@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.2.0',
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    }
+  };
+</script>
+
+  <meta name="description" content="Fluent Python 第十二章读书报告">
+<meta name="keywords" content="Python,fluent python,inheritance,multiple inheritance,mro">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fluent Python 第十二章 继承的优缺点">
+<meta property="og:url" content="http://aldslvda.github.io/2018/07/28/fluent-python-12/index.html">
+<meta property="og:site_name" content="NickAlds&#39;s Blog">
+<meta property="og:description" content="Fluent Python 第十二章读书报告">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/aldslvda/blog-images/blob/master/fluent_python_logo.png?raw=true">
+<meta property="og:updated_time" content="2020-04-04T20:14:56.956Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Fluent Python 第十二章 继承的优缺点">
+<meta name="twitter:description" content="Fluent Python 第十二章读书报告">
+<meta name="twitter:image" content="https://github.com/aldslvda/blog-images/blob/master/fluent_python_logo.png?raw=true">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://aldslvda.github.io/2018/07/28/fluent-python-12/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>Fluent Python 第十二章 继承的优缺点 | NickAlds's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">NickAlds's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Never Settle</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://aldslvda.github.io/2018/07/28/fluent-python-12/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aldslvda">
+      <meta itemprop="description" content="聚沙成塔">
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/4235999?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="NickAlds's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Fluent Python 第十二章 继承的优缺点
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-07-29 03:55:00" itemprop="dateCreated datePublished" datetime="2018-07-29T03:55:00+08:00">2018-07-29</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-04-05 04:14:56" itemprop="dateModified" datetime="2020-04-05T04:14:56+08:00">2020-04-05</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书笔记/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/2018/07/28/fluent-python-12/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/07/28/fluent-python-12/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <img src="https://github.com/aldslvda/blog-images/blob/master/fluent_python_logo.png?raw=true" itemprop="contentUrl">
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        <blockquote>
+<p>Fluent Python 第十二章读书报告</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="Chapter-12-Inheritance-For-Good-or-For-Worse"><a href="#Chapter-12-Inheritance-For-Good-or-For-Worse" class="headerlink" title="Chapter 12. Inheritance: For Good or For Worse"></a>Chapter 12. Inheritance: For Good or For Worse</h1><h1 id="第十二章-继承的优缺点"><a href="#第十二章-继承的优缺点" class="headerlink" title="第十二章: 继承的优缺点"></a>第十二章: 继承的优缺点</h1><blockquote>
+<p>推出继承的初衷是让新手顺利使用只有专家才能设计出来的框架。<br>                                     —— Alan Kay</p>
+</blockquote>
+<p>本章讨论继承和子类化，重点是说明对Python而言尤为重要的两个细节：</p>
+<ul>
+<li>子类化内置类型的缺点</li>
+<li>多重继承和方法解析顺序</li>
+</ul>
+<h2 id="12-1-子类化内置类型的麻烦之处"><a href="#12-1-子类化内置类型的麻烦之处" class="headerlink" title="12.1 子类化内置类型的麻烦之处"></a>12.1 子类化内置类型的麻烦之处</h2><p>Python中的内置类型子类化有一个重要的注意事项：内置类型(使用C语言编写)<strong>不会</strong>调用用户定义的类覆盖的特殊方法。</p>
+<p>内置类型的这种行为违背了面向对象编程的一个基本原则：从实例所属的类搜索方法，这是一个十分糟糕的局面。</p>
+<p>所以在子类化的时候，不应该选择内置类型，而应该选择collections中的类进行继承。</p>
+<h2 id="12-2-多重继承和方法解析顺序"><a href="#12-2-多重继承和方法解析顺序" class="headerlink" title="12.2 多重继承和方法解析顺序"></a>12.2 多重继承和方法解析顺序</h2><p>任何实现多重继承的语言都要处理潜在的命名冲突，这种冲突是由不相关的祖先类同名的方法引起的，称为“菱形问题”。  </p>
+<p><img src="https://github.com/aldslvda/blog-images/blob/master/fluent-python-12.1.png?raw=true" alt="Figure-12-1"></p>
+<p>python能区分子类调用的是哪一个方法，是因为Python会按照特定的顺序遍历继承图，这个顺序叫做方法解析顺序(Method Resolution Order，MRO), Python中的类都有一个名为__mro__的属性，它的值是一个元组，按照方法戒子顺序列出各个超类，从当前类一直向上，直到object类。例如tenserflow中的Variable类</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tf.Variable.__mro__</span><br><span class="line">&gt;&gt;&gt; (&lt;class 'tensorflow.python.ops.variables.Variable'&gt;, &lt;class 'tensorflow.python.training.checkpointable.base.CheckpointableBase'&gt;, &lt;class 'object'&gt;)</span><br></pre></td></tr></table></figure>
+<p>如果把方法调用委托给超类，可以有下面两种选择:</p>
+<ul>
+<li>使用super()函数如Foo_son.super().bar(), 这个方法的好处在于安全，不会过时。适合使用的场景: 调用框架或者不受自己控制的类层次结构中的方法</li>
+<li>如果想要绕过方法解析, 直接调用超类的某个方法，可以直接使用超类类名代替super()函数，如Foo.bar()</li>
+</ul>
+<p>方法解析顺序不仅考虑继承图，还考虑子类声明中列出超类的顺序。也就是说，如果把 D 类声明为 class D(C, B):，那么 D 类的__mro__ 属性就是：先搜索 C 类，再搜索 B 类。</p>
+<h2 id="12-3-多重继承的真实应用"><a href="#12-3-多重继承的真实应用" class="headerlink" title="12.3 多重继承的真实应用"></a>12.3 多重继承的真实应用</h2><p>标准库中，GUI工具包Tkinter把多重继承用到了极致。<br><img src="https://github.com/aldslvda/blog-images/blob/master/fluent-python-12.2.png?raw=true" alt="Figure-12-2"></p>
+<p>其中几个类：</p>
+<ul>
+<li>Toplevel：表示 Tkinter 应用程序中顶层窗口的类。</li>
+<li>Widget：窗口中所有可见对象的超类。</li>
+<li>Button：普通的按钮小组件。</li>
+<li>Entry：单行可编辑文本字段。</li>
+<li>Text：多行可编辑文本字段</li>
+</ul>
+<p>但由于Tkinter开发时间比较久远，很多使用多重继承不能称作是最佳的实践。后面会对Tkinter使用多重继承的<strong>可取之处</strong>和<strong>不当之处</strong>进行讨论</p>
+<h2 id="12-4-处理多重继承"><a href="#12-4-处理多重继承" class="headerlink" title="12.4 处理多重继承"></a>12.4 处理多重继承</h2><blockquote>
+<p>……我们需要一种更好的、全新的继承理论（目前仍是如此）。例如，继承和实例化（一种继承方式）混淆了语用（比如为了节省空间而重构代码）和语义（用途太多了，比如特殊化、普遍化、形态，等等）。<br>                                                            ——Alan Kay</p>
+</blockquote>
+<p>如上面引用的一段话， 继承有很多用途，而多重继承增加了可选方案和复杂度。使用多重继承容易得出令人费解和脆弱的设计。</p>
+<p>暂时还没有针对多重继承完整的理论，下面是避免把类图搅乱的一些建议。</p>
+<ul>
+<li><p>把接口继承和实现继承区分开来<br>  使用多重继承是，一定要明确<strong>为什么</strong>创建子类。一般原因可能有：</p>
+<ul>
+<li>继承接口，创建子类型， 实现“是什么”</li>
+<li>继承实现，通过继承避免代码复用<br>其实这两条经常同时出现，不过只要可能的话，一定要明确区分。前者是支撑框架的支柱，后者是实现细节，通常可以换用组合和委托模式。</li>
+</ul>
+</li>
+<li><p>使用抽象基类显式表示接口<br>  如果类的作用是定义接口，应该明确定为抽象基类</p>
+</li>
+<li><p>通过混入(mixin)重用代码<br>  如果一个类的作用是为多个不相关的子类提供方法实现，从而实现重用，但不体现“是什么”关系，应该把那个类明确地定义为混入类（mixin class）。从概念上讲，混入不定义新类型，只是<strong>打包方法，便于重用</strong>。混入类绝对<strong>不能</strong>实例化，而且具体类不能<strong>只</strong>继承混入类。混入类应该提供某方面的特定行为，只实现少量关系非常紧密的方法。</p>
+</li>
+<li><p>在名称中明确指明混入<br>  混入类应该以Mixin 作为后缀(在django的GenericViews中尤为常见)</p>
+</li>
+<li><p>抽象基类可以作为混入，反之不成立。<br>  抽象基类可以实现具体方法，因此也可以作为混入使用。抽象基类可以作为其他类的唯一基类，而混入决不能作为唯一的超类，除非继承另一个更具体的混入。<br>  抽象基类中实现的具体方法只能与抽象基类及其超类中的方法协作。</p>
+</li>
+<li><p>不要子类化多个具体类<br>  具体类的超类中除了一个具体超类之外，其余的都应该是抽象基类或混入。</p>
+</li>
+<li><p>为用户提供聚合类<br>  如果抽象基类或混入的组合对客户代码非常有用，那就提供一个类，使用易于理解的方式把它们结合起来。 Grady Booch 把这种类称为聚合类（aggregate class）。<br>  <em>聚合类恰如其名，只做聚合，不额外实现类方法</em></p>
+</li>
+<li><p>“优先使用对象组合，而不是类继承”<br>  优先使用组合能让设计更灵活。组合和委托可以代替混入，把行为提供给不同的类，但是不能取代接口继承去定义类型层次结构。</p>
+</li>
+</ul>
+<h1 id="12-5-小结"><a href="#12-5-小结" class="headerlink" title="12.5  小结"></a>12.5  小结</h1><p>本章着重探讨了多重继承这把双刃剑。讲述了Python中的MRO（方法解析顺序），探讨了多重继承实现的一些可以称之为准则的最佳实践标准。</p>
+
+      
+    </div>
+
+    
+      
+
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/fluent-python/" rel="tag"># fluent python</a>
+          
+            <a href="/tags/inheritance/" rel="tag"># inheritance</a>
+          
+            <a href="/tags/multiple-inheritance/" rel="tag"># multiple inheritance</a>
+          
+            <a href="/tags/mro/" rel="tag"># mro</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/28/fluent-python-11/" rel="next" title="Fluent Python 第十一章 从协议到抽象基类">
+                <i class="fa fa-chevron-left"></i> Fluent Python 第十一章 从协议到抽象基类
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/29/fluent-python-13/" rel="prev" title="Fluent Python 第十三章 正确使用运算符重载">
+                Fluent Python 第十三章 正确使用运算符重载 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image" src="https://avatars0.githubusercontent.com/u/4235999?s=460&v=4" alt="aldslvda">
+  
+  <p class="site-author-name" itemprop="name">aldslvda</p>
+  <div class="site-description motion-element" itemprop="description">聚沙成塔</div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">66</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+  <div class="links-of-author motion-element">
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://github.com/aldslvda" title="GitHub &rarr; https://github.com/aldslvda" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="mailto:aldslvda@live.com" title="E-Mail &rarr; mailto:aldslvda@live.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="http://weibo.com/aldslvda" title="weibo &rarr; http://weibo.com/aldslvda" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+    
+  </div>
+
+
+
+
+
+
+
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Chapter-12-Inheritance-For-Good-or-For-Worse"><span class="nav-text">Chapter 12. Inheritance: For Good or For Worse</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第十二章-继承的优缺点"><span class="nav-text">第十二章: 继承的优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#12-1-子类化内置类型的麻烦之处"><span class="nav-text">12.1 子类化内置类型的麻烦之处</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-2-多重继承和方法解析顺序"><span class="nav-text">12.2 多重继承和方法解析顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-3-多重继承的真实应用"><span class="nav-text">12.3 多重继承的真实应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-4-处理多重继承"><span class="nav-text">12.4 处理多重继承</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#12-5-小结"><span class="nav-text">12.5  小结</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aldslvda</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+  
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://aldslvda.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://aldslvda.github.io/2018/07/28/fluent-python-12/";
+    this.page.identifier = "2018/07/28/fluent-python-12/";
+    this.page.title = 'Fluent Python 第十二章 继承的优缺点';
+    };
+  function loadComments() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://aldslvda.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', '' + +new Date());
+    (d.head || d.body).appendChild(s);
+  }
+  
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// GET RESPONSIVE HEIGHT PASSED FROM IFRAME
+
+window.addEventListener("message", function(e) {
+  var data = e.data;
+  if ((typeof data === 'string') && (data.indexOf('ciu_embed') > -1)) {
+    var featureID = data.split(':')[1];
+    var height = data.split(':')[2];
+    $(`iframe[data-feature=${featureID}]`).height(parseInt(height) + 30);
+  }
+}, false);
+</script>
+
+
+
+
+
+
+
+
+  
+
+</body>
+</html>

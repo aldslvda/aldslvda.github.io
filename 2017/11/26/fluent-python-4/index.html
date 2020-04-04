@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.2.0',
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    }
+  };
+</script>
+
+  <meta name="description" content="Fluent Python 第四章读书报告">
+<meta name="keywords" content="Python,fluent python,bytes,unicode">
+<meta property="og:type" content="article">
+<meta property="og:title" content="fluent python 第四章小记">
+<meta property="og:url" content="http://aldslvda.github.io/2017/11/26/fluent-python-4/index.html">
+<meta property="og:site_name" content="NickAlds&#39;s Blog">
+<meta property="og:description" content="Fluent Python 第四章读书报告">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/aldslvda/blog-images/blob/master/fluent_python_logo.png?raw=true">
+<meta property="og:updated_time" content="2020-04-04T20:14:56.956Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="fluent python 第四章小记">
+<meta name="twitter:description" content="Fluent Python 第四章读书报告">
+<meta name="twitter:image" content="https://github.com/aldslvda/blog-images/blob/master/fluent_python_logo.png?raw=true">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://aldslvda.github.io/2017/11/26/fluent-python-4/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>fluent python 第四章小记 | NickAlds's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">NickAlds's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Never Settle</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://aldslvda.github.io/2017/11/26/fluent-python-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aldslvda">
+      <meta itemprop="description" content="聚沙成塔">
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/4235999?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="NickAlds's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">fluent python 第四章小记
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2017-11-27 00:03:27" itemprop="dateCreated datePublished" datetime="2017-11-27T00:03:27+08:00">2017-11-27</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-04-05 04:14:56" itemprop="dateModified" datetime="2020-04-05T04:14:56+08:00">2020-04-05</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书笔记/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/2017/11/26/fluent-python-4/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/11/26/fluent-python-4/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <img src="https://github.com/aldslvda/blog-images/blob/master/fluent_python_logo.png?raw=true" itemprop="contentUrl">
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        <blockquote>
+<p>Fluent Python 第四章读书报告</p>
+</blockquote>
+<a id="more"></a> 
+<h1 id="Chapter-4-Texts-versus-Bytes"><a href="#Chapter-4-Texts-versus-Bytes" class="headerlink" title="Chapter 4. Texts versus Bytes"></a>Chapter 4. Texts versus Bytes</h1><h1 id="第四章-文本和字节"><a href="#第四章-文本和字节" class="headerlink" title="第四章.  文本和字节"></a>第四章.  文本和字节</h1><p>* 注: 本章中讨论的所有字符和字节的问题以Python3为主<br>Python 3 明确区分了人类可读的文本字符串(text)和原始的字节序列(Bytes)。隐式地把字节序列转换成Unicode文本已成过去。</p>
+<h2 id="字符问题"><a href="#字符问题" class="headerlink" title="字符问题"></a>字符问题</h2><p>字符串是一个相当简单的概念，但是字符的定义比较复杂。<br>Python3的str对象中获取的单个元素是Unicode, 但是Python2的str对象获取的是原始的字节序列。<br>Unicode 标准把字符的标识和具体的字节表述进行了如下的明确区分:   </p>
+<ul>
+<li><p>字符的标识，即码位，是 0~1 114 111(0x10fff)的数字（十进制），在 Unicode 标准中以4~6个十六进制数字表示，而且加前缀“U+”。例如，字母 A 的码位是 U+0041，欧元符号的码位是 U+20AC，高音谱号的码位是 U+1D11E。在 Unicode 6.3 中（这是 Python 3.4使用的标准），约 10% 的有效码位有对应的字符。</p>
+</li>
+<li><p>字符的具体表述取决于所用的编码。编码是在码位和字节序列之间转换时使用的算法。在 UTF-8 编码中，A（U+0041）的码位编码成单个字节 \x41，而在 UTF-16LE编码中编码成两个字节 \x41\x00。再举个例子，欧元符号（U+20AC）在 UTF-8 编码中是三个字节——\xe2\x82\xac，而在 UTF-16LE 中编码成两个字节：\xac\x20。</p>
+</li>
+</ul>
+<p>将码位(code points)转化成字节序列(Bytes)的过程是编码，将字符序列转化为码位的过程是解码。</p>
+<h2 id="字节概要"><a href="#字节概要" class="headerlink" title="字节概要"></a>字节概要</h2><ol>
+<li>Python 内置了两种基本的二进制序列类型：Python 3 引入的不可变 bytes 类型和 Python 2.6 添加的可变bytearray 类型。   </li>
+<li>bytes 或 bytearray 对象的各个元素是介于 0~255(0x0~0xff)之间的整数。<br>bytes对象的切片还是bytes对象，最小单位是长度为1的bytes对象.     </li>
+<li>bytearray 对象的切片还是 bytearray 对象。   </li>
+<li>除了格式化方法（format 和 format_map）和几个处理 Unicode 数据的方法（包括casefold、isdecimal、isidentifier、isnumeric、isprintable 和 encode）之外，str 类型的其他方法都支持 bytes 和 bytearray 类型。这意味着，我们可以使用熟悉的字符串方法处理二进制序列，如 endswith、replace、strip、translate、upper等，只有少数几个其他方法的参数是 bytes 对象，而不是 str 对象。此外，如果正则表达式编译自二进制序列而不是字符串，re 模块中的正则表达式函数也能处理二进制序列.   </li>
+<li>二进制序列有个类方法是 str 没有的，名为 fromhex: </li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bytes.fromhex(<span class="string">'31 4B CE A9'</span>)</span><br><span class="line"><span class="string">b'1K\xce\xa9'</span></span><br></pre></td></tr></table></figure>
+<p>新建bytes或bytearray可以调用各自的构造方法:</p>
+<ul>
+<li>一个str对象和一个encoding参数</li>
+<li>一个提供0~0xff的整数的可迭代对象</li>
+<li>一个实现了缓冲协议的对象(buffer protocol, 例如bytes, bytearray, memory view, array.array)</li>
+</ul>
+<h2 id="结构体和内存视图-struct-and-memory-view"><a href="#结构体和内存视图-struct-and-memory-view" class="headerlink" title="结构体和内存视图(struct and memory view)"></a>结构体和内存视图(struct and memory view)</h2><p>struct 模块能处理bytes、bytearray 和 memoryview 对象, 能将打包的字节序列和不同类型字段组成的元组相互转换。<br>memoryview 类不是用于创建或存储字节序列的，而是共享内存，让你访问其他二进制序列、打包的数组和缓冲中的数据切片，而无需复制字节序列。   </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> struct</span><br><span class="line">fmt = <span class="string">'&lt;3s3sHH'</span> </span><br><span class="line"><span class="comment">#格式：&lt; 是小字节序，3s3s 是两个 3 字节序列，HH 是两个 16 位二进制整数。</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'filter.gif'</span>, <span class="string">'rb'</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    img = memoryview(fp.read()) </span><br><span class="line">    <span class="comment">#创建一个内存视图</span></span><br><span class="line"></span><br><span class="line">header = img[:<span class="number">10</span>] </span><br><span class="line"><span class="comment">#header也是一个内存视图</span></span><br><span class="line">bytes(header) </span><br><span class="line"><span class="comment"># b'GIF89a+\x02\xe6\x00'</span></span><br><span class="line">struct.unpack(fmt, header) </span><br><span class="line"><span class="comment"># (b'GIF', b'89a', 555, 230) 分别代表文件类型,版本,宽度,高度</span></span><br><span class="line"><span class="keyword">del</span> header </span><br><span class="line"><span class="comment"># 删除引用, 释放内存</span></span><br><span class="line"><span class="keyword">del</span> img</span><br></pre></td></tr></table></figure>
+<h2 id="基本的编解码器"><a href="#基本的编解码器" class="headerlink" title="基本的编解码器"></a>基本的编解码器</h2><p>Python 自带了超过 100 种编解码器（codec, encoder/decoder），用于在文本和字节之间相互转换。每个编解码器都有一个名称，如 ‘utf_8’，而且经常有几个别名，如’utf8’、’utf-8’ 和 ‘U8’。这些名称可以传给open()、str.encode()、bytes.decode() 等函数的 encoding 参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> codec <span class="keyword">in</span> [<span class="string">'latin_1'</span>, <span class="string">'utf_8'</span>, <span class="string">'utf_16'</span>]:</span><br><span class="line"><span class="meta">... </span>print(codec, <span class="string">'El Niño'</span>.encode(codec), sep=<span class="string">'\t'</span>)</span><br><span class="line">...</span><br><span class="line">latin_1 <span class="string">b'El Ni\xf1o'</span></span><br><span class="line">utf_8 <span class="string">b'El Ni\xc3\xb1o'</span></span><br><span class="line">utf_16 <span class="string">b'\xff\xfeE\x00l\x00 \x00N\x00i\x00\xf1\x00o\x00'</span></span><br></pre></td></tr></table></figure>
+<p>某些编码（如 ASCII 和多字节的 GB2312）不能表示所有 Unicode字符。然而，UTF 编码的设计目的就是处理每一个 Unicode 码位。  </p>
+<p>一些典型编码:</p>
+<ul>
+<li>latin1: 一种重要的编码，是其他编码的基础，例如 cp1252 和 Unicode（注意，latin1 与cp1252 的字节值是一样的，甚至连码位也相同）</li>
+<li>cp1252:Microsoft 制定的 latin1 超集，添加了有用的符号，例如弯引号和€（欧元）；有些Windows 应用把它称为“ANSI”，但它并不是 ANSI 标准。</li>
+<li>cp437: IBM PC 最初的字符集，包含框图符号。与后来出现的 latin1 不兼容。</li>
+<li>gb2312:用于编码简体中文的陈旧标准；这是亚洲语言中使用较广泛的多字节编码之一。</li>
+<li>utf-8:目前 Web 中最常见的 8 位编码； 与 ASCII 兼容（纯 ASCII 文本是有效的 UTF-8 文本）。</li>
+<li>utf-16le: UTF-16 的 16 位编码方案的一种形式；所有 UTF-16 支持通过转义序列（称为“代理对”，surrogate pair）表示超过 U+FFFF 的码位。</li>
+</ul>
+<h2 id="编解码中出现的问题"><a href="#编解码中出现的问题" class="headerlink" title="编解码中出现的问题"></a>编解码中出现的问题</h2><h3 id="UnicodeEncodeError"><a href="#UnicodeEncodeError" class="headerlink" title="UnicodeEncodeError"></a>UnicodeEncodeError</h3><p>把文本转换成字节序列时，如果目标编码中<strong>没有定义</strong>某个字符，那就会抛出 UnicodeEncodeError</p>
+<h3 id="UnicodeDecodeError"><a href="#UnicodeDecodeError" class="headerlink" title="UnicodeDecodeError"></a>UnicodeDecodeError</h3><p>不是每一个字节都包含有效的 ASCII 字符，也不是每一个字符序列都是有效的 UTF-8 或 UTF-16。因此，把二进制序列转换成文本时，如果假设是这两个编码中的一个，遇到无法转换的字节序列时会抛出 UnicodeDecodeError<br>一些陈旧的8位编码可以解码任何字节序列，不抛出错误，但是会得到无用的输出。</p>
+<h3 id="使用预期之外的编码加载模块时抛出的SyntaxError"><a href="#使用预期之外的编码加载模块时抛出的SyntaxError" class="headerlink" title="使用预期之外的编码加载模块时抛出的SyntaxError"></a>使用预期之外的编码加载模块时抛出的SyntaxError</h3><p>Python 3 默认使用 UTF-8 编码源码，Python 2（从 2.5 开始）则默认使用 ASCII。如果加载的 .py 模块中包含 UTF-8 之外的数据，而且没有声明编码，会抛出SyntaxError<br>这个问题可以在文件的前两行加入#encoding:${encoding_name}解决。</p>
+<h3 id="找出一个字节序列的编码"><a href="#找出一个字节序列的编码" class="headerlink" title="找出一个字节序列的编码"></a>找出一个字节序列的编码</h3><p>单纯的字节序列是无法找出编码的，必须通过协议/规定的格式告知解码者。——有些通信协议和文件格式，如 HTTP 和 XML，包含明确指明内容编码的首部。<br>但是字节流也可以通过寻找规则来判断可能的编码: 例如，如果 b’\x00’ 字节经常出现，那么可能是 16 位或 32位编码，而不是 8 位编码方案，因为纯文本中不能包含空字符；如果字节序列b’\x20\x00’ 经常出现，那么可能是 UTF-16LE 编码中的空格字符（U+0020）<br>统一字符编码侦测包 Chardet（<a href="https://pypi.python.org/pypi/chardet）就是这样工作的，它能识别所支持的" target="_blank" rel="noopener">https://pypi.python.org/pypi/chardet）就是这样工作的，它能识别所支持的</a> 30 种编码.    </p>
+<h3 id="BOM：有用的鬼符"><a href="#BOM：有用的鬼符" class="headerlink" title="BOM：有用的鬼符"></a>BOM：有用的鬼符</h3><p>utf-16编码的序列开头会有几个额外的字节，称为BOM，即字节序标记（byte-order mark），指明字节序。<br>小字节序设备中，低8位在前，高8位在后，大字节序的设备则反之。<br>UTF-16 有两个变种：UTF-16LE，显式指明使用小字节序；UTF-16BE，显式指明使用大字节序。如果使用这两个变种，不会生成 BOM<br>与字节序有关的问题只对一个字（word）占多个字节的编码（如 UTF-16 和 UTF-32）有影响。UTF-8 的一大优势是，不管设备使用哪种字节序，生成的字节序列始终一致，因此不需要 BOM。   </p>
+<h2 id="处理文本"><a href="#处理文本" class="headerlink" title="处理文本"></a>处理文本</h2><p>处理文本的最佳实践是“Unicode 三明治”（要尽早把输入（例如读取文件时）的字节序列解码成字符串，处理过程全部用字符串，输出时尽量晚编码成字符序列)<br><img src="https://github.com/aldslvda/blog-images/blob/master/fluent-python-4.1.png?raw=true" alt="Figure-4-1"></p>
+<p>文本处理中的一些要点:</p>
+<ul>
+<li>需要在多台设备中或多种场合下运行的代码，一定不能依赖默认编码。打开文件时始终应该明确传入 encoding= 参数，因为不同的设备使用的默认编码可能不同。</li>
+<li>除非想判断编码，否则不要在二进制模式中打开文本文件；即便如此，也应该使用 Chardet，而不是重新发明轮子。常规代码只应该使用二进制模式打开二进制文件。</li>
+</ul>
+<h2 id="为了正确的比较规范化Unicode-字符串"><a href="#为了正确的比较规范化Unicode-字符串" class="headerlink" title="为了正确的比较规范化Unicode 字符串"></a>为了正确的比较规范化Unicode 字符串</h2><p>在 Unicode 标准中，’é’和 ‘e\u0301’ 这样的序列叫“标准等价物”（canonical equivalent），应用程序应该把它们视作相同的字符。但是，Python 看到的是不同的码位序列，因此判定二者不相等。<br>上述的问题的解决方案是规范化Unicode字符串。通常是使用 unicodedata.normalize 函数提供的 Unicode 规范化。第一个参数是’NFC’、’NFD’、’NFKC’ 和 ‘NFKD’之一。<br>NFC（Normalization Form C）使用最少的码位构成等价的字符串，而 NFD 把组合字符分解成基字符和单独的组合字符。这两种规范化方式都能让比较行为符合预期。<br>NFKC 和 NFKD的首字母缩略词中，字母 K 表示“compatibility”（兼容性）。这两种是较严格的规范化形式，对“兼容字符”有影响。<br><strong>由于这一节的内容的领域偏向性太过严重，一般工作不会见到，只是略作了解，碰到相关问题再细查</strong></p>
+<h2 id="支持字符串和字节序列的双模式API"><a href="#支持字符串和字节序列的双模式API" class="headerlink" title="支持字符串和字节序列的双模式API"></a>支持字符串和字节序列的双模式API</h2><h3 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h3><p>如果使用字节序列构建正则表达式，\d 和 \w 等模式只能匹配 ASCII 字符；相比之下，如果是字符串模式，就能匹配 ASCII 之外的 Unicode 数字或字母。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">re_numbers_str = re.compile(<span class="string">r'\d+'</span>)</span><br><span class="line">re_words_str = re.compile(<span class="string">r'\w+'</span>)</span><br><span class="line">re_numbers_bytes = re.compile(r<span class="string">b'\d+'</span>)</span><br><span class="line">re_words_bytes = re.compile(r<span class="string">b'\w+'</span>)</span><br><span class="line">text_str = (<span class="string">"Ramanujan saw \u0be7\u0bed\u0be8\u0bef"</span> </span><br><span class="line"><span class="string">" as 1729 = 1³ + 12³ = 9³ + 10³."</span>) </span><br><span class="line">text_bytes = text_str.encode(<span class="string">'utf_8'</span>) </span><br><span class="line">print(<span class="string">'Text'</span>, repr(text_str), sep=<span class="string">'\n '</span>)</span><br><span class="line">print(<span class="string">'Numbers'</span>)</span><br><span class="line">print(<span class="string">' str :'</span>, re_numbers_str.findall(text_str)) </span><br><span class="line">print(<span class="string">' bytes:'</span>, re_numbers_bytes.findall(text_bytes)) </span><br><span class="line">print(<span class="string">'Words'</span>)</span><br><span class="line">print(<span class="string">' str :'</span>, re_words_str.findall(text_str)) </span><br><span class="line">print(<span class="string">' bytes:'</span>, re_words_bytes.findall(text_bytes))</span><br></pre></td></tr></table></figure>
+<p>上面这段代码的输出:</p>
+<blockquote>
+<p>Text<br> ‘Ramanujan saw ௧௭௨௯ as 1729 = 1³ + 12³ = 9³ + 10³.’<br>Numbers<br> str : [‘௧௭௨௯’, ‘1729’, ‘1’, ‘12’, ‘9’, ‘10’]<br> bytes: [b’1729’, b’1’, b’12’, b’9’, b’10’]<br>Words<br> str : [‘Ramanujan’, ‘saw’, ‘௧௭௨௯’, ‘as’, ‘1729’, ‘1³’, ‘12³’, ‘9³’, ‘10³’]<br> bytes: [b’Ramanujan’, b’saw’, b’as’, b’1729’, b’1’, b’12’, b’9’, b’10’]   </p>
+</blockquote>
+<h3 id="os函数"><a href="#os函数" class="headerlink" title="os函数"></a>os函数</h3><p>GNU/Linux 内核不理解 Unicode，对任何合理的编码方案来说，在文<br>件名中使用字节序列都是无效的，无法解码成字符串。在不同操作系统中使用各种客户端的文件服务器，在遇到这个问题时尤其容易出错。<br>为了规避这个问题，os 模块中的所有函数、文件名或路径名参数既能使用字符串，也能使用字节序列。如果这样的函数使用字符串参数调用，该参数会使用sys.getfilesystemencoding() 得到的编解码器自动编码，然后操作系统会使用相同的编解码器解码。这几乎就是我们想要的行为，与 Unicode 三明治最佳实践一致。<br>利用这一特性可以修复一些含有鬼符的文件名。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>随着 Unicode 的广泛使用（80% 的网站已经使用 UTF-8），我们必须把文本字符串与它们在文件中的二进制序列表述区分开，而 Python 3 中这个区分是强制的。   </li>
+<li>这一部分要解决的问题大多是一些由于地区/语言不通造成的编码差异，这种差异可以通过规范化Unicode解决,也可以通过规范化编码解决。   </li>
+<li>Unicode 异常复杂，充满特殊情况，而且要覆盖各种人类语言和产业标准策略。所以要做到完美的处理非常困难。    </li>
+<li>Python 3.3 起，创建 str 对象时，解释器会检查里面的字符，然后为该字符串选择最经济的内存布局：如果字符都在 latin1 字符集中，那就使用 1 个字节存储每个码位；否则，根据字符串中的具体字符，选择 2 个或 4 个字节存储每个码位。</li>
+<li>Python 3 对 int 类型的处理方式：如果一个整数在一个机器字中放得下，那就存储在一个机器字中；否则解释器切换成变长表述，类似于Python 2 中的 long 类型。</li>
+</ol>
+
+      
+    </div>
+
+    
+      
+
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/fluent-python/" rel="tag"># fluent python</a>
+          
+            <a href="/tags/bytes/" rel="tag"># bytes</a>
+          
+            <a href="/tags/unicode/" rel="tag"># unicode</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/23/scrapy_crawler_01/" rel="next" title="使用scrapy搭建一个简单的新闻爬虫">
+                <i class="fa fa-chevron-left"></i> 使用scrapy搭建一个简单的新闻爬虫
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/28/how-network-connects-1/" rel="prev" title="网络是怎样连接的 第一章小记">
+                网络是怎样连接的 第一章小记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image" src="https://avatars0.githubusercontent.com/u/4235999?s=460&v=4" alt="aldslvda">
+  
+  <p class="site-author-name" itemprop="name">aldslvda</p>
+  <div class="site-description motion-element" itemprop="description">聚沙成塔</div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">66</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+  <div class="links-of-author motion-element">
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://github.com/aldslvda" title="GitHub &rarr; https://github.com/aldslvda" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="mailto:aldslvda@live.com" title="E-Mail &rarr; mailto:aldslvda@live.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="http://weibo.com/aldslvda" title="weibo &rarr; http://weibo.com/aldslvda" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+    
+  </div>
+
+
+
+
+
+
+
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Chapter-4-Texts-versus-Bytes"><span class="nav-text">Chapter 4. Texts versus Bytes</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第四章-文本和字节"><span class="nav-text">第四章.  文本和字节</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#字符问题"><span class="nav-text">字符问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字节概要"><span class="nav-text">字节概要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结构体和内存视图-struct-and-memory-view"><span class="nav-text">结构体和内存视图(struct and memory view)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本的编解码器"><span class="nav-text">基本的编解码器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编解码中出现的问题"><span class="nav-text">编解码中出现的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UnicodeEncodeError"><span class="nav-text">UnicodeEncodeError</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UnicodeDecodeError"><span class="nav-text">UnicodeDecodeError</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用预期之外的编码加载模块时抛出的SyntaxError"><span class="nav-text">使用预期之外的编码加载模块时抛出的SyntaxError</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#找出一个字节序列的编码"><span class="nav-text">找出一个字节序列的编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BOM：有用的鬼符"><span class="nav-text">BOM：有用的鬼符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理文本"><span class="nav-text">处理文本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为了正确的比较规范化Unicode-字符串"><span class="nav-text">为了正确的比较规范化Unicode 字符串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#支持字符串和字节序列的双模式API"><span class="nav-text">支持字符串和字节序列的双模式API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#正则表达式"><span class="nav-text">正则表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#os函数"><span class="nav-text">os函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aldslvda</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+  
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://aldslvda.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://aldslvda.github.io/2017/11/26/fluent-python-4/";
+    this.page.identifier = "2017/11/26/fluent-python-4/";
+    this.page.title = 'fluent python 第四章小记';
+    };
+  function loadComments() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://aldslvda.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', '' + +new Date());
+    (d.head || d.body).appendChild(s);
+  }
+  
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// GET RESPONSIVE HEIGHT PASSED FROM IFRAME
+
+window.addEventListener("message", function(e) {
+  var data = e.data;
+  if ((typeof data === 'string') && (data.indexOf('ciu_embed') > -1)) {
+    var featureID = data.split(':')[1];
+    var height = data.split(':')[2];
+    $(`iframe[data-feature=${featureID}]`).height(parseInt(height) + 30);
+  }
+}, false);
+</script>
+
+
+
+
+
+
+
+
+  
+
+</body>
+</html>

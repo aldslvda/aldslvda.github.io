@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.2.0',
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    }
+  };
+</script>
+
+  <meta name="description" content="Fluent Python 第五章读书报告">
+<meta name="keywords" content="Python,fluent python,functional">
+<meta property="og:type" content="article">
+<meta property="og:title" content="fluent python 第五章小记">
+<meta property="og:url" content="http://aldslvda.github.io/2017/12/13/fluent-python-5/index.html">
+<meta property="og:site_name" content="NickAlds&#39;s Blog">
+<meta property="og:description" content="Fluent Python 第五章读书报告">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/aldslvda/blog-images/blob/master/fluent_python_logo.png?raw=true">
+<meta property="og:updated_time" content="2020-04-04T20:14:56.956Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="fluent python 第五章小记">
+<meta name="twitter:description" content="Fluent Python 第五章读书报告">
+<meta name="twitter:image" content="https://github.com/aldslvda/blog-images/blob/master/fluent_python_logo.png?raw=true">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://aldslvda.github.io/2017/12/13/fluent-python-5/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>fluent python 第五章小记 | NickAlds's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">NickAlds's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Never Settle</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://aldslvda.github.io/2017/12/13/fluent-python-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aldslvda">
+      <meta itemprop="description" content="聚沙成塔">
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/4235999?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="NickAlds's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">fluent python 第五章小记
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2017-12-13 21:21:21" itemprop="dateCreated datePublished" datetime="2017-12-13T21:21:21+08:00">2017-12-13</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-04-05 04:14:56" itemprop="dateModified" datetime="2020-04-05T04:14:56+08:00">2020-04-05</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书笔记/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/2017/12/13/fluent-python-5/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/13/fluent-python-5/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <img src="https://github.com/aldslvda/blog-images/blob/master/fluent_python_logo.png?raw=true" itemprop="contentUrl">
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        <blockquote>
+<p>Fluent Python 第五章读书报告</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="Chapter-5-First-Class-Functions"><a href="#Chapter-5-First-Class-Functions" class="headerlink" title="Chapter 5. First Class Functions"></a>Chapter 5. First Class Functions</h1><h1 id="第五章-一等函数"><a href="#第五章-一等函数" class="headerlink" title="第五章. 一等函数"></a>第五章. 一等函数</h1><p>首先解释一下标题的含义:<br>编程语言理论家把“一等对象”定义为满足下述条件的程序实体：</p>
+<ul>
+<li>在运行时创建</li>
+<li>能赋值给变量或数据结构中的元素</li>
+<li>能作为参数传给函数</li>
+<li>能作为函数的返回结果</li>
+</ul>
+<p>在Python中，整数、字符串和字典都是一等对象，特别提到的是，函数也是一等对象，这一特性称为一等函数。</p>
+<h2 id="把函数视作对象"><a href="#把函数视作对象" class="headerlink" title="把函数视作对象"></a>把函数视作对象</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span>.__doc__</span><br><span class="line"><span class="string">"print(value, ..., sep=' ', end='\\n', file=sys.stdout, flush=False)\n\nPrints the values to a stream, or to sys.stdout by default.\nOptional keyword arguments:\nfile:  a file-like object (stream); defaults to the current sys.stdout.\nsep:   string inserted between values, default a space.\nend:   string appended after the last value, default a newline.\nflush: whether to forcibly flush the stream."</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(<span class="keyword">print</span>)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">builtin_function_or_method</span>'&gt;</span></span><br></pre></td></tr></table></figure>
+<p>由上面的控制台输出可以看到函数print有一个名为__doc__的属性, 同时是builtin_function_or_method的一个实例。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&gt;&gt; <span class="function"><span class="keyword">def</span> <span class="title">plus</span><span class="params">(a)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> a+<span class="number">1</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>map(plus, range(<span class="number">10</span>))</span><br><span class="line">&lt;map object at <span class="number">0x109553c50</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(map(plus, range(<span class="number">10</span>)))</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>]</span><br></pre></td></tr></table></figure>
+<p>由上面的控制台输出可以看到函数是可以作为参数被传递的。<br>有了一等函数，就可以使用函数式编程。</p>
+<h2 id="高阶函数"><a href="#高阶函数" class="headerlink" title="高阶函数"></a>高阶函数</h2><p>接受函数为参数，或者把函数作为结果返回的函数是高阶函数（higher-orderfunction），第一节中提到的map就是一个高阶函数。</p>
+<h3 id="常见的高阶函数"><a href="#常见的高阶函数" class="headerlink" title="常见的高阶函数"></a>常见的高阶函数</h3><p>函数式语言通常会提供map、filter和reduce这三个高阶函数。</p>
+<ul>
+<li>在Python中，map/filter有更好用的替代品，Python2中map/filter返回的是列表，所以比较好的替代品是列表推导，Python3中这两个函数的返回则是生成器，所以比较好的替代是生成器表达式   </li>
+</ul>
+<p>reduce比较特别：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> functools <span class="keyword">import</span> reduce </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> operator <span class="keyword">import</span> add </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>reduce(add, range(<span class="number">100</span>)) </span><br><span class="line"><span class="number">4950</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sum(<span class="number">100</span>)</span><br><span class="line"><span class="number">4950</span></span><br></pre></td></tr></table></figure>
+<p>sum 和 reduce 的通用思想是把某个操作连续应用到序列的元素上，累计之前的结果，把一系列值归约成一个值。<br>类似的归约函数还有all()和any(), all()传入一个可迭代对象，若所有元素都为True,返回True,否则返回False; 而any()只要有一个True就返回True。</p>
+<h2 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h2><p>为了使用高阶函数，有时创建一次性的小型函数更便利， 这便是匿名函数的由来。</p>
+<p>lamda函数就是在python表达式内创建匿名函数，但由于句法的限制，lambda函数的定义体只能用纯表达式。</p>
+<p>“Functional Programming HOWTO” 中提到，如果使用lambda表达式使得代码难以理解，建议按下面的步骤重构:</p>
+<ul>
+<li>编写注释，说明lambda表达式的作用       </li>
+<li>研究注释，用一个名称概括       </li>
+<li>用这个名称定义一个函数，把lambda表达式转换成这个函数    </li>
+<li>删除注释</li>
+</ul>
+<h2 id="可调用对象"><a href="#可调用对象" class="headerlink" title="可调用对象"></a>可调用对象</h2><p>Python 的数据模型文档指出了7种可调用对象：</p>
+<ul>
+<li>用户定义的函数:<br>  使用lambda表达式或者def语句创建  </li>
+<li>内置函数:<br>  使用CPython实现的函数   </li>
+<li>内置方法:<br>  使用C语言实现的方法   </li>
+<li>方法:<br>  类的定义题中实现的函数   </li>
+<li>类:<br>  调用时会创建一个实例，然后执行构造函数</li>
+<li>类的实例:<br>  如果类定义了__call__方法，那么它的实例可以作为函数调用。  </li>
+<li>生成器函数:<br>  使用了yeild关键字的函数或方法, 返回生成器对象。</li>
+</ul>
+<h2 id="用户定义的可调用类型"><a href="#用户定义的可调用类型" class="headerlink" title="用户定义的可调用类型"></a>用户定义的可调用类型</h2><p>不仅python函数式对象，对象也可以表现得像函数，只需要实现方法__call__。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BingoCage</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, items)</span>:</span></span><br><span class="line">        self._items = list(items)</span><br><span class="line">        random.shuffle(self._items)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pick</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">return</span> self._items.pop()</span><br><span class="line">        <span class="keyword">except</span> IndexError:</span><br><span class="line">            <span class="keyword">raise</span> LookupError(<span class="string">'pick from empty BingoCage'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.pick()</span><br></pre></td></tr></table></figure>
+<p>这样调用BingoCage的实例时，效果和调用pick方法一样。  </p>
+<p>实现 __call__ 方法的类是创建函数类对象的简便方式，此时必须在内部维护一个状态，让它在调用之间可用，例如 BingoCage 中的剩余元素。装饰器就是这样。装饰器必须是函数，而且有时要在多次调用之间“记住”某些事 [ 例如备忘（memoization），即缓存消耗大的计算结果，供后面使用 ]。</p>
+<p>创建保有内部状态的函数，还有一种截然不同的方式 —— 使用闭包。</p>
+<h2 id="从定位参数到仅限关键字参数"><a href="#从定位参数到仅限关键字参数" class="headerlink" title="从定位参数到仅限关键字参数"></a>从定位参数到仅限关键字参数</h2><p>Python提供了极为灵活的参数处理机制，Python3提供了 keyword-only argument。调用函数时使用<em>和</em>展开可迭代对象，映射到单个参数。  </p>
+<p>下面的例子中，tag函数用于生成html标签</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tag</span><span class="params">(name, *content, cls=None, **attrs)</span>:</span></span><br><span class="line">    <span class="string">"""生成一个或多个HTML标签"""</span></span><br><span class="line">    <span class="keyword">if</span> cls <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">        attrs[<span class="string">'class'</span>] = cls</span><br><span class="line">    <span class="keyword">if</span> attrs:</span><br><span class="line">        attr_str = <span class="string">''</span>.join(<span class="string">' %s="%s"'</span> % (attr, value)</span><br><span class="line">                        <span class="keyword">for</span> attr, value <span class="keyword">in</span> sorted(attrs.items()))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        attr_str = <span class="string">''</span></span><br><span class="line">    <span class="keyword">if</span> content:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'\n'</span>.join(<span class="string">'&lt;%s%s&gt;%s&lt;/%s&gt;'</span> %</span><br><span class="line">                (name, attr_str, c, name) <span class="keyword">for</span> c <span class="keyword">in</span> content)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'&lt;%s%s /&gt;'</span> % (name, attr_str)</span><br></pre></td></tr></table></figure>
+<p>下面是这个函数的几种调用方式</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tag(<span class="string">'br'</span>)</span><br><span class="line"><span class="string">'&lt;br /&gt;'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tag(<span class="string">'p'</span>, <span class="string">'hello'</span>)</span><br><span class="line"><span class="string">'&lt;p&gt;hello&lt;/p&gt;'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(tag(<span class="string">'p'</span>, <span class="string">'hello'</span>, <span class="string">'world'</span>))</span><br><span class="line">&lt;p&gt;hello&lt;/p&gt;</span><br><span class="line">&lt;p&gt;world&lt;/p&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tag(<span class="string">'p'</span>, <span class="string">'hello'</span>, id=<span class="number">33</span>)</span><br><span class="line"><span class="string">'&lt;p id="33"&gt;hello&lt;/p&gt;'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(tag(<span class="string">'p'</span>, <span class="string">'hello'</span>, <span class="string">'world'</span>, cls=<span class="string">'sidebar'</span>))</span><br><span class="line">&lt;p class="sidebar"&gt;hello&lt;/p&gt;</span><br><span class="line">&lt;p class="sidebar"&gt;world&lt;/p&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tag(content=<span class="string">'testing'</span>, name=<span class="string">"img"</span>)</span><br><span class="line"><span class="string">'&lt;img content="testing" /&gt;'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_tag = &#123;<span class="string">'name'</span>: <span class="string">'img'</span>, <span class="string">'title'</span>: <span class="string">'Sunset Boulevard'</span>,</span><br><span class="line"><span class="meta">... </span><span class="string">'src'</span>: <span class="string">'sunset.jpg'</span>, <span class="string">'cls'</span>: <span class="string">'framed'</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tag(**my_tag)</span><br><span class="line"><span class="string">'&lt;img class="framed" src="sunset.jpg" title="Sunset Boulevard" /&gt;'</span></span><br></pre></td></tr></table></figure>
+<h2 id="获取关于参数的信息"><a href="#获取关于参数的信息" class="headerlink" title="获取关于参数的信息"></a>获取关于参数的信息</h2><p>这里举一个处理web请求的例子: </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> bobo</span><br><span class="line"><span class="meta">@bobo.query('/')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">(person)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'Hello %s!'</span> % person</span><br></pre></td></tr></table></figure>
+<p>在上面这段代码中，bobo是一个web微框架，bobo.query()装饰器将hello()函数与请求处理机制结合在一起，使得hello()自动接收请求中的person作为参数，若没有person参数，则返回403.</p>
+<p>函数对象有个 __defaults__ 属性，它的值是一个元组，里面保存着定位参数和关键字参数的默认值。仅限关键字参数的默认值在 __kwdefaults__ 属性中。然而，参数的名称在 __code__ 属性中，它的值是一个 code 对象引用，自身也有很多属性。</p>
+<p>下面举一个<a href="https://github.com/aldslvda/readings/blob/master/Fluent-Python/5.%20First%20Class%20Functions/clip.py" target="_blank" rel="noopener">clip.py</a>的例子，讲解函数对象用于获取参数信息的属性。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">clip</span><span class="params">(text, max_len=<span class="number">80</span>)</span>:</span></span><br><span class="line">    <span class="string">"""在max_len前面或后面的第一个空格处截断文本</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    end = <span class="keyword">None</span></span><br><span class="line">    <span class="keyword">if</span> len(text) &gt; max_len:</span><br><span class="line">        space_before = text.rfind(<span class="string">' '</span>, <span class="number">0</span>, max_len)</span><br><span class="line">        <span class="keyword">if</span> space_before &gt;= <span class="number">0</span>:</span><br><span class="line">            end = space_before</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            space_after = text.rfind(<span class="string">' '</span>, max_len)</span><br><span class="line">        <span class="keyword">if</span> space_after &gt;= <span class="number">0</span>:</span><br><span class="line">            end = space_after</span><br><span class="line">            <span class="keyword">if</span> end <span class="keyword">is</span> <span class="keyword">None</span>: <span class="comment"># 没找到空格</span></span><br><span class="line">                end = len(text)</span><br><span class="line">    <span class="keyword">return</span> text[:end].rstrip()</span><br></pre></td></tr></table></figure>
+<p>我们在控制台输入下面的命令，查看属性</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> clip <span class="keyword">import</span> clip</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>clip.__defaults__</span><br><span class="line">(<span class="number">80</span>,)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>clip.__code__</span><br><span class="line">&lt;code object clip at <span class="number">0x10dadcc90</span>, file <span class="string">"/Users/NickAl/study/github/readings/Fluent-Python/5. First Class Functions/clip.py"</span>, line <span class="number">2</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>clip.__code__.co_varnames</span><br><span class="line">(<span class="string">'text'</span>, <span class="string">'max_len'</span>, <span class="string">'end'</span>, <span class="string">'space_before'</span>, <span class="string">'space_after'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>clip.__code__.co_argcount</span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>参数名称在 __code__.co_varnames中，不过里面还有函数定义体中创建的局部变量。因此，参数名称是前 N 个字符串，N的值由 __code\_.co_argcount 确定。顺便说一下，这里不包含前缀为 * 或 ** 的长度可变的参数。参数的默认值只能通过它们在 __defaults__ 元组中的位置确定，因此要从后向前扫描才能把参数和默认值对应起来。</p>
+<p>另一种查看属性的方式是，使用inspect 模块</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> clip <span class="keyword">import</span> clip</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> inspect <span class="keyword">import</span> signature</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sig = signature(clip)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sig</span><br><span class="line">&lt;Signature (text, max_len=<span class="number">80</span>)&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> name, param <span class="keyword">in</span> sig.parameters.items():</span><br><span class="line"><span class="meta">... </span>    print(param.kind, <span class="string">':'</span>, name, <span class="string">'='</span>, param.default)</span><br><span class="line">...</span><br><span class="line">POSITIONAL_OR_KEYWORD : text = &lt;<span class="class"><span class="keyword">class</span> '<span class="title">inspect</span>.<span class="title">_empty</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="title">POSITIONAL_OR_KEYWORD</span> :</span> max_len = <span class="number">80</span></span><br></pre></td></tr></table></figure>
+<p>inspect.signature 函数返回一个 inspect.Signature 对象，它有一个 parameters 属性，这是一个有序映射，把参数名和 inspect.Parameter 对象对应起来。</p>
+<p>inspect.Signature的kind属性有下面5种:</p>
+<ul>
+<li>POSITIONAL_OR_KEYWORD:可以通过定位参数和关键字参数传入的形参（多数 Python 函数的参数属于此类）。</li>
+<li>VAR_POSITIONAL:定位参数元组。</li>
+<li>VAR_KEYWORD:关键字参数字典。</li>
+<li>KEYWORD_ONLY:仅限关键字参数（Python 3 新增）。</li>
+<li>POSITIONAL_ONLY:仅限定位参数；目前，Python 声明函数的句法不支持，但是有些使用 C 语言实现且不接受关键字参数的函数（如 divmod）支持。</li>
+</ul>
+<h2 id="函数注解"><a href="#函数注解" class="headerlink" title="函数注解"></a>函数注解</h2><p>Python 3 提供了一种句法，用于为函数声明中的参数和返回值附加元数据, 这就是注解。<br>在clip.py中声明一个新的函数clip_with_anno, 只在声明时加入注解，其他一样。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">clip_with_anno</span><span class="params">(text:str, max_len: <span class="string">'int &gt; 0'</span> = <span class="number">80</span>)</span> -&gt; str:</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> clip <span class="keyword">import</span> clip_with_anno</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>clip_with_anno.__annotations__</span><br><span class="line">&#123;'text': &lt;class 'str'&gt;, 'max_len': 'int &gt; 0', 'return': &lt;class 'str'&gt;&#125;</span><br></pre></td></tr></table></figure>
+<p>注解和参数、返回值的对应关系一目了然。然而Python本身对注解没有任何操作。</p>
+<h2 id="Python标准库中为支持函数式编程提供的包"><a href="#Python标准库中为支持函数式编程提供的包" class="headerlink" title="Python标准库中为支持函数式编程提供的包"></a>Python标准库中为支持函数式编程提供的包</h2><h3 id="operator模块"><a href="#operator模块" class="headerlink" title="operator模块"></a>operator模块</h3><p>下面展示了使用reduce计算阶乘的两种方式，区别是是否使用了operator库。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br><span class="line"><span class="keyword">from</span> operator <span class="keyword">import</span> mul</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fact</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> reduce(<span class="keyword">lambda</span> a, b: a*b, range(<span class="number">1</span>, n+<span class="number">1</span>))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fact_with_mul</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> reduce(mul, range(<span class="number">1</span>, n+<span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+<p>上面的例子使用mul避免了lambda表达式的使用。<br>operator还提供了一些有效的函数:</p>
+<ul>
+<li>attrgetter 与 itemgetter这样获取对象属性和可迭代对象的元素的函数。</li>
+<li>methodcaller 创建的函数会在对象上调用参数指定的方法</li>
+</ul>
+<h3 id="functools-partial"><a href="#functools-partial" class="headerlink" title="functools.partial"></a>functools.partial</h3><p>functools.partial 这个高阶函数用于<strong>部分应用</strong>一个函数。部分应用是指，基于一个函数创建一个新的可调用对象，把原函数的某些参数固定。使用这个函数可以把接受一个或多个参数的函数改编成需要回调的 API，这样参数更少.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> operator <span class="keyword">import</span> mul</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> functools <span class="keyword">import</span> partial</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>triple = partial(mul, <span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>triple(<span class="number">7</span>)</span><br><span class="line"><span class="number">21</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(map(triple, range(<span class="number">1</span>, <span class="number">10</span>)))</span><br><span class="line">[<span class="number">3</span>, <span class="number">6</span>, <span class="number">9</span>, <span class="number">12</span>, <span class="number">15</span>, <span class="number">18</span>, <span class="number">21</span>, <span class="number">24</span>, <span class="number">27</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>这一小节主要讲了Python函数的一等性质，即函数也是对象这一概念，并说明了这一性质的一部分应用场景，以及功能有限的lambda函数的一些替代方式。</p>
+<p>高强度加班了两周，终终终终于有时间吧这章看完啦<img src="https://github.com/aldslvda/blog-images/blob/master/acfun_emoji/01.png?raw=true" alt="1"></p>
+<p>To be continued … 敬请期待<img src="https://github.com/aldslvda/blog-images/blob/master/acfun_emoji/25.png?raw=true" alt="1"></p>
+
+      
+    </div>
+
+    
+      
+
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/fluent-python/" rel="tag"># fluent python</a>
+          
+            <a href="/tags/functional/" rel="tag"># functional</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/28/how-network-connects-1/" rel="next" title="网络是怎样连接的 第一章小记">
+                <i class="fa fa-chevron-left"></i> 网络是怎样连接的 第一章小记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/17/fluent-python-6-1/" rel="prev" title="Fluent Python第六章:使用一等函数实现设计模式(1) —— 策略模式">
+                Fluent Python第六章:使用一等函数实现设计模式(1) —— 策略模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image" src="https://avatars0.githubusercontent.com/u/4235999?s=460&v=4" alt="aldslvda">
+  
+  <p class="site-author-name" itemprop="name">aldslvda</p>
+  <div class="site-description motion-element" itemprop="description">聚沙成塔</div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">66</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+  <div class="links-of-author motion-element">
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://github.com/aldslvda" title="GitHub &rarr; https://github.com/aldslvda" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="mailto:aldslvda@live.com" title="E-Mail &rarr; mailto:aldslvda@live.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="http://weibo.com/aldslvda" title="weibo &rarr; http://weibo.com/aldslvda" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+    
+  </div>
+
+
+
+
+
+
+
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Chapter-5-First-Class-Functions"><span class="nav-text">Chapter 5. First Class Functions</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第五章-一等函数"><span class="nav-text">第五章. 一等函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#把函数视作对象"><span class="nav-text">把函数视作对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高阶函数"><span class="nav-text">高阶函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常见的高阶函数"><span class="nav-text">常见的高阶函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#匿名函数"><span class="nav-text">匿名函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可调用对象"><span class="nav-text">可调用对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用户定义的可调用类型"><span class="nav-text">用户定义的可调用类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从定位参数到仅限关键字参数"><span class="nav-text">从定位参数到仅限关键字参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取关于参数的信息"><span class="nav-text">获取关于参数的信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数注解"><span class="nav-text">函数注解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python标准库中为支持函数式编程提供的包"><span class="nav-text">Python标准库中为支持函数式编程提供的包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#operator模块"><span class="nav-text">operator模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#functools-partial"><span class="nav-text">functools.partial</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-text">小结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aldslvda</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+  
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://aldslvda.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://aldslvda.github.io/2017/12/13/fluent-python-5/";
+    this.page.identifier = "2017/12/13/fluent-python-5/";
+    this.page.title = 'fluent python 第五章小记';
+    };
+  function loadComments() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://aldslvda.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', '' + +new Date());
+    (d.head || d.body).appendChild(s);
+  }
+  
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// GET RESPONSIVE HEIGHT PASSED FROM IFRAME
+
+window.addEventListener("message", function(e) {
+  var data = e.data;
+  if ((typeof data === 'string') && (data.indexOf('ciu_embed') > -1)) {
+    var featureID = data.split(':')[1];
+    var height = data.split(':')[2];
+    $(`iframe[data-feature=${featureID}]`).height(parseInt(height) + 30);
+  }
+}, false);
+</script>
+
+
+
+
+
+
+
+
+  
+
+</body>
+</html>

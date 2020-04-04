@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.2.0',
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    }
+  };
+</script>
+
+  <meta name="description" content="Fluent Python 第十四章读书报告">
+<meta name="keywords" content="Python,Iterable,Iterator,Generator">
+<meta property="og:type" content="article">
+<meta property="og:title" content="fluent python 第十四章 可迭代对象，迭代器和生成器">
+<meta property="og:url" content="http://aldslvda.github.io/2018/09/20/fluent-python-14/index.html">
+<meta property="og:site_name" content="NickAlds&#39;s Blog">
+<meta property="og:description" content="Fluent Python 第十四章读书报告">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/aldslvda/blog-images/blob/master/fluent_python_logo.png?raw=true">
+<meta property="og:updated_time" content="2020-04-04T20:14:56.956Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="fluent python 第十四章 可迭代对象，迭代器和生成器">
+<meta name="twitter:description" content="Fluent Python 第十四章读书报告">
+<meta name="twitter:image" content="https://github.com/aldslvda/blog-images/blob/master/fluent_python_logo.png?raw=true">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://aldslvda.github.io/2018/09/20/fluent-python-14/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>fluent python 第十四章 可迭代对象，迭代器和生成器 | NickAlds's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">NickAlds's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Never Settle</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://aldslvda.github.io/2018/09/20/fluent-python-14/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aldslvda">
+      <meta itemprop="description" content="聚沙成塔">
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/4235999?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="NickAlds's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">fluent python 第十四章 可迭代对象，迭代器和生成器
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-09-20 18:00:00" itemprop="dateCreated datePublished" datetime="2018-09-20T18:00:00+08:00">2018-09-20</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-04-05 04:14:56" itemprop="dateModified" datetime="2020-04-05T04:14:56+08:00">2020-04-05</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书笔记/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/2018/09/20/fluent-python-14/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/09/20/fluent-python-14/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <img src="https://github.com/aldslvda/blog-images/blob/master/fluent_python_logo.png?raw=true" itemprop="contentUrl">
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        <blockquote>
+<p>Fluent Python 第十四章读书报告</p>
+</blockquote>
+<a id="more"></a> 
+<h1 id="Chapter-14-Iterables-Iterators-and-GeneratorsOperator"><a href="#Chapter-14-Iterables-Iterators-and-GeneratorsOperator" class="headerlink" title="Chapter 14. Iterables, Iterators, and GeneratorsOperator"></a>Chapter 14. Iterables, Iterators, and GeneratorsOperator</h1><h1 id="第十四章-可迭代对象，迭代器和生成器"><a href="#第十四章-可迭代对象，迭代器和生成器" class="headerlink" title="第十四章: 可迭代对象，迭代器和生成器"></a>第十四章: 可迭代对象，迭代器和生成器</h1><p>迭代是数据处理的基石。扫面内存中放不下的数据集时， 我们需要找到一种惰性获取数据的方式，即按需每次获取一个数据项。这就是迭代器模式(Iterator Pattern).<br>下面会说明Python语言是如何内置迭代器模式的。</p>
+<blockquote>
+<p>所有生成器都是迭代器，因为生成器完全实现了迭代器接口。不过，根据《设计模式：可复用面向对象软件的基础》一书的定义，迭代器用于从集合中取出元素；而生成器用于“凭空”生成元素。通过斐波纳契数列能很好地说明二者之间的区别：斐波纳契数列中的数有无穷个，在一个集合里放不下。不过要知道，在 Python 社区中，<strong>大多数时候都把迭代器和生成器视作同一概念</strong>。</p>
+</blockquote>
+<p>Python3 中， 生成器有广泛的用途， 例如range() 在Python2中返回列表， 在3中返回一个类似生成器的对象。</p>
+<p>在Python语言内部， 迭代器用于支持:  </p>
+<ul>
+<li>for循环</li>
+<li>构建和扩展集合类型</li>
+<li>逐行遍历文本文件</li>
+<li>列表推导， 字典推导和集合推导</li>
+<li>元组拆包</li>
+<li>调用函数时使用*拆包实参</li>
+</ul>
+<p>本章将讨论：</p>
+<ul>
+<li>语言内部使用iter()内置函数处理可迭代对象的方式</li>
+<li>如何使用Python实现经典的迭代器模式</li>
+<li>说明生成器函数的工作原理</li>
+<li>如何使用生成器函数或生成器表达式代替经典的迭代器</li>
+<li>如何使用标准库中通用的生成器函数</li>
+<li>如何使用yeild from 语句合并生成器</li>
+<li>为什么生成器和协程看似相同实则差别很大， 不能混淆</li>
+</ul>
+<h2 id="14-1-从序列开始"><a href="#14-1-从序列开始" class="headerlink" title="14.1 从序列开始"></a>14.1 从序列开始</h2><p>我们首先实现一个Sentence类， 通过索引从文本提取单词。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> reprlib</span><br><span class="line">    RE_WORD = re.compile(<span class="string">'\w+'</span>)</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Sentence</span>:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, text)</span>:</span></span><br><span class="line">            self.text = text</span><br><span class="line">            self.words = RE_WORD.findall(text)</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, index)</span>:</span></span><br><span class="line">            <span class="keyword">return</span> self.words[index]</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">__len__</span><span class="params">(self)</span>:</span></span><br><span class="line">            <span class="keyword">return</span> len(self.words)</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></span><br><span class="line">            <span class="keyword">return</span> <span class="string">'Sentence(%s)'</span> % reprlib.repr(self.text)</span><br></pre></td></tr></table></figure>
+<p>序列可以迭代的原因：iter函数。解释器需要迭代对象 x 时，会自动调用 iter(x)。<br>内置的 iter 函数有以下作用。<br>(1) 检查对象是否实现了 __iter__ 方法，如果实现了就调用它，获取一个迭代器。<br>(2) 如果没有实现 __iter__ 方法，但是实现了 __getitem__ 方法，Python 会创建一个迭代器，尝试按顺序（从索引 0 开始）获取元素。<br>(3) 如果尝试失败，Python 抛出 TypeError 异常，通常会提示“C object is not iterable”（C对象不可迭代），其中 C 是目标对象所属的类。<br>任何 Python 序列都可迭代的原因是，它们都实现了 __getitem__ 方法。其实，标准的序列也都实现了 __iter__ 方法</p>
+<h2 id="14-2-可迭代对象和迭代器"><a href="#14-2-可迭代对象和迭代器" class="headerlink" title="14.2 可迭代对象和迭代器"></a>14.2 可迭代对象和迭代器</h2><p>上面一小节我们可以看到迭代器的定义：</p>
+<blockquote>
+<p>使用 iter 内置函数可以获取迭代器的对象。如果对象实现了能返回迭代器的__iter__ 方法，那么对象就是可迭代的。<br>序列都可以迭代；实现__getitem__ 方法，而且其参数是从零开始的索引，这种对象也可以迭代。<br>我们要明确可迭代的对象和迭代器之间的关系：Python 从可迭代的对象中获取迭代器。</p>
+</blockquote>
+<p>下面给出一个简单的例子，使用while循环模拟for循环中的迭代器：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># for 实现</span></span><br><span class="line">s = <span class="string">'ABC'</span></span><br><span class="line"><span class="keyword">for</span> char <span class="keyword">in</span> s:</span><br><span class="line">    print(char)</span><br><span class="line"></span><br><span class="line"><span class="comment"># while 实现</span></span><br><span class="line">s = <span class="string">'ABC'</span></span><br><span class="line">it = iter(s) </span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        print(next(it)) </span><br><span class="line">    <span class="keyword">except</span> StopIteration: </span><br><span class="line">        <span class="keyword">del</span> it </span><br><span class="line">    <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<p>标准的迭代器接口有两个方法。</p>
+<ul>
+<li>__next__<br>  返回下一个可用的元素，如果没有元素了，抛出 StopIteration 异常。</li>
+<li>__iter__<br>  返回 self，以便在应该使用可迭代对象的地方使用迭代器，例如在 for 循环中。</li>
+</ul>
+<p>这个接口在 collections.abc.Iterator 抽象基类中制定。这个类定义了 __next__ 抽象方法，而且继承自 Iterable 类；__iter__ 抽象方法则在 Iterable 类中定义。</p>
+<p>因为迭代器只有__next__ 和__iter__方法，所以迭代器没办法检查遗漏的元素和‘还原’迭代器， 如果想再次迭代， 还是需要传入被迭代的对象。由于Iterator.__init__是返回实例本身，传入迭代器无法还原已经迭代过的元素。</p>
+<h2 id="14-3-典型的迭代器"><a href="#14-3-典型的迭代器" class="headerlink" title="14.3 典型的迭代器"></a>14.3 典型的迭代器</h2><p>这一节会将迭代器和可迭代对象分离开来，让我们更加清楚迭代器和可迭代对象的关系</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> reprlib</span><br><span class="line">RE_WORD = re.compile(<span class="string">'\w+'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sentence</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, text)</span>:</span></span><br><span class="line">        self.text = text</span><br><span class="line">        self.words = RE_WORD.findall(text)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'Sentence(%s)'</span> % reprlib.repr(self.text)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> SentenceIterator(self.words)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SentenceIterator</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, words)</span>:</span></span><br><span class="line">        self.words = words</span><br><span class="line">        self.index = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__next__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            word = self.words[self.index]</span><br><span class="line">        <span class="keyword">except</span> IndexError:</span><br><span class="line">            <span class="keyword">raise</span> StopIteration()</span><br><span class="line">        self.index += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> word</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self</span><br></pre></td></tr></table></figure>
+<p>如果在Sentence中实现__next__方法， 可以让Sentence同时成为可迭代对象和迭代器。但是这是一个相当糟糕的设计。<strong>可迭代的对象一定不能是自身的迭代器</strong></p>
+<blockquote>
+<p>迭代器模式中指明， 迭代器应该有以下特点：</p>
+<ol>
+<li>访问一个聚合对象的内容而无需暴露它的内部表示</li>
+<li>支持对聚合对象的多种遍历(每次调用iter()都新建一个独立的迭代器)</li>
+<li>为遍历不同的聚合结构提供统一的接口</li>
+</ol>
+</blockquote>
+<h2 id="14-4-生成器函数"><a href="#14-4-生成器函数" class="headerlink" title="14.4 生成器函数"></a>14.4 生成器函数</h2><p>Python中实现上一节相同功能的方式是使用生成器函数代替额外实现的迭代器。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> reprlib</span><br><span class="line">RE_WORD = re.compile(<span class="string">'\w+'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sentence</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, text)</span>:</span></span><br><span class="line">        self.text = text</span><br><span class="line">        self.words = RE_WORD.findall(text)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'Sentence(%s)'</span> % reprlib.repr(self.text)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> word <span class="keyword">in</span> self.words:</span><br><span class="line">            <span class="keyword">yield</span> word</span><br><span class="line">        <span class="keyword">return</span></span><br></pre></td></tr></table></figure>
+<p>相比起上一节的实现简单许多。</p>
+<blockquote>
+<p>只要 Python 函数的定义体中有 yield 关键字，该函数就是生成器函数。调用生成器函数时，会返回一个生成器对象。也就是说，生成器函数是生成器工厂。</p>
+</blockquote>
+<h2 id="14-5-生成器的惰性实现"><a href="#14-5-生成器的惰性实现" class="headerlink" title="14.5 生成器的惰性实现"></a>14.5 生成器的惰性实现</h2><p>re.finditer是re.findall的惰性版本， 返回的不是一个列表而是一个生成器，这样也能节省大量内存。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> reprlib</span><br><span class="line">RE_WORD = re.compile(<span class="string">'\w+'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sentence</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, text)</span>:</span></span><br><span class="line">        self.text = text</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'Sentence(%s)'</span> % reprlib.repr(self.text)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> match <span class="keyword">in</span> RE_WORD.finditer(self.text):</span><br><span class="line">            <span class="keyword">yield</span> match.group()</span><br></pre></td></tr></table></figure>
+<p>使用finditer使得Sentence的元素变得可以惰性获得了。</p>
+<h2 id="14-6-生成器表达式"><a href="#14-6-生成器表达式" class="headerlink" title="14.6 生成器表达式"></a>14.6 生成器表达式</h2><p>下面使用生成器表达式构建生成器, 会使代码更加简洁<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> reprlib</span><br><span class="line">RE_WORD = re.compile(<span class="string">'\w+'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sentence</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, text)</span>:</span></span><br><span class="line">        self.text = text</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'Sentence(%s)'</span> % reprlib.repr(self.text)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> (match.group() <span class="keyword">for</span> match <span class="keyword">in</span> RE_WORD.finditer(self.text))</span><br></pre></td></tr></table></figure></p>
+<h2 id="14-7-yeild-from"><a href="#14-7-yeild-from" class="headerlink" title="14.7 yeild from"></a>14.7 yeild from</h2><blockquote>
+<p>注: yeild from 是Python3.3中新出现的语法</p>
+</blockquote>
+<p>如果生成器函数需要产出另一个生成器生成的值，传统的解决方法是使用嵌套的 for 循<br>环。<br>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">chain</span><span class="params">(*iterables)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">for</span> it <span class="keyword">in</span> iterables:</span><br><span class="line"><span class="meta">... </span>        <span class="keyword">for</span> i <span class="keyword">in</span> it:</span><br><span class="line"><span class="meta">... </span>            <span class="keyword">yield</span> i</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">'ABC'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>t = tuple(range(<span class="number">3</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(chain(s, t))</span><br><span class="line">[<span class="string">'A'</span>, <span class="string">'B'</span>, <span class="string">'C'</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+<p>这个chain生成器函数吧操作依次交给各个可迭代对象处理。我们可以用下面的方法简化：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">chain</span><span class="params">(*iterables)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">for</span> i <span class="keyword">in</span> iterables:</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">yield</span> <span class="keyword">from</span> i</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(chain(s, t))</span><br><span class="line">[<span class="string">'A'</span>, <span class="string">'B'</span>, <span class="string">'C'</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+<p>可以看出，yield from i 完全代替了内层的 for 循环， 使得代码简化很多。</p>
+<h2 id="14-8-深入分析iter-函数"><a href="#14-8-深入分析iter-函数" class="headerlink" title="14.8 深入分析iter()函数"></a>14.8 深入分析iter()函数</h2><p>在 Python 中迭代对象 x 时会调用 iter(x), 这是上文中我们反复提到的, 这也是iter()最常见的用法。   </p>
+<p>iter 函数还有一个鲜为人知的用法：传入两个参数，使用常规的函数或任何可调用的对象创建迭代器。这样使用时，第一个参数必须是可调用的对象，用于不断调用（没有参数），产出各个值；第二个值是哨符，这是个标记值，当可调用的对象返回这个值时，触发迭代器抛出 StopIteration 异常，而不产出哨符。</p>
+<p>例子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 掷骰子直到掷出1点</span></span><br><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> randint</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">d6</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> randint(<span class="number">1</span>, <span class="number">6</span>)</span><br><span class="line"></span><br><span class="line">d6_iter = iter(d6, <span class="number">1</span>)</span><br><span class="line"><span class="keyword">for</span> roll <span class="keyword">in</span> d6_iter:</span><br><span class="line">    print(roll)</span><br></pre></td></tr></table></figure></p>
+<h2 id="14-9-生成器当成协程"><a href="#14-9-生成器当成协程" class="headerlink" title="14.9 生成器当成协程"></a>14.9 生成器当成协程</h2><blockquote>
+<p>Python 2.5 实现了“PEP 342 — Coroutines via Enhanced Generators”（<a href="https://www.python.org/dev/peps/pep-0342/" target="_blank" rel="noopener">https://www.python.org/dev/peps/pep-0342/</a> ）。这个提案为生成器对象添加了额外的方法和功能，其中最值得关注的是 .send() 方法， 这个函数让生成器变身为<strong>协程</strong>。</p>
+</blockquote>
+<p>与 .__next__() 方法一样，.send() 方法致使生成器前进到下一个 yield 语句。不过，.send() 方法还允许使用生成器的客户把数据发给自己，即不管传给 .send() 方法什么参数，那个参数都会成为生成器函数定义体中对应的 yield 表达式的值。也就是说，.send() 方法允许在客户代码和生成器之间双向交换数据。而 .__next__() 方法只允许客户从生成器中获取数据。</p>
+<blockquote>
+<ul>
+<li>生成器用于生成供迭代的数据</li>
+<li>协程是数据的消费者</li>
+<li>为了避免脑袋炸裂，不能把这两个概念混为一谈</li>
+<li>协程与迭代无关</li>
+<li><p>注意，虽然在协程中会使用 yield 产出值，但这与迭代无关</p>
+ <div align="right">——David Beazley  “A Curious Course on Coroutines and Concurrency”</div>
+</li>
+</ul>
+</blockquote>
+<p>基于这几点， 本章不讨论协程<img src="https://github.com/aldslvda/blog-images/blob/master/acfun_emoji/11.png?raw=true" alt="233"></p>
+<h2 id="14-9-小结"><a href="#14-9-小结" class="headerlink" title="14.9 小结"></a>14.9 小结</h2><p>Python 语言对迭代的支持非常深入, Python 已经融合（grok）了迭代器。Python 从语义上集成迭代器模式是个很好的例证，说明设计模式在各种编程语言中使用的方式并不相同。</p>
+
+      
+    </div>
+
+    
+      
+
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/Iterable/" rel="tag"># Iterable</a>
+          
+            <a href="/tags/Iterator/" rel="tag"># Iterator</a>
+          
+            <a href="/tags/Generator/" rel="tag"># Generator</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/17/some_python_tricks/" rel="next" title="Python常用的一些小技巧(语法糖 etc.)">
+                <i class="fa fa-chevron-left"></i> Python常用的一些小技巧(语法糖 etc.)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/26/python-sercurity-10-problems/" rel="prev" title="python 的十个安全问题">
+                python 的十个安全问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image" src="https://avatars0.githubusercontent.com/u/4235999?s=460&v=4" alt="aldslvda">
+  
+  <p class="site-author-name" itemprop="name">aldslvda</p>
+  <div class="site-description motion-element" itemprop="description">聚沙成塔</div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">66</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+  <div class="links-of-author motion-element">
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://github.com/aldslvda" title="GitHub &rarr; https://github.com/aldslvda" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="mailto:aldslvda@live.com" title="E-Mail &rarr; mailto:aldslvda@live.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="http://weibo.com/aldslvda" title="weibo &rarr; http://weibo.com/aldslvda" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+    
+  </div>
+
+
+
+
+
+
+
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Chapter-14-Iterables-Iterators-and-GeneratorsOperator"><span class="nav-text">Chapter 14. Iterables, Iterators, and GeneratorsOperator</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第十四章-可迭代对象，迭代器和生成器"><span class="nav-text">第十四章: 可迭代对象，迭代器和生成器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#14-1-从序列开始"><span class="nav-text">14.1 从序列开始</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-2-可迭代对象和迭代器"><span class="nav-text">14.2 可迭代对象和迭代器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-3-典型的迭代器"><span class="nav-text">14.3 典型的迭代器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-4-生成器函数"><span class="nav-text">14.4 生成器函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-5-生成器的惰性实现"><span class="nav-text">14.5 生成器的惰性实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-6-生成器表达式"><span class="nav-text">14.6 生成器表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-7-yeild-from"><span class="nav-text">14.7 yeild from</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-8-深入分析iter-函数"><span class="nav-text">14.8 深入分析iter()函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-9-生成器当成协程"><span class="nav-text">14.9 生成器当成协程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-9-小结"><span class="nav-text">14.9 小结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aldslvda</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+  
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://aldslvda.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://aldslvda.github.io/2018/09/20/fluent-python-14/";
+    this.page.identifier = "2018/09/20/fluent-python-14/";
+    this.page.title = 'fluent python 第十四章 可迭代对象，迭代器和生成器';
+    };
+  function loadComments() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://aldslvda.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', '' + +new Date());
+    (d.head || d.body).appendChild(s);
+  }
+  
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// GET RESPONSIVE HEIGHT PASSED FROM IFRAME
+
+window.addEventListener("message", function(e) {
+  var data = e.data;
+  if ((typeof data === 'string') && (data.indexOf('ciu_embed') > -1)) {
+    var featureID = data.split(':')[1];
+    var height = data.split(':')[2];
+    $(`iframe[data-feature=${featureID}]`).height(parseInt(height) + 30);
+  }
+}, false);
+</script>
+
+
+
+
+
+
+
+
+  
+
+</body>
+</html>

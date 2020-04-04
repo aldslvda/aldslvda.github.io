@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.2.0',
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    }
+  };
+</script>
+
+  <meta name="description" content="本文介绍了如何使用scrapy搭建一个简单的新闻爬虫。">
+<meta name="keywords" content="Python,scrapy,crawler">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用scrapy搭建一个简单的新闻爬虫">
+<meta property="og:url" content="http://aldslvda.github.io/2017/11/23/scrapy_crawler_01/index.html">
+<meta property="og:site_name" content="NickAlds&#39;s Blog">
+<meta property="og:description" content="本文介绍了如何使用scrapy搭建一个简单的新闻爬虫。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/aldslvda/blog-images/blob/master/scrapylogo.png?raw=true">
+<meta property="og:updated_time" content="2020-04-04T20:14:56.956Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用scrapy搭建一个简单的新闻爬虫">
+<meta name="twitter:description" content="本文介绍了如何使用scrapy搭建一个简单的新闻爬虫。">
+<meta name="twitter:image" content="https://github.com/aldslvda/blog-images/blob/master/scrapylogo.png?raw=true">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://aldslvda.github.io/2017/11/23/scrapy_crawler_01/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>使用scrapy搭建一个简单的新闻爬虫 | NickAlds's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">NickAlds's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Never Settle</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://aldslvda.github.io/2017/11/23/scrapy_crawler_01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aldslvda">
+      <meta itemprop="description" content="聚沙成塔">
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/4235999?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="NickAlds's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">使用scrapy搭建一个简单的新闻爬虫
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2017-11-24 01:01:43" itemprop="dateCreated datePublished" datetime="2017-11-24T01:01:43+08:00">2017-11-24</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-04-05 04:14:56" itemprop="dateModified" datetime="2020-04-05T04:14:56+08:00">2020-04-05</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/技术分享/" itemprop="url" rel="index"><span itemprop="name">技术分享</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/2017/11/23/scrapy_crawler_01/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/11/23/scrapy_crawler_01/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <img src="https://github.com/aldslvda/blog-images/blob/master/scrapylogo.png?raw=true" itemprop="contentUrl">
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        <blockquote>
+<p>本文介绍了如何使用scrapy搭建一个简单的新闻爬虫。</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="使用scrapy搭建一个简单的新闻爬虫"><a href="#使用scrapy搭建一个简单的新闻爬虫" class="headerlink" title="使用scrapy搭建一个简单的新闻爬虫"></a>使用scrapy搭建一个简单的新闻爬虫</h1><p>前段时间面了几家公司的爬虫工程师岗位。所有的公司都会问的一个问题就是: 你使用过哪种爬虫框架？熟练度如何？是否能根据需求修改框架源码？有过分布式爬取的经验吗？<br>每次我遇到这种问题都感到很尴尬 —— 现在主流的爬虫框架大概有Scrapy, PySpider(Python); Nutch, Heritrix(Java) —— 这些我一个都没用过, 目前在线上运行的爬虫全是 requests + json/html/xml 解析。<img src="https://github.com/aldslvda/blog-images/blob/master/acfun_emoji/11.png?raw=true" alt="1"><br>至于分布式爬虫, 由于我目前接触的项目爬取量比较小(200+新闻app，300+新闻媒体微信公众号，300+微博的每日增量爬取), 每天的爬取量一台1核/1G/1M的阿里云足够胜任了, 暂时还用不到分布式爬取……<img src="https://github.com/aldslvda/blog-images/blob/master/acfun_emoji/01.png?raw=true" alt="1"></p>
+<p>另外分布式爬取大多依赖上面提到的框架。</p>
+<p>所以我做了一个很艰难的决定！把之前写过的爬虫！用scrapy重新实现一遍！<img src="https://github.com/aldslvda/blog-images/blob/master/acfun_emoji/1010.png?raw=true" alt="1"></p>
+<p>……<br>……<br>……   </p>
+<p>好吧，的确有点艰难……</p>
+<p>所以先从其中一个开始吧<img src="https://github.com/aldslvda/blog-images/blob/master/acfun_emoji/1015.png?raw=true" alt="1">。</p>
+<p>下面会讲到如何使用scrapy 编写一个网易新闻app的爬虫。</p>
+<p><strong>*</strong> 我选择了一本参考书籍 《learning scrapy》, 但是这本书爬取的示例网站需要翻墙，所以我只看了框架相关的部分，实际网页解析之类的事情，在修改之前的爬虫的过程中解决。</p>
+<h2 id="1-环境配置"><a href="#1-环境配置" class="headerlink" title="1. 环境配置"></a>1. 环境配置</h2><p>我开发使用电脑的是Mac OSX, 但其实在实际的Python开发中, OSX使用的命令和ubuntu/debian大同小异。    </p>
+<ul>
+<li>安装scrapy</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pip install scrapy</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建工程文件夹</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">scrapy startproject crawler</span><br><span class="line">tree crawler</span><br><span class="line">.</span><br><span class="line">├── crawler</span><br><span class="line">│   ├── __init__.py</span><br><span class="line">│   ├── items.py</span><br><span class="line">│   ├── middlewares.py</span><br><span class="line">│   ├── pipelines.py</span><br><span class="line">│   ├── settings.py</span><br><span class="line">│   └── spiders</span><br><span class="line">│       └── __init__.py</span><br><span class="line">└── scrapy.cfg</span><br></pre></td></tr></table></figure>
+<p>scrapy startproject crawler 这行命令创建了一个新的工程文件夹，文件夹的结构使用tree命令展示出来了。<br>这些文件的主要作用:   </p>
+<p>(1) scrapy.cfg 项目的配置文件<br>(2) crawler/ :Python代码存放的位置<br>(3) crawler/items.py: items文件，定义一个(或多个)item的属性<br>(4) crawler/pipelines: 项目的管道文件。</p>
+<blockquote>
+<p>在scrapy的官方文档中，pipeline的作用是：   </p>
+<ol>
+<li>清洗html数据；   <ol start="2">
+<li>验证已经爬取的数据(检查item是否有特定属性)；   </li>
+<li>去重；   </li>
+<li>将爬取的item存进数据库。   </li>
+</ol>
+</li>
+</ol>
+</blockquote>
+<p>(5) crawler/settings.py 配置文件<br>(6) crawler/spiders/ :爬虫文件的目录   </p>
+<h2 id="2-爬虫的编写"><a href="#2-爬虫的编写" class="headerlink" title="2. 爬虫的编写"></a>2. 爬虫的编写</h2><h3 id="2-1-定义Item"><a href="#2-1-定义Item" class="headerlink" title="2.1 定义Item"></a>2.1 定义Item</h3><p>简单来说，item的作用是装载抓取到的数据，是一种类似字典的容器。它的属性都会定义为scrapy.item.Field对象。</p>
+<p>由于我们要写的是一个爬取新闻的app, 首先要明确的是我们需要的数据是什么，对于一个爬虫来说, 重要的是能否<strong>取我所需</strong>, 而不是尽我所能爬取对应网站的所有数据。<br>那么对于一个新闻爬虫，我们爬到的每一条新闻都需要一些什么样的数据呢？   </p>
+<ul>
+<li>category 新闻类型(按照包含的媒体 分为图片/视频)    </li>
+<li>source_type  新闻来源的类型(app, 微博, 微信, 网站, 电子报 etc.)   </li>
+<li>source_name  新闻来源的名称</li>
+<li>news_sign     一条新闻的唯一标识(可以用于去重)</li>
+<li>views         浏览量</li>
+<li>title         标题</li>
+<li>url           新闻链接</li>
+<li>publish_time  发布时间</li>
+<li>text          新闻文本</li>
+<li>images        新闻图片的列表</li>
+</ul>
+<p>以上就是我们需要的一些数据，我们按照上面的列表定义一个item</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scrapy.item <span class="keyword">import</span> Item, Field</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NewsCrawlerItem</span><span class="params">(Item)</span>:</span></span><br><span class="line">    category = Field()</span><br><span class="line">    source_type = Field()</span><br><span class="line">    source_name = Field()</span><br><span class="line"></span><br><span class="line">    news_sign = Field()</span><br><span class="line">    views = Field()</span><br><span class="line">    title = Field()</span><br><span class="line">    url = Field()</span><br><span class="line">    publish_time = Field()</span><br><span class="line">    text = Field()</span><br><span class="line">    images = Field()</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-编写爬虫"><a href="#2-2-编写爬虫" class="headerlink" title="2.2 编写爬虫"></a>2.2 编写爬虫</h3><p>Spider是爬虫的核心部分，用于从一个(或一系列)网站爬取数据。<br>要建立一个Spider，你必须为scrapy.spider.BaseSpider创建一个子类，并确定三个主要的、强制的属性：</p>
+<ul>
+<li>name 爬虫名称，必须是唯一的</li>
+<li>start_urls 起始页面</li>
+<li>parse() 解析爬取到的数据所用的方法, 接受的唯一参数是scrapy.Request方法请求得到的Response对象</li>
+</ul>
+<h4 id="2-2-1-关于二维爬取"><a href="#2-2-1-关于二维爬取" class="headerlink" title="2.2.1 关于二维爬取"></a>2.2.1 关于二维爬取</h4><p>一个典型的爬虫在两个方向移动：</p>
+<ul>
+<li>水平方向：从一个索引页到另一个索引页</li>
+<li>垂直方向：从索引页面到下一级页面(可能是下一级的索引，或者内容页面)</li>
+</ul>
+<p>这个例子中水平方向是网易新闻的一页新闻到另一页，它返回的是一个个的新闻列表；<br>垂直方向是从新闻列表逐个进入新闻的内容界面</p>
+<h4 id="2-2-2-关于从网页-或者HTTP请求的Response-Body-中提取数据"><a href="#2-2-2-关于从网页-或者HTTP请求的Response-Body-中提取数据" class="headerlink" title="2.2.2 关于从网页(或者HTTP请求的Response Body)中提取数据"></a>2.2.2 关于从网页(或者HTTP请求的Response Body)中提取数据</h4><ul>
+<li>html 网页的数据可以用 beautifusoup/xpath/正则 提取</li>
+<li>json 直接解析成Python的字典即可</li>
+<li>xml  python也有对应的库用于解析   </li>
+</ul>
+<p>本文的爬虫会用到json和html解析，这里html使用xpath解析。</p>
+<h4 id="2-2-3-一个网易新闻app的Spider"><a href="#2-2-3-一个网易新闻app的Spider" class="headerlink" title="2.2.3 一个网易新闻app的Spider"></a>2.2.3 一个网易新闻app的Spider</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="keyword">import</span> urlparse</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> scrapy.loader.processors <span class="keyword">import</span> MapCompose, Join</span><br><span class="line"><span class="keyword">from</span> scrapy.loader <span class="keyword">import</span> ItemLoader</span><br><span class="line"><span class="keyword">from</span> scrapy.http <span class="keyword">import</span> Request</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> news_crawler.items <span class="keyword">import</span> NewsCrawlerItem</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BasicSpider</span><span class="params">(scrapy.Spider)</span>:</span></span><br><span class="line">    name = <span class="string">"netease"</span></span><br><span class="line">    allowed_domains = [<span class="string">"163.com"</span>]</span><br><span class="line">    <span class="comment"># Start on the first index page</span></span><br><span class="line">    chls = [</span><br><span class="line">        <span class="string">"T1370583240249"</span>,  <span class="string">"T1348649145984"</span>,  <span class="string">"T1348647909107"</span>,  <span class="string">"T1348648037603"</span>,  </span><br><span class="line">        <span class="string">"T1368497029546"</span>,  <span class="string">"T1348648141035"</span>,  <span class="string">"T1474271789612"</span>,  <span class="string">"T1467284926140"</span>,  </span><br><span class="line">        <span class="string">"T1492136373327"</span>,  <span class="string">"T1348648517839"</span>,  <span class="string">"T1348648650048"</span>,  <span class="string">"T1498701411149"</span>,  </span><br><span class="line">        <span class="string">"T1348648756099"</span>,  <span class="string">"T1473054348939"</span>,  <span class="string">"T1356600029035"</span>,  <span class="string">"T1348649079062"</span>,  </span><br><span class="line">        <span class="string">"T1348649503389"</span>,  <span class="string">"T1348649176279"</span>,  <span class="string">"T1348649475931"</span>,  <span class="string">"T1411113472760"</span>,  </span><br><span class="line">        <span class="string">"T1486979691117"</span>,  <span class="string">"T1348649580692"</span>,  <span class="string">"T1348649654285"</span>,  <span class="string">"T1348649776727"</span>,  </span><br><span class="line">        <span class="string">"T1350383429665"</span>,  <span class="string">"T1421997195219"</span>,  <span class="string">"T1456394562871"</span>,  <span class="string">"T1348654060988"</span>,  </span><br><span class="line">        <span class="string">"T1348654085632"</span>,  <span class="string">"T1491816738487"</span>,  <span class="string">"T1348654105308"</span>,  <span class="string">"T1348654151579"</span>,  </span><br><span class="line">        <span class="string">"T1348654204705"</span>,  <span class="string">"T1414389941036"</span>,  <span class="string">"T1401272877187"</span>,  <span class="string">"T1385429690972"</span>,  </span><br><span class="line">        <span class="string">"T1348654225495"</span>,  <span class="string">"T1397116135282"</span>,  <span class="string">"T1444270454635"</span>,  <span class="string">"T1481105123675"</span>,  </span><br><span class="line">        <span class="string">"T1503456682313"</span>,  <span class="string">"T1464592736048"</span>,  <span class="string">"T1504171773862"</span>,  <span class="string">"T1348650593803"</span>,  </span><br><span class="line">        <span class="string">"T1348650839000"</span>,  <span class="string">"T1414142214384"</span>,  <span class="string">"T1441074311424"</span>,  <span class="string">"T1482470888760"</span>,  </span><br><span class="line">        <span class="string">"T1499853820829"</span>,  <span class="string">"T1509504918215"</span>,  <span class="string">"T1502955728035"</span>,  <span class="string">"T1509448512433"</span>,  </span><br><span class="line">        <span class="string">"T1419315959525"</span>,  <span class="string">"T1419316284722"</span>,  <span class="string">"T1419316384474"</span>,  <span class="string">"T1419316531256"</span>,  </span><br><span class="line">        <span class="string">"T1427878984398"</span>,  <span class="string">"T1433137697241"</span>,  <span class="string">"T1449126525962"</span>,  <span class="string">"T1456112189138"</span>,  </span><br><span class="line">        <span class="string">"T1493374039495"</span>,  <span class="string">"T1456112438822"</span>,  <span class="string">"T1468031118349"</span>,  <span class="string">"T1488432440430"</span>,  </span><br><span class="line">        <span class="string">"T1488432474929"</span>,  <span class="string">"T1504689350701"</span></span><br><span class="line">    ]</span><br><span class="line">    start_urls = (</span><br><span class="line">        <span class="string">'http://c.m.163.com/nc/article/list/%s/0-20.html'</span>%chlid <span class="keyword">for</span> chlid <span class="keyword">in</span> chls</span><br><span class="line">    )</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        <span class="comment"># Get the next index URLs and yield Requests</span></span><br><span class="line">        url_spl = response.url.split(<span class="string">'/'</span>)</span><br><span class="line">        chl_url = <span class="string">'/'</span>.join(url_spl[:<span class="number">-1</span>])</span><br><span class="line">        chl_id = url_spl[<span class="number">-2</span>]</span><br><span class="line">        items = json.loads(response.body)[chl_id]</span><br><span class="line">        <span class="comment"># Get item URLs and yield Requests</span></span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> items:</span><br><span class="line">            <span class="keyword">if</span> <span class="string">'url_3w'</span> <span class="keyword">in</span> item <span class="keyword">and</span> item[<span class="string">'url_3w'</span>]:</span><br><span class="line">                news_url = item[<span class="string">'url_3w'</span>]</span><br><span class="line">                <span class="keyword">if</span> <span class="string">'_mobile'</span> <span class="keyword">not</span> <span class="keyword">in</span> news_url <span class="keyword">and</span> <span class="string">'3g.163.com'</span> <span class="keyword">not</span> <span class="keyword">in</span> news_url:</span><br><span class="line">                    news_url = news_url.replace(<span class="string">'.html'</span>, <span class="string">'_mobile.html'</span>)</span><br><span class="line">                <span class="keyword">yield</span> Request(news_url, callback=self.parse_item, dont_filter=<span class="keyword">True</span>)</span><br><span class="line">        <span class="keyword">if</span> len(items) == <span class="number">20</span>:</span><br><span class="line">            page_num = int(url_spl[<span class="number">-1</span>].split(<span class="string">'-'</span>)[<span class="number">0</span>]) /<span class="number">20</span> + <span class="number">1</span></span><br><span class="line">            <span class="keyword">yield</span> Request(chl_url+<span class="string">'/%d-%d.html'</span>%(page_num*<span class="number">20</span>, page_num*<span class="number">20</span>+<span class="number">20</span>), callback=self.parse, dont_filter=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_item</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        <span class="string">""" This function parses a netease page.</span></span><br><span class="line"><span class="string">        @returns item</span></span><br><span class="line"><span class="string">        @scrapes category source_type source_name news_sign views title url publish_time text images</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># Create the loader using the response</span></span><br><span class="line">        </span><br><span class="line">        item = NewsCrawlerItem()</span><br><span class="line">        item[<span class="string">'category'</span>] = <span class="string">'image'</span></span><br><span class="line">        item[<span class="string">'source_type'</span>] = <span class="string">'app'</span></span><br><span class="line">        item[<span class="string">'source_name'</span>] = self.name</span><br><span class="line">        item[<span class="string">'news_sign'</span>] = <span class="string">''</span></span><br><span class="line">        item[<span class="string">'views'</span>] = <span class="number">0</span></span><br><span class="line">        item[<span class="string">'url'</span>] = response.url</span><br><span class="line">        item[<span class="string">'title'</span>] = response.xpath(<span class="string">'//h1/text()'</span>).extract()[<span class="number">0</span>]</span><br><span class="line">        <span class="comment"># Load fields using XPath expressions</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">'3g.163.com'</span> <span class="keyword">in</span> response.url:</span><br><span class="line">            item[<span class="string">'publish_time'</span>] = response.xpath(<span class="string">'//*[@property="article:published_time"]/@content'</span>).extract()[<span class="number">0</span>][:<span class="number">19</span>].replace(<span class="string">'T'</span>,<span class="string">''</span>)</span><br><span class="line">            item[<span class="string">'text'</span>] = <span class="string">''</span>.join(response.xpath(<span class="string">'//*[@class="content"]//p/text()'</span>).extract())</span><br><span class="line">            item[<span class="string">'images'</span>] = response.xpath(<span class="string">'//*[@class="content"]//img/@src'</span>).extract()</span><br><span class="line">            item[<span class="string">'news_sign'</span>] = <span class="string">'netease'</span>+response.xpath(<span class="string">'//article/@id'</span>).extract()[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            item[<span class="string">'publish_time'</span>] = response.xpath(<span class="string">'//*[@id="articleBody"]/div[1]/span[1]/text()'</span>).extract()[<span class="number">0</span>]</span><br><span class="line">            item[<span class="string">'text'</span>] = <span class="string">''</span>.join(response.xpath(<span class="string">'//*[@class="article-body"]//p/text()'</span>).extract())</span><br><span class="line">            item[<span class="string">'images'</span>] = response.xpath(<span class="string">'//*[@class="article-body"]//img/@src'</span>).extract()</span><br><span class="line">            item[<span class="string">'news_sign'</span>] = <span class="string">'netease'</span>+response.xpath(<span class="string">'//*[@id="docId"]/@value'</span>).extract()[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">return</span> item</span><br></pre></td></tr></table></figure>
+<h4 id="2-2-4-爬虫代码代码的解析"><a href="#2-2-4-爬虫代码代码的解析" class="headerlink" title="2.2.4 爬虫代码代码的解析"></a>2.2.4 爬虫代码代码的解析</h4><p>上面提到过parse接受response作为参数。<br>这里重点说一下parse()方法中的两个生成器yeild,分别代表了垂直爬取和水平爬取。<br>首先说一下Request对象:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Request</span><span class="params">(object_ref)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, url, callback=None, method=<span class="string">'GET'</span>, headers=None, body=None,</span></span></span><br><span class="line"><span class="function"><span class="params">                 cookies=None, meta=None, encoding=<span class="string">'utf-8'</span>, priority=<span class="number">0</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                 dont_filter=False, errback=None, flags=None)</span>:</span></span><br></pre></td></tr></table></figure>
+<p>这里我们使用到了3个参数,url,callback,dont_filter。<br>我们第一次使用yeild是请求新闻的内容页面，这里的回调函数是parse_item()，用来提取单个新闻的信息;<br>第二次使用yeild是请求“下一页”的数据，这里的回调函数是parse(),当然从scrapy的官方文档来看，这里不传callback的话，默认的回调函数也是parse(),这样下一页的数据也会再一次通过parse()解析，实现水平方向上的爬取。<br>dont_filter是告诉Request不要对url进行过滤(去重)</p>
+<p>下面的parse_item()就是html的解析了，这里不赘述。</p>
+<h2 id="3-爬取到的数据存储"><a href="#3-爬取到的数据存储" class="headerlink" title="3 爬取到的数据存储"></a>3 爬取到的数据存储</h2><p>这里我们用mongoDb对爬取到的数据进行存储。</p>
+<h3 id="3-1-配置MongoDB信息"><a href="#3-1-配置MongoDB信息" class="headerlink" title="3.1 配置MongoDB信息"></a>3.1 配置MongoDB信息</h3><p>在settings.py中设置MongoDB的信息</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># MongoDB settings</span></span><br><span class="line">MONGODB_SERVER = <span class="string">"$mongo_server"</span></span><br><span class="line">MONGODB_PORT = <span class="number">27017</span></span><br><span class="line">MONGODB_DB = <span class="string">"news"</span></span><br><span class="line">MONGODB_COLLECTION = <span class="string">"news_item"</span></span><br></pre></td></tr></table></figure>
+<p>这里server的ip隐去了</p>
+<h3 id="3-2-编写MongoDBPipeline"><a href="#3-2-编写MongoDBPipeline" class="headerlink" title="3.2 编写MongoDBPipeline"></a>3.2 编写MongoDBPipeline</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pymongo <span class="keyword">import</span> MongoClient</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> scrapy.conf <span class="keyword">import</span> settings</span><br><span class="line"><span class="keyword">from</span> scrapy.exceptions <span class="keyword">import</span> DropItem</span><br><span class="line"><span class="keyword">from</span> scrapy <span class="keyword">import</span> log</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MongoDBPipeline</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        client = MongoClient(</span><br><span class="line">            settings[<span class="string">'MONGODB_SERVER'</span>],</span><br><span class="line">            settings[<span class="string">'MONGODB_PORT'</span>]</span><br><span class="line">        )</span><br><span class="line">        news_db = client[settings[<span class="string">'MONGODB_DB'</span>]]</span><br><span class="line">        self.collection = news_db[settings[<span class="string">'MONGODB_COLLECTION'</span>]]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_item</span><span class="params">(self, item, spider)</span>:</span></span><br><span class="line">        valid = <span class="keyword">True</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> item[<span class="string">'news_sign'</span>]:</span><br><span class="line">            valid = <span class="keyword">False</span></span><br><span class="line">            <span class="keyword">raise</span> DropItem(<span class="string">"Missing item!"</span>)</span><br><span class="line">        <span class="keyword">if</span> valid:</span><br><span class="line">            self.collection.insert(dict(item))</span><br><span class="line">            log.msg(<span class="string">"news added to MongoDB database!"</span>,</span><br><span class="line">                    level=log.INFO, spider=spider)</span><br><span class="line">        <span class="keyword">return</span> item</span><br></pre></td></tr></table></figure>
+<p>这个pipeline的作用包括上面提到的验证已经爬取的数据和将爬取的item存进数据库。去重暂时还没有做处理。</p>
+<h3 id="3-3-配置pipeline"><a href="#3-3-配置pipeline" class="headerlink" title="3.3 配置pipeline"></a>3.3 配置pipeline</h3><p> 在settings.py中添加下面的配置</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> ITEM_PIPELINES = &#123;</span><br><span class="line">    <span class="string">'news_crawler.pipelines.mongodb_ppl.MongoDBPipeline'</span>: <span class="number">300</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 可以看到这是一个字典，键为pipeline的路径，值为优先级(值越小越优先)。</p>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4.总结"></a>4.总结</h2><p>按照上面的步骤走下来，大概就能编写出一个网易新闻的爬虫。这个爬虫写出来，大概就迈出了重构以前爬虫代码的第一步了<img src="https://github.com/aldslvda/blog-images/blob/master/acfun_emoji/1010.png?raw=true" alt="1"></p>
+<p>后面碰到什么问题也会更新上来的，敬请期待<img src="https://github.com/aldslvda/blog-images/blob/master/acfun_emoji/25.png?raw=true" alt="1"></p>
+
+      
+    </div>
+
+    
+      
+
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/scrapy/" rel="tag"># scrapy</a>
+          
+            <a href="/tags/crawler/" rel="tag"># crawler</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/23/fluent-python-3/" rel="next" title="fluent python 第三章小记">
+                <i class="fa fa-chevron-left"></i> fluent python 第三章小记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/26/fluent-python-4/" rel="prev" title="fluent python 第四章小记">
+                fluent python 第四章小记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image" src="https://avatars0.githubusercontent.com/u/4235999?s=460&v=4" alt="aldslvda">
+  
+  <p class="site-author-name" itemprop="name">aldslvda</p>
+  <div class="site-description motion-element" itemprop="description">聚沙成塔</div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">66</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+  <div class="links-of-author motion-element">
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://github.com/aldslvda" title="GitHub &rarr; https://github.com/aldslvda" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="mailto:aldslvda@live.com" title="E-Mail &rarr; mailto:aldslvda@live.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="http://weibo.com/aldslvda" title="weibo &rarr; http://weibo.com/aldslvda" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+    
+  </div>
+
+
+
+
+
+
+
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用scrapy搭建一个简单的新闻爬虫"><span class="nav-text">使用scrapy搭建一个简单的新闻爬虫</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-环境配置"><span class="nav-text">1. 环境配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-爬虫的编写"><span class="nav-text">2. 爬虫的编写</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-定义Item"><span class="nav-text">2.1 定义Item</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-编写爬虫"><span class="nav-text">2.2 编写爬虫</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-关于二维爬取"><span class="nav-text">2.2.1 关于二维爬取</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-关于从网页-或者HTTP请求的Response-Body-中提取数据"><span class="nav-text">2.2.2 关于从网页(或者HTTP请求的Response Body)中提取数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-3-一个网易新闻app的Spider"><span class="nav-text">2.2.3 一个网易新闻app的Spider</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-4-爬虫代码代码的解析"><span class="nav-text">2.2.4 爬虫代码代码的解析</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-爬取到的数据存储"><span class="nav-text">3 爬取到的数据存储</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-配置MongoDB信息"><span class="nav-text">3.1 配置MongoDB信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-编写MongoDBPipeline"><span class="nav-text">3.2 编写MongoDBPipeline</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-配置pipeline"><span class="nav-text">3.3 配置pipeline</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-总结"><span class="nav-text">4.总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aldslvda</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+  
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://aldslvda.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://aldslvda.github.io/2017/11/23/scrapy_crawler_01/";
+    this.page.identifier = "2017/11/23/scrapy_crawler_01/";
+    this.page.title = '使用scrapy搭建一个简单的新闻爬虫';
+    };
+  function loadComments() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://aldslvda.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', '' + +new Date());
+    (d.head || d.body).appendChild(s);
+  }
+  
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// GET RESPONSIVE HEIGHT PASSED FROM IFRAME
+
+window.addEventListener("message", function(e) {
+  var data = e.data;
+  if ((typeof data === 'string') && (data.indexOf('ciu_embed') > -1)) {
+    var featureID = data.split(':')[1];
+    var height = data.split(':')[2];
+    $(`iframe[data-feature=${featureID}]`).height(parseInt(height) + 30);
+  }
+}, false);
+</script>
+
+
+
+
+
+
+
+
+  
+
+</body>
+</html>

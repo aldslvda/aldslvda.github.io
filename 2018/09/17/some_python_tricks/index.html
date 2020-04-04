@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.2.0',
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    }
+  };
+</script>
+
+  <meta name="description" content="本文分享一些使用 Python 的技巧，顺序按照 A-Z 排列。">
+<meta name="keywords" content="Python Tricks,Syntactic sugar,语法糖">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python常用的一些小技巧(语法糖 etc.)">
+<meta property="og:url" content="http://aldslvda.github.io/2018/09/17/some_python_tricks/index.html">
+<meta property="og:site_name" content="NickAlds&#39;s Blog">
+<meta property="og:description" content="本文分享一些使用 Python 的技巧，顺序按照 A-Z 排列。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/aldslvda/blog-images/blob/master/python-tricks-title.jpg?raw=true">
+<meta property="og:updated_time" content="2020-04-04T20:14:56.956Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python常用的一些小技巧(语法糖 etc.)">
+<meta name="twitter:description" content="本文分享一些使用 Python 的技巧，顺序按照 A-Z 排列。">
+<meta name="twitter:image" content="https://github.com/aldslvda/blog-images/blob/master/python-tricks-title.jpg?raw=true">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://aldslvda.github.io/2018/09/17/some_python_tricks/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>Python常用的一些小技巧(语法糖 etc.) | NickAlds's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">NickAlds's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Never Settle</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://aldslvda.github.io/2018/09/17/some_python_tricks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aldslvda">
+      <meta itemprop="description" content="聚沙成塔">
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/4235999?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="NickAlds's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python常用的一些小技巧(语法糖 etc.)
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-09-17 14:27:22" itemprop="dateCreated datePublished" datetime="2018-09-17T14:27:22+08:00">2018-09-17</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-04-05 04:14:56" itemprop="dateModified" datetime="2020-04-05T04:14:56+08:00">2020-04-05</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/随手摘录/" itemprop="url" rel="index"><span itemprop="name">随手摘录</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/2018/09/17/some_python_tricks/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/09/17/some_python_tricks/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <img src="https://github.com/aldslvda/blog-images/blob/master/python-tricks-title.jpg?raw=true" itemprop="contentUrl">
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        <blockquote>
+<p>本文分享一些使用 Python 的技巧，顺序按照 A-Z 排列。</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="all-or-any"><a href="#all-or-any" class="headerlink" title="all or any"></a>all or any</h1><p>Python 非常受欢迎的原因之一是其可读性和表达性。</p>
+<p>人们还经常把 Python 笑称为「可执行伪码（executable pseudocode）」。但是，当你可以编写这样的代码时，很难去反驳这种言论：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">x = [<span class="keyword">True</span>, <span class="keyword">True</span>, <span class="keyword">False</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> any(x):</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"At least one True"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> all(x):</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"Not one False"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> any(x) <span class="keyword">and</span> <span class="keyword">not</span> all(x):</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"At least one True and one False"</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="bashplotlib"><a href="#bashplotlib" class="headerlink" title="bashplotlib"></a>bashplotlib</h1><p>想在控制台中绘图吗？</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip install bashplotlib</span><br></pre></td></tr></table></figure>
+<p>使用上面的行，即可在控制台中绘图。</p>
+<h1 id="collections"><a href="#collections" class="headerlink" title="collections"></a>collections</h1><p>Python 有一些很棒的默认数据类型，但有时候它们可能不会尽如你意。</p>
+<p>不过，Python 标准库提供了 collections 模块。这个方便的附加组件可以为你提供更多数据类型。</p>
+<blockquote>
+<p>collections 模块：<a href="https://docs.python.org/3/library/collections.html" target="_blank" rel="noopener">https://docs.python.org/3/library/collections.html</a></p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> OrderedDict, Counter</span><br><span class="line"></span><br><span class="line"><span class="comment"># Remembers the order the keys are added!</span></span><br><span class="line"></span><br><span class="line">x = OrderedDict(a=<span class="number">1</span>, b=<span class="number">2</span>, c=<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Counts the frequency of each character</span></span><br><span class="line"></span><br><span class="line">y = Counter(<span class="string">"Hello World!"</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="dir"><a href="#dir" class="headerlink" title="dir"></a>dir</h1><p>你是否想过如何查看 Python 对象内部及其具有哪些属性？</p>
+<p>输入以下命令行：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; dir()</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; dir(<span class="string">"Hello World"</span>)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; dir(dir)</span><br></pre></td></tr></table></figure></p>
+<p>当以交互方式运行 Python 时，这可能是一个非常有用的功能，并且可以动态地探索你正在使用的对象和模块。</p>
+<p>想要了解更多，点这里</p>
+<blockquote>
+<p><a href="https://docs.python.org/3/library/functions.html#dir" target="_blank" rel="noopener">https://docs.python.org/3/library/functions.html#dir</a></p>
+</blockquote>
+<h1 id="emoji"><a href="#emoji" class="headerlink" title="emoji"></a>emoji</h1><p>是的，真的有。请点击这里</p>
+<blockquote>
+<p><a href="https://pypi.org/project/emoji/" target="_blank" rel="noopener">https://pypi.org/project/emoji/</a></p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip install emoji</span><br></pre></td></tr></table></figure>
+<p>别以为我不知道你会偷偷试它→→<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> emoji <span class="keyword">import</span> emojize</span><br><span class="line"></span><br><span class="line">print(emojize(<span class="string">":thumbs_up:"</span>))</span><br><span class="line"></span><br><span class="line">👍</span><br></pre></td></tr></table></figure></p>
+<h1 id="from-future-import"><a href="#from-future-import" class="headerlink" title="from __future__ import"></a>from __future__ import</h1><p>Python 流行的一个结果是，总有新版本正在开发中。新版本意味着新功能——除非你的版本已经过时。</p>
+<p>不过，别担心。__future__模块允许用户导入新版 Python 的功能。这简直就像时间旅行，或者魔法什么的。</p>
+<blockquote>
+<p>__future__模块：<a href="https://docs.python.org/2/library/\*future\*.html" target="_blank" rel="noopener">https://docs.python.org/2/library/\*future\*.html</a></p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> \_\_future\_\_ <span class="keyword">import</span> print_function</span><br><span class="line"></span><br><span class="line">print(<span class="string">"Hello World!"</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="geopy"><a href="#geopy" class="headerlink" title="geopy"></a>geopy</h1><p>地理（Geography）对于程序员来说可能是一个具有挑战性的领域。但是 geopy 模块让它变得异常简单。</p>
+<blockquote>
+<p>geopy 模块：<a href="https://geopy.readthedocs.io/en/latest/" target="_blank" rel="noopener">https://geopy.readthedocs.io/en/latest/</a><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip install geopy</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>它通过抽取一系列不同地理编码服务的 API 来工作，使用户获取一个地方的完整街道地址、纬度、经度，甚至海拔高度。</p>
+<p>另外一个有用的功能是距离：它可以用你喜欢的度量单位计算出两个位置之间的距离。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> geopy <span class="keyword">import</span> GoogleV3</span><br><span class="line"></span><br><span class="line">place = <span class="string">"221b Baker Street, London"</span></span><br><span class="line"></span><br><span class="line">location = GoogleV3().geocode(place)</span><br><span class="line"></span><br><span class="line">print(location.address)</span><br><span class="line"></span><br><span class="line">print(location.location)</span><br></pre></td></tr></table></figure>
+<h1 id="howdoi"><a href="#howdoi" class="headerlink" title="howdoi"></a>howdoi</h1><p>陷入编码问题，却不记得以前见过的解决方案？需要检查 StackOverflow，但不想离开终端？</p>
+<p>那么你需要这个有用的命令行工具：<a href="https://github.com/gleitz/howdoi。" target="_blank" rel="noopener">https://github.com/gleitz/howdoi。</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip install howdoi</span><br></pre></td></tr></table></figure>
+<p>无论你有什么问题都可以问它，它会尽力回答。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ howdoi vertical align css</span><br><span class="line"></span><br><span class="line">$ howdoi <span class="keyword">for</span> loop <span class="keyword">in</span> java</span><br><span class="line"></span><br><span class="line">$ howdoi undo commits <span class="keyword">in</span> git</span><br></pre></td></tr></table></figure></p>
+<p>但是请注意——它会从 StackOverflow 的最高票答案中抓取代码。也就是说它提供的信息并非总是有用……<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ howdoi <span class="built_in">exit</span> vim</span><br></pre></td></tr></table></figure></p>
+<h1 id="inspect"><a href="#inspect" class="headerlink" title="inspect"></a>inspect</h1><p>Python 的 inspect 模块非常有助于理解问题背后的详情。你甚至可以在 inspect 模块上调用其方法！</p>
+<blockquote>
+<p>inspect 模块：<a href="https://docs.python.org/3/library/inspect.html" target="_blank" rel="noopener">https://docs.python.org/3/library/inspect.html</a></p>
+</blockquote>
+<p>下面的代码示例使用 inspect.getsource() 打印自己的源代码。它还使用 inspect.getmodule() 打印定义它的模块。</p>
+<p>最后一行代码打印出自己的行号。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> inspect</span><br><span class="line"></span><br><span class="line">print(inspect.getsource(inspect.getsource))</span><br><span class="line"></span><br><span class="line">print(inspect.getmodule(inspect.getmodule))</span><br><span class="line"></span><br><span class="line">print(inspect.currentframe().f_lineno)</span><br></pre></td></tr></table></figure></p>
+<p>当然，除了这些琐碎的用途之外，inspect 模块还能帮助你理解代码正在做的事。你还可以用它编写自文档化代码。</p>
+<h1 id="Jedi"><a href="#Jedi" class="headerlink" title="Jedi"></a>Jedi</h1><p>Jedi 库是一个自动完成和代码分析的库。它使代码编写变得更快、效果更高。</p>
+<p>除非你正在开发自己的 IDE，否则你肯定会对使用 Jedi 库作为编辑插件很感兴趣。</p>
+<blockquote>
+<p>Jedi：<a href="https://jedi.readthedocs.io/en/latest/docs/usage.html" target="_blank" rel="noopener">https://jedi.readthedocs.io/en/latest/docs/usage.html</a></p>
+</blockquote>
+<p>你可能已经在使用 Jedi 了。IPython 项目就使用 Jedi 实现代码自动完成功能。</p>
+<h1 id="kwargs"><a href="#kwargs" class="headerlink" title="**kwargs"></a>**kwargs</h1><p>学习任何语言时都会遇到很多里程碑。对于 Python 来说，理解神秘的**kwargs 语法可能算是其中之一。</p>
+<p>词典对象前面的双星号可以让你把该词典的内容作为命名参数输入到函数中。</p>
+<p>词典的秘钥是参数名，值是传递给函数的值。你甚至不需要称它为 kwargs！</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">dictionary = &#123;<span class="string">"a"</span>: <span class="number">1</span>, <span class="string">"b"</span>: <span class="number">2</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">someFunction</span><span class="params">(a, b)</span>:</span></span><br><span class="line"></span><br><span class="line">    print(a + b)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># these do the same thing:</span></span><br><span class="line"></span><br><span class="line">someFunction(**dictionary)</span><br><span class="line"></span><br><span class="line">someFunction(a=<span class="number">1</span>, b=<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>当你想编写能够处理事先未定义的命名参数的函数时，这个很有用。</p>
+<h1 id="列表推导式（List-comprehensions）"><a href="#列表推导式（List-comprehensions）" class="headerlink" title="列表推导式（List comprehensions）"></a>列表推导式（List comprehensions）</h1><p>我最喜欢 Python 编程的原因之一是它的列表推导式</p>
+<blockquote>
+<p><a href="https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions" target="_blank" rel="noopener">https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions</a></p>
+</blockquote>
+<p>这些表达式使得编写干净易读的代码变得很容易，那些代码读起来几乎像自然语言一样。</p>
+<blockquote>
+<p>关于它们的更多使用信息请查看：<a href="https://www.learnpython.org/en/List_Comprehensions" target="_blank" rel="noopener">https://www.learnpython.org/en/List_Comprehensions</a></p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">numbers = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>]</span><br><span class="line"></span><br><span class="line">evens = [x <span class="keyword">for</span> x <span class="keyword">in</span> numbers <span class="keyword">if</span> x % <span class="number">2</span> <span class="keyword">is</span> <span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">odds = [y <span class="keyword">for</span> y <span class="keyword">in</span> numbers <span class="keyword">if</span> y <span class="keyword">not</span> <span class="keyword">in</span> evens]</span><br><span class="line"></span><br><span class="line">cities = [<span class="string">'London'</span>, <span class="string">'Dublin'</span>, <span class="string">'Oslo'</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">visit</span><span class="params">(city)</span>:</span></span><br><span class="line"></span><br><span class="line">    print(<span class="string">"Welcome to "</span>+city)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> city <span class="keyword">in</span> cities:</span><br><span class="line"></span><br><span class="line">    visit(city)</span><br></pre></td></tr></table></figure>
+<h1 id="map"><a href="#map" class="headerlink" title="map"></a>map</h1><p>Python 通过许多内置功能支持函数式编程。map() 函数是最有用的函数之一——特别是当它与 lambda 函数结合使用时。</p>
+<blockquote>
+<p>lambda 函数：<a href="https://docs.python.org/3/tutorial/controlflow.html#lambda-expressions" target="_blank" rel="noopener">https://docs.python.org/3/tutorial/controlflow.html#lambda-expressions</a></p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">x = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">y = map(<span class="keyword">lambda</span> x : x + <span class="number">1</span> , x)</span><br><span class="line"></span><br><span class="line"><span class="comment"># prints out [2,3,4]</span></span><br><span class="line"></span><br><span class="line">print(list(y))</span><br></pre></td></tr></table></figure>
+<p>在上面的例子中，map() 将一个简单的 lambda 函数应用于 x 中的每个元素。它返回一个 map 对象，该对象可以被转换成可迭代的对象，如列表或元组。</p>
+<h1 id="newspaper3k"><a href="#newspaper3k" class="headerlink" title="newspaper3k"></a>newspaper3k</h1><p>如果你之前没有见过它，那么我建议你先查看</p>
+<blockquote>
+<p><a href="https://pypi.org/project/newspaper3k/。" target="_blank" rel="noopener">https://pypi.org/project/newspaper3k/。</a></p>
+</blockquote>
+<p>它可以帮助你从大量顶级国际出版物中检索到新闻文章和相关元数据。你可以检索图像、文本和作者名。</p>
+<p>它还有一些内置的 NLP 功能。</p>
+<blockquote>
+<p>地址：<a href="https://newspaper.readthedocs.io/en/latest/user_guide/quickstart.html#performing-nlp-on-an-article" target="_blank" rel="noopener">https://newspaper.readthedocs.io/en/latest/user_guide/quickstart.html#performing-nlp-on-an-article</a></p>
+</blockquote>
+<p>如果你想在下一个项目中使用 BeautifulSoup 或其它 DIY 网页抓取库，那么不如使用$ pip install newspaper3k，既省时又省事，何乐而不为呢？</p>
+<h1 id="运算符重载（Operator-overloading）"><a href="#运算符重载（Operator-overloading）" class="headerlink" title="运算符重载（Operator overloading）"></a>运算符重载（Operator overloading）</h1><p>Python 支持运算符重载。</p>
+<p>它实际上是一个简单的概念。你有没有想过为什么 Python 允许用户使用 + 运算符来将数字相加，并级联字符串？这就是运算符重载在发挥作用。</p>
+<p>你可以使用 Python 的标准运算符号来定义对象，这样你可以在与这些对象相关的语境中使用它们。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Thing</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, value)</span>:</span></span><br><span class="line"></span><br><span class="line">        self.__value = value</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__gt__</span><span class="params">(self, other)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> self.__value &gt; other.__value</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__lt__</span><span class="params">(self, other)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> self.__value &lt; other.__value</span><br><span class="line"></span><br><span class="line">something = Thing(<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line">nothing = Thing(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># True</span></span><br><span class="line"></span><br><span class="line">something &gt; nothing</span><br><span class="line"></span><br><span class="line"><span class="comment"># False</span></span><br><span class="line"></span><br><span class="line">something &lt; nothing</span><br><span class="line"></span><br><span class="line"><span class="comment"># Error</span></span><br><span class="line"></span><br><span class="line">something + nothing</span><br></pre></td></tr></table></figure></p>
+<h1 id="pprint"><a href="#pprint" class="headerlink" title="pprint"></a>pprint</h1><p>Python 的默认 print 函数就可以实现打印功能。但如果尝试打印较大的嵌套对象，就会发现打印结果很丑。</p>
+<p>这时 Python 标准库的 pretty printer 模块就可以发挥作用了。该模块可以将复杂的结构化对象以一种易读的格式打印出来。</p>
+<blockquote>
+<p>pretty printer 模块：<a href="https://docs.python.org/3/library/pprint.html" target="_blank" rel="noopener">https://docs.python.org/3/library/pprint.html</a></p>
+</blockquote>
+<p>Python 开发者的必备技能之一就是处理复杂的数据结构。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pprint</span><br><span class="line"></span><br><span class="line">url = <span class="string">'https://randomuser.me/api/?results=1'</span></span><br><span class="line"></span><br><span class="line">users = requests.get(url).json()</span><br><span class="line"></span><br><span class="line">pprint.pprint(users)</span><br><span class="line"></span><br><span class="line">Queue</span><br></pre></td></tr></table></figure></p>
+<h1 id="Python-支持多线程，而这是由-Python-标准库的-Queue-模块支持的。"><a href="#Python-支持多线程，而这是由-Python-标准库的-Queue-模块支持的。" class="headerlink" title="Python 支持多线程，而这是由 Python 标准库的 Queue 模块支持的。"></a>Python 支持多线程，而这是由 Python 标准库的 Queue 模块支持的。</h1><p>该模块允许用户实现队列（queue）数据结构。队列数据结构允许用户根据特定的规则添加和检索条目。</p>
+<p>『First in, first out』 (FIFO) 队列允许用户按照对象被添加的顺序来检索对象。『Last in, first out』 (LIFO) 队列允许用户首先访问最新添加的对象。</p>
+<p>最后，优先级队列（priority queue）允许用户根据对象对应的优先级类别来检索对象。</p>
+<p>如何使用 queue 在 Python 中实现多线程编程，示例详见：<a href="https://www.tutorialspoint.com/python3/python_multithreading.htm。" target="_blank" rel="noopener">https://www.tutorialspoint.com/python3/python_multithreading.htm。</a></p>
+<h1 id="repr"><a href="#repr" class="headerlink" title="__repr__"></a>__repr__</h1><p>在 Python 中定义一个类别或对象时，以「官方」方式将对象表示为字符串很有用。例如：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; file = open(<span class="string">'file.txt'</span>, <span class="string">'r'</span>)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="built_in">print</span>(file)</span><br><span class="line"></span><br><span class="line">&lt;open file <span class="string">'file.txt'</span>, mode <span class="string">'r'</span> at 0x10d30aaf0&gt;</span><br></pre></td></tr></table></figure></p>
+<p>这使代码 debug 变得简单很多。将字符串添加到类别定义，如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">someClass</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"&lt;some description here&gt;"</span></span><br><span class="line"></span><br><span class="line">someInstance = someClass()</span><br><span class="line"></span><br><span class="line"><span class="comment"># prints &lt;some description here&gt;</span></span><br><span class="line"></span><br><span class="line">print(someInstance)</span><br></pre></td></tr></table></figure>
+<h1 id="sh"><a href="#sh" class="headerlink" title="sh"></a>sh</h1><p>Python 是一种伟大的脚本语言，不过有时使用标准 os 和 subprocess 库会有点棘手。</p>
+<p>sh 库提供了一种不错的替代方案。</p>
+<blockquote>
+<p>sh 库：<a href="http://amoffat.github.io/sh/" target="_blank" rel="noopener">http://amoffat.github.io/sh/</a></p>
+</blockquote>
+<p>该库允许用户像使用普通函数一样调用任意程序，这对自动化工作流和任务非常有用。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sh <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">sh.pwd()</span><br><span class="line"></span><br><span class="line">sh.mkdir(<span class="string">'new_folder'</span>)</span><br><span class="line"></span><br><span class="line">sh.touch(<span class="string">'new_file.txt'</span>)</span><br><span class="line"></span><br><span class="line">sh.whoami()</span><br><span class="line"></span><br><span class="line">sh.echo(<span class="string">'This is great!'</span>)</span><br></pre></td></tr></table></figure></p>
+<h1 id="类型提示（Type-hints）"><a href="#类型提示（Type-hints）" class="headerlink" title="类型提示（Type hints）"></a>类型提示（Type hints）</h1><p>Python 是动态语言。在定义变量、函数、类别等时无需指定数据类型。</p>
+<p>这有利于缩短开发周期。但是，简单的类型错误（typing issue）导致的运行时错误真的太烦了。</p>
+<p>从 Python 3.5 版本开始，用户可以选择在定义函数时开启类型提示。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">addTwo</span><span class="params">(x : Int)</span> -&gt; Int:</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> x + <span class="number">2</span></span><br></pre></td></tr></table></figure></p>
+<p>你还可以定义类型别名：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> List</span><br><span class="line"></span><br><span class="line">Vector = List[float]</span><br><span class="line"></span><br><span class="line">Matrix = List[Vector]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">addMatrix</span><span class="params">(a : Matrix, b : Matrix)</span> -&gt; Matrix:</span></span><br><span class="line"></span><br><span class="line">  result = []</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> i,row <span class="keyword">in</span> enumerate(a):</span><br><span class="line"></span><br><span class="line">    result_row =[]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> j, col <span class="keyword">in</span> enumerate(row):</span><br><span class="line"></span><br><span class="line">      result_row += [a[i][j] + b[i][j]]</span><br><span class="line"></span><br><span class="line">    result += [result_row]</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">x = [[<span class="number">1.0</span>, <span class="number">0.0</span>], [<span class="number">0.0</span>, <span class="number">1.0</span>]]</span><br><span class="line"></span><br><span class="line">y = [[<span class="number">2.0</span>, <span class="number">1.0</span>], [<span class="number">0.0</span>, <span class="number">-2.0</span>]]</span><br><span class="line"></span><br><span class="line">z = addMatrix(x, y)</span><br></pre></td></tr></table></figure></p>
+<p>尽管非强制，但类型注释可以使代码更易理解。</p>
+<p>它们还允许你在运行之前使用类型检查工具捕捉 TypeError。在进行大型复杂项目时执行此类操作是值得的。</p>
+<h1 id="uuid"><a href="#uuid" class="headerlink" title="uuid"></a>uuid</h1><p>生成通用唯一标识符（Universally Unique ID，UUID）的一种快速简单方法就是使用 Python 标准库的 uuid 模块。</p>
+<blockquote>
+<p>uuid 模块：<a href="https://docs.python.org/3/library/uuid.html" target="_blank" rel="noopener">https://docs.python.org/3/library/uuid.html</a></p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> uuid</span><br><span class="line"></span><br><span class="line">user_id = uuid.uuid4()</span><br><span class="line"></span><br><span class="line">print(user_id)</span><br></pre></td></tr></table></figure>
+<p>这创建了一个随机化后的 128 比特数字，该数字几乎必然是唯一的。</p>
+<p>事实上，可以生成 2¹²²可能的 UUID。这个数字超过了 5,000,000,000,000,000,000,000,000,000,000,000,000。</p>
+<p>在给定集合中找出重复数字的可能性极低。即使有一万亿 UUID，重复数字存在的概率也远远低于十亿分之一。</p>
+<h1 id="虚拟环境（Virtual-environment）"><a href="#虚拟环境（Virtual-environment）" class="headerlink" title="虚拟环境（Virtual environment）"></a>虚拟环境（Virtual environment）</h1><p>这可能是 Python 中我最喜欢的事物了。</p>
+<p>你可能同时处理多个 Python 项目。不幸的是，有时候两个项目依赖于相同依赖项的不同版本。那你要安装哪个版本呢？</p>
+<p>幸运的是，Python 支持虚拟环境，这使得用户能够充分利用两种环境。见下列行：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">python -m venv my-project</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> my-project/bin/activate</span><br><span class="line"></span><br><span class="line">pip install all-the-modules</span><br></pre></td></tr></table></figure></p>
+<p>现在你在一台机器上具备独立的多个 Python 版本了。问题解决！</p>
+<h1 id="wikipedia"><a href="#wikipedia" class="headerlink" title="wikipedia"></a>wikipedia</h1><p>Wikipedia 拥有一个很棒的 API，允许用户以编程方式访问巨大体量的免费知识和信息。</p>
+<p>wikipedia 模块使得访问该 API 非常便捷。</p>
+<blockquote>
+<p>Wikipedia 模块：<a href="https://wikipedia.readthedocs.io/en/latest/quickstart.html" target="_blank" rel="noopener">https://wikipedia.readthedocs.io/en/latest/quickstart.html</a></p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> wikipedia</span><br><span class="line"></span><br><span class="line">result = wikipedia.page(<span class="string">'freeCodeCamp'</span>)</span><br><span class="line"></span><br><span class="line">print(result.summary)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> link <span class="keyword">in</span> result.links:</span><br><span class="line"></span><br><span class="line">    print(link)</span><br></pre></td></tr></table></figure>
+<p>和真实的维基百科网站类似，该模块支持多种语言、页面消歧、随机页面检索，甚至还具备 donate() 方法。</p>
+<h1 id="xkcd"><a href="#xkcd" class="headerlink" title="xkcd"></a>xkcd</h1><p>humour 是 Python 语言的一个关键特征，其名称来自英国喜剧片《蒙提·派森的飞行马戏团》(Monty Python and the Flying Circus)。Python 的很多官方文档引用了该喜剧片最著名的剧情。</p>
+<p>幽默感并不限于文档。试着运行下列行：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> antigravity</span><br></pre></td></tr></table></figure></p>
+<p>将打开 xkcd 画的 Python 漫画。不要改变这一点，Python。不要改变。</p>
+<h1 id="YAML"><a href="#YAML" class="headerlink" title="YAML"></a>YAML</h1><p>YAML 代表 『YAML Ain』t Markup Language』。它是一种数据格式语言，是 JSON 的超集。</p>
+<p>与 JSON 不同，它可以存储更复杂的对象并引用自己的元素。你还可以编写注释，使其尤其适用于编写配置文件。</p>
+<blockquote>
+<p>PyYAML 模块（<a href="https://pyyaml.org/wiki/PyYAMLDocumentation）可以让你在" target="_blank" rel="noopener">https://pyyaml.org/wiki/PyYAMLDocumentation）可以让你在</a> Python 中使用 YAML。</p>
+</blockquote>
+<p>安装：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip install pyyaml</span><br></pre></td></tr></table></figure></p>
+<p>然后导入到项目中：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> yaml</span><br></pre></td></tr></table></figure></p>
+<p>PyYAML 使你能够存储任何数据类型的 Python 对象，以及任何用户定义类别的实例。</p>
+<h1 id="zip"><a href="#zip" class="headerlink" title="zip"></a>zip</h1><p>给你支最后一招，非常酷。还在用两个列表来组成一部词典吗？<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">keys = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>]</span><br><span class="line"></span><br><span class="line">vals = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">zipped = dict(zip(keys, vals))</span><br></pre></td></tr></table></figure></p>
+<p>zip() 内置函数使用多个可迭代对象作为输入并返回元组列表。每个元组按位置索引对输入对象的元素进行分组。</p>
+<p>你也可以通过调用*zip() 来「解压」对象。</p>
+<p>原文链接：<a href="https://medium.freecodecamp.org/an-a-z-of-useful-python-tricks-b467524ee747" target="_blank" rel="noopener">https://medium.freecodecamp.org/an-a-z-of-useful-python-tricks-b467524ee747</a></p>
+
+      
+    </div>
+
+    
+      
+
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Python-Tricks/" rel="tag"># Python Tricks</a>
+          
+            <a href="/tags/Syntactic-sugar/" rel="tag"># Syntactic sugar</a>
+          
+            <a href="/tags/语法糖/" rel="tag"># 语法糖</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/29/fluent-python-13/" rel="next" title="Fluent Python 第十三章 正确使用运算符重载">
+                <i class="fa fa-chevron-left"></i> Fluent Python 第十三章 正确使用运算符重载
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/20/fluent-python-14/" rel="prev" title="fluent python 第十四章 可迭代对象，迭代器和生成器">
+                fluent python 第十四章 可迭代对象，迭代器和生成器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image" src="https://avatars0.githubusercontent.com/u/4235999?s=460&v=4" alt="aldslvda">
+  
+  <p class="site-author-name" itemprop="name">aldslvda</p>
+  <div class="site-description motion-element" itemprop="description">聚沙成塔</div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">66</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+  <div class="links-of-author motion-element">
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://github.com/aldslvda" title="GitHub &rarr; https://github.com/aldslvda" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="mailto:aldslvda@live.com" title="E-Mail &rarr; mailto:aldslvda@live.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="http://weibo.com/aldslvda" title="weibo &rarr; http://weibo.com/aldslvda" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+    
+  </div>
+
+
+
+
+
+
+
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#all-or-any"><span class="nav-text">all or any</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#bashplotlib"><span class="nav-text">bashplotlib</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#collections"><span class="nav-text">collections</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#dir"><span class="nav-text">dir</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#emoji"><span class="nav-text">emoji</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#from-future-import"><span class="nav-text">from __future__ import</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#geopy"><span class="nav-text">geopy</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#howdoi"><span class="nav-text">howdoi</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#inspect"><span class="nav-text">inspect</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Jedi"><span class="nav-text">Jedi</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#kwargs"><span class="nav-text">**kwargs</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#列表推导式（List-comprehensions）"><span class="nav-text">列表推导式（List comprehensions）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#map"><span class="nav-text">map</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#newspaper3k"><span class="nav-text">newspaper3k</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#运算符重载（Operator-overloading）"><span class="nav-text">运算符重载（Operator overloading）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pprint"><span class="nav-text">pprint</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Python-支持多线程，而这是由-Python-标准库的-Queue-模块支持的。"><span class="nav-text">Python 支持多线程，而这是由 Python 标准库的 Queue 模块支持的。</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#repr"><span class="nav-text">__repr__</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sh"><span class="nav-text">sh</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类型提示（Type-hints）"><span class="nav-text">类型提示（Type hints）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#uuid"><span class="nav-text">uuid</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#虚拟环境（Virtual-environment）"><span class="nav-text">虚拟环境（Virtual environment）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#wikipedia"><span class="nav-text">wikipedia</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#xkcd"><span class="nav-text">xkcd</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#YAML"><span class="nav-text">YAML</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#zip"><span class="nav-text">zip</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aldslvda</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+  
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://aldslvda.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://aldslvda.github.io/2018/09/17/some_python_tricks/";
+    this.page.identifier = "2018/09/17/some_python_tricks/";
+    this.page.title = 'Python常用的一些小技巧(语法糖 etc.)';
+    };
+  function loadComments() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://aldslvda.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', '' + +new Date());
+    (d.head || d.body).appendChild(s);
+  }
+  
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// GET RESPONSIVE HEIGHT PASSED FROM IFRAME
+
+window.addEventListener("message", function(e) {
+  var data = e.data;
+  if ((typeof data === 'string') && (data.indexOf('ciu_embed') > -1)) {
+    var featureID = data.split(':')[1];
+    var height = data.split(':')[2];
+    $(`iframe[data-feature=${featureID}]`).height(parseInt(height) + 30);
+  }
+}, false);
+</script>
+
+
+
+
+
+
+
+
+  
+
+</body>
+</html>

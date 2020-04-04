@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.2.0',
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    }
+  };
+</script>
+
+  <meta name="description" content="Fluent Python 第十二章读书报告">
+<meta name="keywords" content="Python,duck typing,protocal,abstract basic class,ABC,fluent python,interfaces">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fluent Python 第十一章 从协议到抽象基类">
+<meta property="og:url" content="http://aldslvda.github.io/2018/07/28/fluent-python-11/index.html">
+<meta property="og:site_name" content="NickAlds&#39;s Blog">
+<meta property="og:description" content="Fluent Python 第十二章读书报告">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/aldslvda/blog-images/blob/master/fluent_python_logo.png?raw=true">
+<meta property="og:updated_time" content="2020-04-04T20:14:56.956Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Fluent Python 第十一章 从协议到抽象基类">
+<meta name="twitter:description" content="Fluent Python 第十二章读书报告">
+<meta name="twitter:image" content="https://github.com/aldslvda/blog-images/blob/master/fluent_python_logo.png?raw=true">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://aldslvda.github.io/2018/07/28/fluent-python-11/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>Fluent Python 第十一章 从协议到抽象基类 | NickAlds's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">NickAlds's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Never Settle</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://aldslvda.github.io/2018/07/28/fluent-python-11/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aldslvda">
+      <meta itemprop="description" content="聚沙成塔">
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/4235999?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="NickAlds's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Fluent Python 第十一章 从协议到抽象基类
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-07-28 18:00:00" itemprop="dateCreated datePublished" datetime="2018-07-28T18:00:00+08:00">2018-07-28</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-04-05 04:14:56" itemprop="dateModified" datetime="2020-04-05T04:14:56+08:00">2020-04-05</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书笔记/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/2018/07/28/fluent-python-11/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/07/28/fluent-python-11/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <img src="https://github.com/aldslvda/blog-images/blob/master/fluent_python_logo.png?raw=true" itemprop="contentUrl">
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        <blockquote>
+<p>Fluent Python 第十二章读书报告</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="Chapter-11-Interfaces-From-Protocols-to-ABCs"><a href="#Chapter-11-Interfaces-From-Protocols-to-ABCs" class="headerlink" title="Chapter 11. Interfaces From Protocols to ABCs"></a>Chapter 11. Interfaces From Protocols to ABCs</h1><h1 id="第十一章-从协议到抽象基类"><a href="#第十一章-从协议到抽象基类" class="headerlink" title="第十一章: 从协议到抽象基类"></a>第十一章: 从协议到抽象基类</h1><p>本章主要讨论接口，从鸭子类型的动态协议到使接口更加明确，能验证实现是否符合规定的抽象基类（ABC）</p>
+<p>本章会专门讲解抽象基类。首先，本章说明抽象基类的常见用途：实现接口时作为超类使用。然后，说明抽象基类如何检查具体子类是否符合接口定义，以及如何使用注册机制声明一个类实现了某个接口，而不进行子类化操作。最后，说明如何让抽象基类自动“识别”任何符合接口的类——不进行子类化或注册。</p>
+<h2 id="Python-中的接口和协议"><a href="#Python-中的接口和协议" class="headerlink" title="Python 中的接口和协议"></a>Python 中的接口和协议</h2><p>Python中，我们把协议定为非正式的接口， 协议也是Python这类动态语言实现多态的方式。</p>
+<p>Python 中接口的运作方式: Python 中没有interface 关键字， 并且除了抽象基类（ABC）,每个类都有接口，实现方式为：类实现或继承公开属性(方法或者数据属性)</p>
+<p>关于接口有一个实用的补充定义：对象公开方法的子集，让对象在系统中扮演特定角色。<br>借口是实现特定角色的方法的集合，这就是协议。协议与继承没有关系，一个类可能实现多个接口使同一个实例扮演多个角色。</p>
+<p>协议不是正式的接口, 没有接口一致性的各种强制，因此一个类可以只实现部分接口。</p>
+<h2 id="Python中的序列协议"><a href="#Python中的序列协议" class="headerlink" title="Python中的序列协议"></a>Python中的序列协议</h2><p>Python中数据模型的哲学是尽量支持基本协议， 下面的图展示了抽象基类Sequence的正式接口。</p>
+<p><img src="https://github.com/aldslvda/blog-images/blob/master/fluent-python-11.1.png?raw=true" alt="Figure-11-1"></p>
+<p>如果没有实现__iter__和__contains__方法， Python会调用__getitem__方法， 设法让迭代和in运算符可用。几十一个对象只实现了__getitem__方法，也能进行迭代，为了迭代对象，解释器会尝试调用两个不同的方法。</p>
+<h2 id="使用猴子补丁在运行时实现协议"><a href="#使用猴子补丁在运行时实现协议" class="headerlink" title="使用猴子补丁在运行时实现协议"></a>使用猴子补丁在运行时实现协议</h2><blockquote>
+<p>得益于鸭子类型，如果遵守既定的协议，很有可能增加利用现有的标准库和第三方代码的可能性。<br>猴子补丁: 在运行时修改类或者模块，而不改动源码。这种技术非常强大，但是打补丁的代码和被打补丁的程序需要耦合非常紧密，而且往往要处理没有文档的部分。</p>
+</blockquote>
+<p>协议可以支持猴子补丁， 恰恰说明了协议的动态性： 即使对象一开始没有实现所需的方法，后来用补丁的形式加进去也行。这也是鸭子类型思想的一个缩影。</p>
+<h2 id="关于抽象基类和白鹅类型"><a href="#关于抽象基类和白鹅类型" class="headerlink" title="关于抽象基类和白鹅类型"></a>关于抽象基类和白鹅类型</h2><blockquote>
+<p>白鹅类型： 只要cls是抽象基类， 即cls的元类是abc.ABCMeta, 就可以使用isinstance(obj, cls)</p>
+<ul>
+<li>抽象基类的本质就是几个特殊方法的集合</li>
+<li>可以用instance(obj, cls)检查类是否已经实现了抽象基类定义的api契约。</li>
+<li>需要注意的是 生产代码中尽量避免定义抽象基类，极容易因为设计不当造成滥用，滥用抽象基类会造成<strong>灾难性的后果</strong></li>
+<li>抽象基类是封装框架引入一般性概念和抽象的。</li>
+</ul>
+</blockquote>
+<h2 id="定义抽象基类的子类"><a href="#定义抽象基类的子类" class="headerlink" title="定义抽象基类的子类"></a>定义抽象基类的子类</h2><p>要想实现子类，可以覆盖从抽象基类中继承的方法，以更高效的方式重新实现。例如__contains__方法会扫描序列，如果你定义的序列按顺序排列，那么就可以重新定义这个方法使用bisect函数二分查找。</p>
+<h2 id="标准库中的抽象基类"><a href="#标准库中的抽象基类" class="headerlink" title="标准库中的抽象基类"></a>标准库中的抽象基类</h2><h3 id="collections-abc模块"><a href="#collections-abc模块" class="headerlink" title="collections.abc模块"></a>collections.abc模块</h3><p>Python 标准库中有两个abc模块，一个是collections.abc， 另一个是abc.ABC，后者是所有抽象基类的依赖。<br>collections.abc类中有16个抽象基类，它们的继承关系如下图所示:</p>
+<p><img src="https://github.com/aldslvda/blog-images/blob/master/fluent-python-11.2.png?raw=true" alt="Figure-11-2"></p>
+<ul>
+<li><p>Iterable、Container 和 Sized<br>  各个集合应该继承这三个抽象基类，或者至少实现兼容的协议。Iterable 通过__iter__方法支持迭代，Container 通过 __contains__ 方法支持 in 运算符，Sized通过 __len__ 方法支持 len() 函数。</p>
+</li>
+<li><p>Sequence、Mapping 和 Set<br>　　这三个是主要的不可变集合类型，而且各自都有可变的子类。</p>
+</li>
+<li><p>MappingView<br>　　在 Python 3 中，映射方法 .items()、.keys() 和 .values() 返回的对象分别是ItemsView 、KeysView 和 ValuesView 的实例。前两个类还从 Set 类继承了丰富的接口，包含 3.8.3 节所述的全部运算符。</p>
+</li>
+<li><p>Callable 和 Hashable<br>　　这两个抽象基类与集合没有太大的关系，只不过因为 collections.abc 是标准库中定义抽象基类的第一个模块，而它们又太重要了，因此才把它们放到 collections.abc模块中。这两个抽象基类的主要作用是为内置函数 isinstance 提供支持，以一种安全的方式判断对象能不能调用或散列。若想检查是否能调用，可以使用内置的 callable() 函数；但是没有类似的 hashable() 函数，因此测试对象是否可散列，最好使用 isinstance(my_obj, Hashable)。</p>
+</li>
+<li><p>Iterator<br>　　它是 Iterable 的子类。</p>
+</li>
+</ul>
+<h3 id="抽象基类中的数字塔numbers"><a href="#抽象基类中的数字塔numbers" class="headerlink" title="抽象基类中的数字塔numbers"></a>抽象基类中的数字塔numbers</h3><p>numbers包定义的是数字塔，包含的类如下，通过类名即可判断出他们的继承关系:</p>
+<ul>
+<li>Number</li>
+<li>Complex</li>
+<li>Real</li>
+<li>Rational</li>
+<li>Integral</li>
+</ul>
+<h1 id="本章小结"><a href="#本章小结" class="headerlink" title="本章小结"></a>本章小结</h1><p>本章介绍了Python中非正式接口(协议的高动态本性)，以及Python中接口的运作方式，同时介绍了Python中的抽象基类及其类别和用途。</p>
+<blockquote>
+<p>尽管抽象基类使得类型检查变得更容易了，但不应该在程序中过度使用它。Python 的核心在于它是一门动态语言，它带来了极大的灵活性。如果处处都强制实行类型约束，那么会使代码变得更加复杂，而本不应该如此。我们应该拥抱 Python 的灵活性.<br>“如果觉得自己想创建新的抽象基类，先试着通过常规的鸭子类型来解决问题。”</p>
+</blockquote>
+
+      
+    </div>
+
+    
+      
+
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/duck-typing/" rel="tag"># duck typing</a>
+          
+            <a href="/tags/protocal/" rel="tag"># protocal</a>
+          
+            <a href="/tags/abstract-basic-class/" rel="tag"># abstract basic class</a>
+          
+            <a href="/tags/ABC/" rel="tag"># ABC</a>
+          
+            <a href="/tags/fluent-python/" rel="tag"># fluent python</a>
+          
+            <a href="/tags/interfaces/" rel="tag"># interfaces</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/07/fluent-python-10/" rel="next" title="Fluent Python 第十章小结">
+                <i class="fa fa-chevron-left"></i> Fluent Python 第十章小结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/28/fluent-python-12/" rel="prev" title="Fluent Python 第十二章 继承的优缺点">
+                Fluent Python 第十二章 继承的优缺点 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image" src="https://avatars0.githubusercontent.com/u/4235999?s=460&v=4" alt="aldslvda">
+  
+  <p class="site-author-name" itemprop="name">aldslvda</p>
+  <div class="site-description motion-element" itemprop="description">聚沙成塔</div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">66</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+  <div class="links-of-author motion-element">
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://github.com/aldslvda" title="GitHub &rarr; https://github.com/aldslvda" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="mailto:aldslvda@live.com" title="E-Mail &rarr; mailto:aldslvda@live.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="http://weibo.com/aldslvda" title="weibo &rarr; http://weibo.com/aldslvda" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+    
+  </div>
+
+
+
+
+
+
+
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Chapter-11-Interfaces-From-Protocols-to-ABCs"><span class="nav-text">Chapter 11. Interfaces From Protocols to ABCs</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第十一章-从协议到抽象基类"><span class="nav-text">第十一章: 从协议到抽象基类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Python-中的接口和协议"><span class="nav-text">Python 中的接口和协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python中的序列协议"><span class="nav-text">Python中的序列协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用猴子补丁在运行时实现协议"><span class="nav-text">使用猴子补丁在运行时实现协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于抽象基类和白鹅类型"><span class="nav-text">关于抽象基类和白鹅类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义抽象基类的子类"><span class="nav-text">定义抽象基类的子类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标准库中的抽象基类"><span class="nav-text">标准库中的抽象基类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#collections-abc模块"><span class="nav-text">collections.abc模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#抽象基类中的数字塔numbers"><span class="nav-text">抽象基类中的数字塔numbers</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#本章小结"><span class="nav-text">本章小结</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aldslvda</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+  
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://aldslvda.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://aldslvda.github.io/2018/07/28/fluent-python-11/";
+    this.page.identifier = "2018/07/28/fluent-python-11/";
+    this.page.title = 'Fluent Python 第十一章 从协议到抽象基类';
+    };
+  function loadComments() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://aldslvda.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', '' + +new Date());
+    (d.head || d.body).appendChild(s);
+  }
+  
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// GET RESPONSIVE HEIGHT PASSED FROM IFRAME
+
+window.addEventListener("message", function(e) {
+  var data = e.data;
+  if ((typeof data === 'string') && (data.indexOf('ciu_embed') > -1)) {
+    var featureID = data.split(':')[1];
+    var height = data.split(':')[2];
+    $(`iframe[data-feature=${featureID}]`).height(parseInt(height) + 30);
+  }
+}, false);
+</script>
+
+
+
+
+
+
+
+
+  
+
+</body>
+</html>

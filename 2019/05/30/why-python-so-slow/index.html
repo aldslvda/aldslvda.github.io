@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.2.0',
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    }
+  };
+</script>
+
+  <meta name="description" content="Python 正在爆炸般流行起来，它被用于DevOps, 数据处理，web开发和安全领域。但是在速度方面却没有取得过什么胜利。 为什么Python这么慢呢？">
+<meta name="keywords" content="Python,GIL,动态类型语言">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为什么Python 如此之慢">
+<meta property="og:url" content="http://aldslvda.github.io/2019/05/30/why-python-so-slow/index.html">
+<meta property="og:site_name" content="NickAlds&#39;s Blog">
+<meta property="og:description" content="Python 正在爆炸般流行起来，它被用于DevOps, 数据处理，web开发和安全领域。但是在速度方面却没有取得过什么胜利。 为什么Python这么慢呢？">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/aldslvda/blog-images/blob/master/python_slow.png?raw=true">
+<meta property="og:updated_time" content="2020-04-04T20:14:56.956Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为什么Python 如此之慢">
+<meta name="twitter:description" content="Python 正在爆炸般流行起来，它被用于DevOps, 数据处理，web开发和安全领域。但是在速度方面却没有取得过什么胜利。 为什么Python这么慢呢？">
+<meta name="twitter:image" content="https://github.com/aldslvda/blog-images/blob/master/python_slow.png?raw=true">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://aldslvda.github.io/2019/05/30/why-python-so-slow/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>为什么Python 如此之慢 | NickAlds's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">NickAlds's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Never Settle</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://aldslvda.github.io/2019/05/30/why-python-so-slow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aldslvda">
+      <meta itemprop="description" content="聚沙成塔">
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/4235999?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="NickAlds's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">为什么Python 如此之慢
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-05-30 10:37:00" itemprop="dateCreated datePublished" datetime="2019-05-30T10:37:00+08:00">2019-05-30</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-04-05 04:14:56" itemprop="dateModified" datetime="2020-04-05T04:14:56+08:00">2020-04-05</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/随手摘录/" itemprop="url" rel="index"><span itemprop="name">随手摘录</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/2019/05/30/why-python-so-slow/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/05/30/why-python-so-slow/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <img src="https://github.com/aldslvda/blog-images/blob/master/python_slow.png?raw=true" itemprop="contentUrl">
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        <blockquote>
+<p>Python 正在爆炸般流行起来，它被用于DevOps, 数据处理，web开发和安全领域。但是在速度方面却没有取得过什么胜利。 为什么Python这么慢呢？</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="为什么Python-如此之慢"><a href="#为什么Python-如此之慢" class="headerlink" title="为什么Python 如此之慢"></a>为什么Python 如此之慢</h2><p>原文链接: <a href="https://hackernoon.com/why-is-python-so-slow-e5074b6fe55b" target="_blank" rel="noopener">https://hackernoon.com/why-is-python-so-slow-e5074b6fe55b</a></p>
+<p>Python 正在爆炸般流行起来，它被用于DevOps, 数据处理，web开发和安全领域。但是在速度方面却没有取得过什么胜利。<br>Java在速度方面和C/C++/C#/Python比起来如何？答案很大程度上取决于你所运行的应用。没有什么跑分是完美的，但是编程语言测评游戏(Computer Language Benchmarks Game)是一个很好的切入点。  </p>
+<p>十多年来编程语言测评游戏一直对我来说是一个参考，相比于其他语言，比如Java, C#, Go, JavaScript, C++, Python是最慢的语言之一。这些语言中包含了JIT编译器(c#, java)，AOT编译器(c/c++)和解释型语言js。</p>
+<p>注意: 当我说“Python”, 我说的是Python的参考实现CPython, 其他实现这篇文章也会提到。<br>这篇文章想要回答的一个问题就是：当Python执行一个相同的程序要比别的语言实现慢2-10倍的时候，为什么会这么慢，难道我们不能让它跑的更快吗？</p>
+<p>下面说一下本文的主要观点(当然也是客观事实):<br>“因为Python 有GIL(Global Interpreter Lock, 全局解释锁)”<br>“因为Python 是解释型语言而不是编译型”<br>“因为Python 是动态类型语言”<br>哪一个原因影响最大对速度影响最大呢？</p>
+<h3 id="GIL"><a href="#GIL" class="headerlink" title="GIL"></a>GIL</h3><p>现代计算机的cpu有多核，有时候有多个处理器。为了充分利用多出来的处理能力，操作系统定义了一种更加低级别的单位:线程，让一个进程可以启动多个线程来执行系统指令。<br>这样的话如果一个进程的CPU资源非常紧张，负载就会均匀的平摊到各个CPU核心，这种方法能够很高效地让大多数任务更快完成。<br>当我写这篇文章的时候，我的Chrome浏览器开启了44个线程。要记住的是线程的结构和api在POSIX-based的系统(OSX, Linux)和Windows下面是不一样的。操作系统同样会管理线程的调度。<br>如果你没有进行过多线程编程，你需要快速熟悉一下”锁”的概念。不像单线程的进程，多线程的进程中，当你更改内存中的变量，你需要确认多个线程不会同时尝试访问或修改同一个内存块。</p>
+<p>当CPython创建变量，它会给变量分配内存空间并且计算变量的引用数，如果引用数为0, Python将会释放掉这块内存，这就是为什么for循环表达式里的临时变量不会让内存爆炸。也是CPython的垃圾回收机制。</p>
+<p>接下来的挑战是，当变量被多个线程共享时，如何锁住引用数。Python程序执行过程中有一个全局解释锁GIL 小心地控制着线程的执行。Python解释器在同一时间只能执行一个操作，不论有多少个线程。</p>
+<h3 id="这对于Python应用的性能表现意味着什么呢？"><a href="#这对于Python应用的性能表现意味着什么呢？" class="headerlink" title="这对于Python应用的性能表现意味着什么呢？"></a>这对于Python应用的性能表现意味着什么呢？</h3><p>如果你的应用是单线程单解释器的，这对你的应用性能毫无影响。移除GIL也不会对你的应用性能有任何影响。<br>如果你想在同一个解释器中使用线程进行并发操作，并且你的线程是IO密集型的，那你就会看到GIL的资源争夺。</p>
+<p>David Beazley的博客中对多线程程序中 GIL 的作用进行了可视化:<a href="http://dabeaz.blogspot.com/2010/01/python-gil-visualized.html" target="_blank" rel="noopener">http://dabeaz.blogspot.com/2010/01/python-gil-visualized.html</a></p>
+<p>下图表示了Python多线程程序中GIL的分配情况。</p>
+<p><img src="https://github.com/aldslvda/blog-images/blob/master/Thread-Excution-Model.jpg?raw=true" alt="1"></p>
+<p>如果一个Python程序里有多个线程，一个程序运行的时候会拿着GIL，当遇到I/O的时候会放开GIL，但是CPU-bound的线程通常不会进行I/O。Python切换线程的一种作法是每100 ticks检查一下，可以通过sys.setcheckinterval()修改这个数值。<br>综上所述，因为Python线程不能有效利用多核，但是增加了CPU context switch的消耗，所以对于CPU-bound的程序表现很差。更糟糕的是，在多核情况下可能表现会更差，因为系统支持多线程运行但是GIL保证只有一个线程运行，这时候多线程会反复的检查GIL是否被释放，但是拿不到GIL(因为有太多线程竞争)，有可能导致系统发生Trashing现象。</p>
+<p>如果你使用一个web应用(Django)并且使用WSGI，每个请求会有一个单独的Python解释器，由于Python的全局解释锁启动很慢，所以有的WSGI实现会有一个“守护模式”，就是先把Python进程启动起来放着，等待请求进来使用。</p>
+<h3 id="那其他的Python实现呢？"><a href="#那其他的Python实现呢？" class="headerlink" title="那其他的Python实现呢？"></a>那其他的Python实现呢？</h3><p>PyPy也有GIL但是比CPython快超过三倍。<br>JPython 没有GIL, 因为JPython的线程代表一个Java线程，得益于JVM的内存管理机制，JPython不使用GIL。</p>
+<h3 id="JavaScript是怎么做的呢"><a href="#JavaScript是怎么做的呢" class="headerlink" title="JavaScript是怎么做的呢"></a>JavaScript是怎么做的呢</h3><p>首先所有的Javascript 引擎使用标记-清除的垃圾回收机制。 上面提到过， GIL的需求主要是因为CPython的内存管理算法。<br>JavaScript 没有GIL, 但它同时也是单线程的所以它并不需要GIL。JavaScript使用事件循环和Promise/Callback实现异步的编程而不是使用并发。Python也有类似实现asyncio</p>
+<h3 id="“因为Python是解释型语言”"><a href="#“因为Python是解释型语言”" class="headerlink" title="“因为Python是解释型语言”"></a>“因为Python是解释型语言”</h3><p>我经常听说这个言论，我觉得这是一个对于CPython执行方式的粗暴简化。<br>如果你在终端执行一个命令(比如python myscript.py)，CPython会开始顺序执行一大串任务: 读取，词法分析，解析，编译，解释，执行代码。</p>
+<p>一个重点是.pyc文件的创建。在编译阶段，字节码串被写到<strong>pycache</strong>/下(3.x)或者和py文件相同的文件夹(2.x)。这个操作不仅对你自己的代码有效，也包括所有你导入的模块。</p>
+<p>所以大多数情况下，Python在本地解释和执行字节码，与之相比 Java 和 C#.NET:<br>Java 编译成一个“中间语言”，然后JVM读字节码实时将其转化为机器码，.NET的CIL也一样，.NET CLR(Common-Language-Runtime, 通用语言运行时)，使用的是实时编译到机器码(JIT)。</p>
+<p>所以，如果它们都用到了虚拟机和部分字节码，为什么Python在跑分上比Java/C#慢这么多呢?<br>Java/C# 是即时编译(JIT)的。<br>JIT要求一个中间语言，以便让代码转换成区块。AOT编译是为了可以在交互前保证CPU能理解每一行代码。<br>JIT本身不会让执行速度更快，以为它仍然是在执行相同的字节码， 然而JIT可以让实时优化成为可能，一个好的JIT编译器应用的那一部分被执行很多次，这些部分被称为“热点”。<br>这样编译器会将这些部分替换成更加高效的版本。这意味着如果你的程序重复做相同的事情，使用JIT就能显著提高速度。同时Java/C#是强类型的语言所以优化器可以对语言作出更多预设。</p>
+<p>PyPy 使用JIT，前面提到，它比CPython快得多。</p>
+<h3 id="所以为什么CPython不用JIT呢"><a href="#所以为什么CPython不用JIT呢" class="headerlink" title="所以为什么CPython不用JIT呢"></a>所以为什么CPython不用JIT呢</h3><p>JIT有很多缺点，其中一个就是启动慢。CPython 启动已经相对很慢了, PyPy比CPython启动慢CPython2-3倍。JVM启动是出了名的慢。.NET CLR使用随操作系统启动来解决这个问题, 但CLR的开发者同时也是其依赖的系统的开发者(win)。<br>如果你的Python是单进程，运行时间很长，并且有很多重复操作可以被优化，那么使用JIT就很有意义。<br>但是CPython是通用实现，当使用Python开发命令行工具，每次都等待JIT启动是非常糟糕的体验。<br>CPython需要服务于尽可能广泛的场景，有可能使用JIT反而会大幅度拖累系统性能。<br>如果你需要使用JIT并且有一个适合的工作场景，那可以使用PyPy。</p>
+<h3 id="“因为Python是动态类型语言”"><a href="#“因为Python是动态类型语言”" class="headerlink" title="“因为Python是动态类型语言”"></a>“因为Python是动态类型语言”</h3><p>在静态类型语言中，声明变量之前需要声明变量类型，包括 C, C++, Java, C#, Go。动态类型语言中仍然有类型的概念，但是变量的类型可变。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1</span></span><br><span class="line">a = <span class="string">"foo"</span></span><br></pre></td></tr></table></figure>
+<p>这个小例子中, Python 使用相同的变量名创建了类型不同的第二个变量，释放掉了第一个变量的内存空间。<br>静态类型语言并不是为了麻烦你而设计的，而是根据CPU行为设计的。如果所有的行为最终会变成二进制操作，你必须将对象转换成更加底层的数据结构。</p>
+<p>Python为你代劳了转换到底层数据结构这一步，所以你不用关心。当然不用声明变量并不是Python慢的原因。<br>Python语言的设计极为灵活，几乎所有东西都能变成动态的，比如猴子补丁。这种设计让Python的优化变得难以想象的困难。</p>
+<blockquote>
+<p>猴子补丁:</p>
+<ol>
+<li>在运行时替换方法、属性等</li>
+<li>在不修改第三方代码的情况下增加原来不支持的功能</li>
+<li>在运行时为内存中的对象增加patch而不是在磁盘的源代码中增加</li>
+</ol>
+</blockquote>
+<p>python中一个很简单的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> simplejson <span class="keyword">as</span> json</span><br></pre></td></tr></table></figure>
+<h3 id="所以是Python的动态性让它如此慢吗？"><a href="#所以是Python的动态性让它如此慢吗？" class="headerlink" title="所以是Python的动态性让它如此慢吗？"></a>所以是Python的动态性让它如此慢吗？</h3><p>比较和转换类型非常耗费资源, 每次对变量读写、引用都需要检查类型。如此动态化的语言是很难优化的，很多Python的不同实现能更快是因为为了性能在灵活性方面做了妥协。</p>
+<p>比如CPython, 将C语言的静态类型和Python结合，这些静态类型能提供84倍的性能优化。</p>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>Python这么慢主要是因为动态的生态和它的多功能性。它能用来解决所有类型的问题，所以在不同领域我们可以选择更加快速的Python版本。<br>有很多方法可以用来优化你的Python程序，比如活用async, 了解分析工具, 考虑使用多个解释器等等。比如一些启动时间不重要的应用，或者能够能JIT获益的程序我们可以使用PyPy。如果你的代码有些部分非常要求性能，又使用了很多C语言的静态类型，那么选择Cython。</p>
+
+      
+    </div>
+
+    
+      
+
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/GIL/" rel="tag"># GIL</a>
+          
+            <a href="/tags/动态类型语言/" rel="tag"># 动态类型语言</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/26/fluent-python-15/" rel="next" title="fluent python 第十五章 上下文管理器和 else 块">
+                <i class="fa fa-chevron-left"></i> fluent python 第十五章 上下文管理器和 else 块
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/03/docker-compose-ups-ans-downs/" rel="prev" title="运行多容器的应用--使用docker-compose">
+                运行多容器的应用--使用docker-compose <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image" src="https://avatars0.githubusercontent.com/u/4235999?s=460&v=4" alt="aldslvda">
+  
+  <p class="site-author-name" itemprop="name">aldslvda</p>
+  <div class="site-description motion-element" itemprop="description">聚沙成塔</div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">66</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+  <div class="links-of-author motion-element">
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://github.com/aldslvda" title="GitHub &rarr; https://github.com/aldslvda" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="mailto:aldslvda@live.com" title="E-Mail &rarr; mailto:aldslvda@live.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="http://weibo.com/aldslvda" title="weibo &rarr; http://weibo.com/aldslvda" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+    
+  </div>
+
+
+
+
+
+
+
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么Python-如此之慢"><span class="nav-text">为什么Python 如此之慢</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GIL"><span class="nav-text">GIL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#这对于Python应用的性能表现意味着什么呢？"><span class="nav-text">这对于Python应用的性能表现意味着什么呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#那其他的Python实现呢？"><span class="nav-text">那其他的Python实现呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JavaScript是怎么做的呢"><span class="nav-text">JavaScript是怎么做的呢</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#“因为Python是解释型语言”"><span class="nav-text">“因为Python是解释型语言”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#所以为什么CPython不用JIT呢"><span class="nav-text">所以为什么CPython不用JIT呢</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#“因为Python是动态类型语言”"><span class="nav-text">“因为Python是动态类型语言”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#所以是Python的动态性让它如此慢吗？"><span class="nav-text">所以是Python的动态性让它如此慢吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结论"><span class="nav-text">结论</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aldslvda</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+  
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://aldslvda.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://aldslvda.github.io/2019/05/30/why-python-so-slow/";
+    this.page.identifier = "2019/05/30/why-python-so-slow/";
+    this.page.title = '为什么Python 如此之慢';
+    };
+  function loadComments() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://aldslvda.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', '' + +new Date());
+    (d.head || d.body).appendChild(s);
+  }
+  
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// GET RESPONSIVE HEIGHT PASSED FROM IFRAME
+
+window.addEventListener("message", function(e) {
+  var data = e.data;
+  if ((typeof data === 'string') && (data.indexOf('ciu_embed') > -1)) {
+    var featureID = data.split(':')[1];
+    var height = data.split(':')[2];
+    $(`iframe[data-feature=${featureID}]`).height(parseInt(height) + 30);
+  }
+}, false);
+</script>
+
+
+
+
+
+
+
+
+  
+
+</body>
+</html>

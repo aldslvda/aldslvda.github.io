@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.2.0',
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    }
+  };
+</script>
+
+  <meta name="description" content="Fluent PythonChapter 10. Sequence Hacking, Hashing, and Slicing第十章: 序列的修改、散列和切片 这章以上章的Vector2d为基础，定义多维向量，这个类的行为和Python标准的扁平序列一样。将实现下面的功能：  基本的序列协议—— __len__ 和 __getitem__ 正确表述拥有很多元素的实例 适当的切片支持，用于生成新的">
+<meta name="keywords" content="Python,duck typing,fluent python,对象,pythonic,slicing,reduce">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fluent Python 第十章小结">
+<meta property="og:url" content="http://aldslvda.github.io/2018/05/07/fluent-python-10/index.html">
+<meta property="og:site_name" content="NickAlds&#39;s Blog">
+<meta property="og:description" content="Fluent PythonChapter 10. Sequence Hacking, Hashing, and Slicing第十章: 序列的修改、散列和切片 这章以上章的Vector2d为基础，定义多维向量，这个类的行为和Python标准的扁平序列一样。将实现下面的功能：  基本的序列协议—— __len__ 和 __getitem__ 正确表述拥有很多元素的实例 适当的切片支持，用于生成新的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/aldslvda/blog-images/blob/master/fluent_python_logo.png?raw=true">
+<meta property="og:updated_time" content="2020-04-04T20:14:56.956Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Fluent Python 第十章小结">
+<meta name="twitter:description" content="Fluent PythonChapter 10. Sequence Hacking, Hashing, and Slicing第十章: 序列的修改、散列和切片 这章以上章的Vector2d为基础，定义多维向量，这个类的行为和Python标准的扁平序列一样。将实现下面的功能：  基本的序列协议—— __len__ 和 __getitem__ 正确表述拥有很多元素的实例 适当的切片支持，用于生成新的">
+<meta name="twitter:image" content="https://github.com/aldslvda/blog-images/blob/master/fluent_python_logo.png?raw=true">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://aldslvda.github.io/2018/05/07/fluent-python-10/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>Fluent Python 第十章小结 | NickAlds's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">NickAlds's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Never Settle</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://aldslvda.github.io/2018/05/07/fluent-python-10/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aldslvda">
+      <meta itemprop="description" content="聚沙成塔">
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/4235999?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="NickAlds's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Fluent Python 第十章小结
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-05-07 18:38:00" itemprop="dateCreated datePublished" datetime="2018-05-07T18:38:00+08:00">2018-05-07</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-04-05 04:14:56" itemprop="dateModified" datetime="2020-04-05T04:14:56+08:00">2020-04-05</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书笔记/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/2018/05/07/fluent-python-10/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/05/07/fluent-python-10/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <img src="https://github.com/aldslvda/blog-images/blob/master/fluent_python_logo.png?raw=true" itemprop="contentUrl">
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        <h2 id="Fluent-Python"><a href="#Fluent-Python" class="headerlink" title="Fluent Python"></a>Fluent Python</h2><h3 id="Chapter-10-Sequence-Hacking-Hashing-and-Slicing"><a href="#Chapter-10-Sequence-Hacking-Hashing-and-Slicing" class="headerlink" title="Chapter 10. Sequence Hacking, Hashing, and Slicing"></a>Chapter 10. Sequence Hacking, Hashing, and Slicing</h3><h3 id="第十章-序列的修改、散列和切片"><a href="#第十章-序列的修改、散列和切片" class="headerlink" title="第十章: 序列的修改、散列和切片"></a>第十章: 序列的修改、散列和切片</h3><p> 这章以上章的Vector2d为基础，定义多维向量，这个类的行为和Python标准的扁平序列一样。将实现下面的功能：</p>
+<ul>
+<li>基本的序列协议—— __len__ 和 __getitem__</li>
+<li>正确表述拥有很多元素的实例</li>
+<li>适当的切片支持，用于生成新的 Vector 实例</li>
+<li>综合各个元素的值计算散列值</li>
+<li>自定义的格式语言扩展</li>
+<li>此外，我们还将通过 <strong>getattr</strong> 方法实现属性的动态存取，以此取代 Vector2d 使用的只读特性——不过，序列类型通常不会这么做。</li>
+</ul>
+<h4 id="Vector类：用户自定义的序列类型"><a href="#Vector类：用户自定义的序列类型" class="headerlink" title="Vector类：用户自定义的序列类型"></a>Vector类：用户自定义的序列类型</h4><p>序列类型的构造方法最好接受可迭代的对象为参数, 首先我们为vector加上这个构造方法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> array <span class="keyword">import</span> array</span><br><span class="line"><span class="keyword">import</span> reprlib</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Vector</span>:</span></span><br><span class="line">    typecode = <span class="string">'d'</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, components)</span>:</span></span><br><span class="line">        <span class="comment"># 将vector的分量存储在_components中</span></span><br><span class="line">        <span class="comment"># self._components是迭代器</span></span><br><span class="line">        self._components = array(self.typecode, components)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> iter(self._components)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 使用 reprlib.repr() 函数获取 self._components 的有限长度表示形式</span></span><br><span class="line">        components = reprlib.repr(self._components)</span><br><span class="line">        components = components[components.find(<span class="string">'['</span>):<span class="number">-1</span>]</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'Vector(&#123;&#125;)'</span>.format(components)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> str(tuple(self))</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__bytes__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> (bytes([ord(self.typecode)])+bytes(self._components))</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__eq__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> tuple(self) == tuple(other)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__abs__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> math.sqrt(sum(x * x <span class="keyword">for</span> x <span class="keyword">in</span> self))</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__bool__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> bool(abs(self))</span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">frombytes</span><span class="params">(cls, octets)</span>:</span></span><br><span class="line">        typecode = chr(octets[<span class="number">0</span>])</span><br><span class="line">        memv = memoryview(octets[<span class="number">1</span>:]).cast(typecode)</span><br><span class="line">        <span class="keyword">return</span> cls(memv)</span><br></pre></td></tr></table></figure>
+<p><em>注： reprlib.repr 的方式需要做些说明。这个函数用于生成大型结构或递归结构的安全表示形式，它会限制输出字符串的长度，用 ‘…’ 表示截断的部分。</em>    </p>
+<p><em>调用 repr() 函数的目的是调试，因此绝对不能抛出异常。如果 \</em>_repr__ 方法的实现有问题，那么必须处理，尽量输出有用的内容，让用户能够识别目标对象。_ </p>
+<h4 id="协议和鸭子类型"><a href="#协议和鸭子类型" class="headerlink" title="协议和鸭子类型"></a>协议和鸭子类型</h4><p>在 Python 中创建功能完善的序列类型无需使用继承，只需实现符合序列协议的方法。不过，这里说的协议是什么呢？<br>在面向对象编程中，协议是非正式的接口，只在文档中定义，在代码中不定义。例如，Python 的序列协议只需要 __len__ 和 __getitem__ 两个方法。任何类（如 Spam），只要使用标准的签名和语义实现了这两个方法，就能用在任何期待序列的地方。Spam 是不是哪个类的子类无关紧要，只要提供了所需的方法即可。</p>
+<p><em>注： 鸭子类型：“当看到一只鸟走起来像鸭子、游泳起来像鸭子、叫起来也像鸭子，那么这只鸟就可以被称为鸭子。”</em></p>
+<p>协议是非正式的，没有强制力，因此如果你知道类的具体使用场景，通常只需要实现一个协议的部分。例如，为了支持迭代，只需实现 __getitem__ 方法，没必要提供 __len__方法。</p>
+<h4 id="Vector-可切片的序列"><a href="#Vector-可切片的序列" class="headerlink" title="Vector:可切片的序列"></a>Vector:可切片的序列</h4><p>添加__len__ 和 __getitem__方法后就可以实现基本的切片了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Vector</span>:</span></span><br><span class="line">    <span class="comment"># 省略了很多行</span></span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self._components)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, index)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._components[index]</span><br></pre></td></tr></table></figure>
+<p>但是这样实现的切片会存在一个问题， 就是切片得到的结果是数组而不是新的Vector类</p>
+<h5 id="切片原理"><a href="#切片原理" class="headerlink" title="切片原理"></a>切片原理</h5><p>首先通过一个例子查看切片的原理:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">MySeq</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, index)</span>:</span></span><br><span class="line"><span class="meta">... </span>        <span class="keyword">return</span> index</span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = MySeq()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s[<span class="number">1</span>]</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s[<span class="number">1</span>:<span class="number">4</span>]</span><br><span class="line">slice(<span class="number">1</span>, <span class="number">4</span>, <span class="keyword">None</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s[<span class="number">1</span>:<span class="number">4</span>:<span class="number">2</span>]</span><br><span class="line">slice(<span class="number">1</span>, <span class="number">4</span>, <span class="number">2</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s[<span class="number">1</span>:<span class="number">4</span>:<span class="number">2</span>, <span class="number">9</span>]</span><br><span class="line">(slice(<span class="number">1</span>, <span class="number">4</span>, <span class="number">2</span>), <span class="number">9</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s[<span class="number">1</span>:<span class="number">4</span>:<span class="number">2</span>, <span class="number">7</span>:<span class="number">9</span>]</span><br><span class="line">(slice(<span class="number">1</span>, <span class="number">4</span>, <span class="number">2</span>), slice(<span class="number">7</span>, <span class="number">9</span>, <span class="keyword">None</span>))</span><br></pre></td></tr></table></figure>
+<p>slice(1, 4, 2) 表示的是 从1开始, 到4结束, step是2(左开右闭)</p>
+<p>slice 有一个有趣的方法indices   </p>
+<blockquote>
+<p>S.indices(len) -&gt; (start, stop, stride)<br>给定长度为 len 的序列，计算 S 表示的扩展切片的起始（start）和结尾（stop）索引，以及步幅（stride）。超出边界的索引会被截掉，这与常规切片的处理方式一<br>样。</p>
+</blockquote>
+<p>换句话说，indices 方法开放了内置序列实现的棘手逻辑，用于优雅地处理缺失索引和负数索引，以及长度超过目标序列的切片。这个方法会“整顿”元组，把 start、stop 和stride 都变成非负数，而且都落在指定长度序列的边界内。<br>下面举几个例子。假设有个长度为 5 的序列，例如 ‘ABCDE’：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>slice(<span class="keyword">None</span>, <span class="number">10</span>, <span class="number">2</span>).indices(<span class="number">5</span>)</span><br><span class="line">(<span class="number">0</span>, <span class="number">5</span>, <span class="number">2</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>slice(<span class="number">-3</span>, <span class="keyword">None</span>, <span class="keyword">None</span>).indices(<span class="number">5</span>)</span><br><span class="line">(<span class="number">2</span>, <span class="number">5</span>, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>‘ABCDE’[:10:2] 等同于 ‘ABCDE’[0:5:2]<br>‘ABCDE’[-3:] 等同于 ‘ABCDE’[2:5:1]</p>
+<h5 id="能处理切片的-getitem-方法"><a href="#能处理切片的-getitem-方法" class="headerlink" title="能处理切片的__getitem__方法"></a>能处理切片的__getitem__方法</h5><p>对上文提到的Vector类的__getitem__方法 做出如下改动:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, index)</span>:</span></span><br><span class="line">    cls = type(self)</span><br><span class="line">    <span class="keyword">if</span> isinstance(index, slice):</span><br><span class="line">        <span class="keyword">return</span> cls(self._components[index])</span><br><span class="line">    <span class="keyword">elif</span> isinstance(index, numbers.Integral):   </span><br><span class="line">        <span class="keyword">return</span> self._components[index]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        msg = <span class="string">'&#123;cls.__name__&#125; indices must be integers'</span></span><br><span class="line">        <span class="keyword">raise</span> TypeError(msg.format(cls=cls))</span><br></pre></td></tr></table></figure>
+<p>传入slice对象时，getitem会将_components 数组的切片构建成一个新的 Vector 实例</p>
+<h4 id="Vector-类：-动态存取属性"><a href="#Vector-类：-动态存取属性" class="headerlink" title="Vector 类： 动态存取属性"></a>Vector 类： 动态存取属性</h4><p>我们想额外提供下述句法，用于读取向量的前四个分量：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>v = Vector(range(<span class="number">10</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>v.x</span><br><span class="line"><span class="number">0.0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>v.y, v.z, v.t</span><br><span class="line">(<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>)</span><br></pre></td></tr></table></figure>
+<p>首先我们要了解一下Python中对象的属性查找机制:</p>
+<blockquote>
+<p> 简单来说，对 my_obj.x 表达式，Python 会检查 my_obj 实例有没有名为 x 的属性；如果没有，到类（my_obj.<strong>class</strong>）中查找；如果还没有，顺着继承树继续查找。 如果依旧找不到，调用 my_obj 所属类中定义的 <strong>getattr</strong> 方法，传入 self 和属性名称的字符串形式（如 ‘x’）。</p>
+</blockquote>
+<p>下面我们为Vector类增加 __getattr__方法:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">shortcut_names = <span class="string">'xyzt'</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__getattr__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">    cls = type(self)</span><br><span class="line">    <span class="keyword">if</span> len(name) == <span class="number">1</span>:</span><br><span class="line">        pos = cls.shortcut_names.find(name)</span><br><span class="line">    <span class="keyword">if</span> <span class="number">0</span> &lt;= pos &lt; len(self._components):</span><br><span class="line">        <span class="keyword">return</span> self._components[pos]</span><br><span class="line">    msg = <span class="string">'&#123;.__name__!r&#125; object has no attribute &#123;!r&#125;'</span></span><br><span class="line">    <span class="keyword">raise</span> AttributeError(msg.format(cls, name)</span><br></pre></td></tr></table></figure>
+<p>这样的实现可以初步达到我们需要的效果，但是可能会出现下面的矛盾情形：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>v = Vector(range(<span class="number">5</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>v</span><br><span class="line">Vector([<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>v.x</span><br><span class="line"><span class="number">0.0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>v.x = <span class="number">10</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>v.x</span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>v</span><br><span class="line">Vector([<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>])</span><br></pre></td></tr></table></figure>
+<p>这里对v.x赋值并没有改变Vector第一分量的值，这样赋值只是让Vector类多了一个名为x的属性。</p>
+<p>为了避免这种情况出现我们需要实现一个__setattr__方法：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">    cls = type(self)</span><br><span class="line">    <span class="keyword">if</span> len(name) == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">if</span> name <span class="keyword">in</span> cls.shortcut_names:</span><br><span class="line">            error = <span class="string">'readonly attribute &#123;attr_name!r&#125;'</span></span><br><span class="line">        <span class="keyword">elif</span> name.islower():</span><br><span class="line">            error = <span class="string">"can't set attributes 'a' to 'z' in &#123;cls_name!r&#125;"</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            error = <span class="string">''</span></span><br><span class="line">    <span class="keyword">if</span> error:</span><br><span class="line">        msg = error.format(cls_name=cls.__name__, attr_name=name)</span><br><span class="line">        <span class="keyword">raise</span> AttributeError(msg)</span><br><span class="line">    super().__setattr__(name, value)</span><br></pre></td></tr></table></figure></p>
+<p>对单个字符的属性进行单独处理。</p>
+<p>有一个问题要特别注意：多数时候，如果实现了 <strong>getattr</strong> 方法，那么也要定义 <strong>setattr</strong> 方法，以防对象的行为不一致。<br>如果想允许修改分量，可以使用 <strong>setitem</strong> 方法，支持 v[0] = 1.1 这样的赋值，以及（或者）实现 <strong>setattr</strong> 方法，支持 v.x = 1.1 这样的赋值</p>
+<h4 id="Vector类：-散列和快速等值测试"><a href="#Vector类：-散列和快速等值测试" class="headerlink" title="Vector类： 散列和快速等值测试"></a>Vector类： 散列和快速等值测试</h4><p>实现__hash__方法，加上现有的__eq__方法<br>我们使用^（异或）运算符依次计算各个分量的散列值，像这样：v[0] ^ v[1] ^ v[2]…。需要用到归约函数reduce<br><img src="https://raw.githubusercontent.com/aldslvda/blog-images/master/fluent-python-10-1.jpg" alt="Figure-10-1"></p>
+<p>下面提供了三种计算累计异或的方式：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>n = <span class="number">0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">6</span>):</span><br><span class="line"><span class="meta">... </span>    n ^= i</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>n</span><br><span class="line"><span class="number">1</span> &gt;&gt;&gt; <span class="keyword">import</span> functools</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>functools.reduce(<span class="keyword">lambda</span> a, b: a^b, range(<span class="number">6</span>))</span><br><span class="line"><span class="number">1</span> &gt;&gt;&gt; <span class="keyword">import</span> operator</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>functools.reduce(operator.xor, range(<span class="number">6</span>))</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure></p>
+<p>显然第三种比较简洁， 本书的第五章讲过， 尽量避免lambda表达式的使用。</p>
+<p>增加的__hash__方法如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__hash__</span><span class="params">(self)</span>:</span></span><br><span class="line">    hashes = (hash(x) <span class="keyword">for</span> x <span class="keyword">in</span> self._components)</span><br><span class="line">    <span class="keyword">return</span> functools.reduce(operator.xor, hashes, <span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>这是一种映射归约运算<br><img src="https://raw.githubusercontent.com/aldslvda/blog-images/master/fluent-python-10-2.jpg" alt="Figure-10-2"></p>
+<blockquote>
+<p>映射归约：把函数应用到各个元素上，生成一个新序列（映射，map），然后计算聚合值（归约，reduce）</p>
+</blockquote>
+<p>为了提高比较的效率修改__eq__方法(两种实现方式逻辑一样)：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__eq__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> len(self) != len(other):</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line">    <span class="keyword">for</span> a, b <span class="keyword">in</span> zip(self, other):</span><br><span class="line">        <span class="keyword">if</span> a != b:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__eq__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> len(self) == len(other) <span class="keyword">and</span> all(a == b <span class="keyword">for</span> a, b <span class="keyword">in</span> zip(self, other))</span><br></pre></td></tr></table></figure></p>
+<h4 id="格式化"><a href="#格式化" class="headerlink" title="格式化"></a>格式化</h4><p>Vector 类的 __format__ 方法与 Vector2d 类的相似，但是不使用极坐标，而使用球面坐标（也叫超球面坐标），因为 Vector 类支持 n 个维度，而超过四维后，球体变成了“超球体”(n维球体)。 因此，我们会把自定义的格式后缀由 ‘p’ 变成 ‘h’<br>下面是格式化的实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">angle</span><span class="params">(self, n)</span>:</span></span><br><span class="line">    r = math.sqrt(sum(x * x <span class="keyword">for</span> x <span class="keyword">in</span> self[n:]))</span><br><span class="line">    a = math.atan2(r, self[n<span class="number">-1</span>])</span><br><span class="line">    <span class="keyword">if</span> (n == len(self) - <span class="number">1</span>) <span class="keyword">and</span> (self[<span class="number">-1</span>] &lt; <span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> math.pi * <span class="number">2</span> - a</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> a</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">angles</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> (self.angle(n) <span class="keyword">for</span> n <span class="keyword">in</span> range(<span class="number">1</span>, len(self)))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__format__</span><span class="params">(self, fmt_spec=<span class="string">''</span>)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> fmt_spec.endswith(<span class="string">'h'</span>): <span class="comment"># 超球面坐标</span></span><br><span class="line">        fmt_spec = fmt_spec[:<span class="number">-1</span>]</span><br><span class="line">        coords = itertools.chain([abs(self)],</span><br><span class="line">        self.angles())</span><br><span class="line">        outer_fmt = <span class="string">'&lt;&#123;&#125;&gt;'</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        coords = self</span><br><span class="line">        outer_fmt = <span class="string">'(&#123;&#125;)'</span></span><br><span class="line">        components = (format(c, fmt_spec) <span class="keyword">for</span> c <span class="keyword">in</span> coords)</span><br><span class="line">    <span class="keyword">return</span> outer_fmt.format(<span class="string">', '</span>.join(components))</span><br></pre></td></tr></table></figure>
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>我们经常分析 Python 标准对象的行为，然后进行模仿，让 Vector 的行为符合 Python 风格。</p>
+
+      
+    </div>
+
+    
+      
+
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/duck-typing/" rel="tag"># duck typing</a>
+          
+            <a href="/tags/fluent-python/" rel="tag"># fluent python</a>
+          
+            <a href="/tags/对象/" rel="tag"># 对象</a>
+          
+            <a href="/tags/pythonic/" rel="tag"># pythonic</a>
+          
+            <a href="/tags/slicing/" rel="tag"># slicing</a>
+          
+            <a href="/tags/reduce/" rel="tag"># reduce</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/26/fluent-python-9/" rel="next" title="Fluent Python 第九章小结">
+                <i class="fa fa-chevron-left"></i> Fluent Python 第九章小结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/28/fluent-python-11/" rel="prev" title="Fluent Python 第十一章 从协议到抽象基类">
+                Fluent Python 第十一章 从协议到抽象基类 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image" src="https://avatars0.githubusercontent.com/u/4235999?s=460&v=4" alt="aldslvda">
+  
+  <p class="site-author-name" itemprop="name">aldslvda</p>
+  <div class="site-description motion-element" itemprop="description">聚沙成塔</div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">66</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+  <div class="links-of-author motion-element">
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://github.com/aldslvda" title="GitHub &rarr; https://github.com/aldslvda" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="mailto:aldslvda@live.com" title="E-Mail &rarr; mailto:aldslvda@live.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="http://weibo.com/aldslvda" title="weibo &rarr; http://weibo.com/aldslvda" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+    
+  </div>
+
+
+
+
+
+
+
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Fluent-Python"><span class="nav-text">Fluent Python</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Chapter-10-Sequence-Hacking-Hashing-and-Slicing"><span class="nav-text">Chapter 10. Sequence Hacking, Hashing, and Slicing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第十章-序列的修改、散列和切片"><span class="nav-text">第十章: 序列的修改、散列和切片</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Vector类：用户自定义的序列类型"><span class="nav-text">Vector类：用户自定义的序列类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#协议和鸭子类型"><span class="nav-text">协议和鸭子类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Vector-可切片的序列"><span class="nav-text">Vector:可切片的序列</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#切片原理"><span class="nav-text">切片原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#能处理切片的-getitem-方法"><span class="nav-text">能处理切片的__getitem__方法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Vector-类：-动态存取属性"><span class="nav-text">Vector 类： 动态存取属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Vector类：-散列和快速等值测试"><span class="nav-text">Vector类： 散列和快速等值测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#格式化"><span class="nav-text">格式化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小结"><span class="nav-text">小结</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aldslvda</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+  
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://aldslvda.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://aldslvda.github.io/2018/05/07/fluent-python-10/";
+    this.page.identifier = "2018/05/07/fluent-python-10/";
+    this.page.title = 'Fluent Python 第十章小结';
+    };
+  function loadComments() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://aldslvda.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', '' + +new Date());
+    (d.head || d.body).appendChild(s);
+  }
+  
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// GET RESPONSIVE HEIGHT PASSED FROM IFRAME
+
+window.addEventListener("message", function(e) {
+  var data = e.data;
+  if ((typeof data === 'string') && (data.indexOf('ciu_embed') > -1)) {
+    var featureID = data.split(':')[1];
+    var height = data.split(':')[2];
+    $(`iframe[data-feature=${featureID}]`).height(parseInt(height) + 30);
+  }
+}, false);
+</script>
+
+
+
+
+
+
+
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.2.0',
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    }
+  };
+</script>
+
+  <meta name="description" content="Fluent Python 第六章读书报告-第一部分">
+<meta name="keywords" content="Python,fluent python,design pattern,The Strategy pattern">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fluent Python第六章:使用一等函数实现设计模式(1) —— 策略模式">
+<meta property="og:url" content="http://aldslvda.github.io/2017/12/17/fluent-python-6-1/index.html">
+<meta property="og:site_name" content="NickAlds&#39;s Blog">
+<meta property="og:description" content="Fluent Python 第六章读书报告-第一部分">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/aldslvda/blog-images/blob/master/fluent_python_logo.png?raw=true">
+<meta property="og:updated_time" content="2020-04-04T20:14:56.956Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Fluent Python第六章:使用一等函数实现设计模式(1) —— 策略模式">
+<meta name="twitter:description" content="Fluent Python 第六章读书报告-第一部分">
+<meta name="twitter:image" content="https://github.com/aldslvda/blog-images/blob/master/fluent_python_logo.png?raw=true">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://aldslvda.github.io/2017/12/17/fluent-python-6-1/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>Fluent Python第六章:使用一等函数实现设计模式(1) —— 策略模式 | NickAlds's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">NickAlds's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Never Settle</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://aldslvda.github.io/2017/12/17/fluent-python-6-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aldslvda">
+      <meta itemprop="description" content="聚沙成塔">
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/4235999?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="NickAlds's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Fluent Python第六章:使用一等函数实现设计模式(1) —— 策略模式
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2017-12-17 21:27:33" itemprop="dateCreated datePublished" datetime="2017-12-17T21:27:33+08:00">2017-12-17</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-04-05 04:14:56" itemprop="dateModified" datetime="2020-04-05T04:14:56+08:00">2020-04-05</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书笔记/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/2017/12/17/fluent-python-6-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/17/fluent-python-6-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <img src="https://github.com/aldslvda/blog-images/blob/master/fluent_python_logo.png?raw=true" itemprop="contentUrl">
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        <blockquote>
+<p>Fluent Python 第六章读书报告-第一部分</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="Chapter-6-Design-Patterns-with-First-Class-Functions"><a href="#Chapter-6-Design-Patterns-with-First-Class-Functions" class="headerlink" title="Chapter 6. Design Patterns with First-Class Functions"></a>Chapter 6. Design Patterns with First-Class Functions</h1><h1 id="第六章-使用一等函数实现设计模式-1-——-策略模式"><a href="#第六章-使用一等函数实现设计模式-1-——-策略模式" class="headerlink" title="第六章. 使用一等函数实现设计模式(1) —— 策略模式"></a>第六章. 使用一等函数实现设计模式(1) —— 策略模式</h1><p>这一章中会讲到设计模式的定义和适用场景，以及利用Python的一等函数特性对设计模式的实现。</p>
+<p>这篇博文中先讨论策略模式。</p>
+<h2 id="策略模式"><a href="#策略模式" class="headerlink" title="策略模式"></a>策略模式</h2><p>合理利用作为一等函数的对象可以简化某些设计模式。</p>
+<h3 id="经典的策略模式"><a href="#经典的策略模式" class="headerlink" title="经典的策略模式"></a>经典的策略模式</h3><p>《设计模式：可复用面向对象软件的基础》一书是这样概述“策略”模式的：</p>
+<blockquote>
+<p>定义一系列算法，把它们一一封装起来，并且使它们可以相互替换。本模式使得算法可以独立于使用它的客户而变化。</p>
+</blockquote>
+<p><img src="https://github.com/aldslvda/blog-images/blob/master/fluent-python-6.1.png?raw=true" alt="1"></p>
+<p>策略模式的一个经典的场景是商店的折扣策略，上图是这个场景的UML类图。具体场景如下:</p>
+<blockquote>
+<p>假如一个网店制定了下述折扣规则:   </p>
+<ol>
+<li>有 1000 或以上积分的顾客，每个订单享 5% 折扣。   </li>
+<li>同一订单中，单个商品的数量达到 20 个或以上，享 10% 折扣。  </li>
+<li>订单中的不同商品达到 10 个或以上，享 7% 折扣。<br>简单起见，我们假定一个订单一次只能享用一个折扣。  </li>
+</ol>
+</blockquote>
+<p>上面的UML图中:</p>
+<ul>
+<li>上下文: 把一些计算委托给实现不同算法的可互换组件，提供服务。在这个电商示例中，上下文是 Order，它会根据不同的算法计算促销折扣。   </li>
+<li>策略:实现不同算法的组件共同的接口。在这个示例中，名为 Promotion 的抽象类扮演这个角色。    </li>
+<li>具体策略: “策略”的子类，fidelityPromo、BulkPromo 和LargeOrderPromo 是这里实现的三个具体策略。</li>
+</ul>
+<p>上面的UML类图中，每个具体策略都是一个类，而且都只定义了一个方法，即 discount。此<br>外，策略实例没有状态（没有实例属性）。下面是使用Python对这个策略的重构，包括把具体策略用函数实现(而不是类)，取消了Promotion抽象类。<br><a href="https://github.com/aldslvda/readings/blob/master/Fluent-Python/6.%20Design%20Patterns%20with%20First-Class%20Functions/order6.1.py" target="_blank" rel="noopener">示例6.1</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> abc <span class="keyword">import</span> ABC, abstractmethod</span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> namedtuple</span><br><span class="line">Customer = namedtuple(<span class="string">'Customer'</span>, <span class="string">'name fidelity'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LineItem</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, product, quantity, price)</span>:</span></span><br><span class="line">        self.product = product</span><br><span class="line">        self.quantity = quantity</span><br><span class="line">        self.price = price</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">total</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.price * self.quantity</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Order</span>:</span> <span class="comment"># 上下文</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, customer, cart, promotion=None)</span>:</span></span><br><span class="line">        self.customer = customer</span><br><span class="line">        self.cart = list(cart)</span><br><span class="line">        self.promotion = promotion</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">total</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> hasattr(self, <span class="string">'__total'</span>):</span><br><span class="line">            self.__total = sum(item.total() <span class="keyword">for</span> item <span class="keyword">in</span> self.cart)</span><br><span class="line">        <span class="keyword">return</span> self.__total</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">due</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.promotion <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            discount = <span class="number">0</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            discount = self.promotion.discount(self)</span><br><span class="line">        <span class="keyword">return</span> self.total() - discount</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></span><br><span class="line">        fmt = <span class="string">'&lt;Order total: &#123;:.2f&#125; due: &#123;:.2f&#125;&gt;'</span></span><br><span class="line">        <span class="keyword">return</span> fmt.format(self.total(), self.due())</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Promotion</span><span class="params">(ABC)</span> :</span> <span class="comment"># 策略：抽象基类</span></span><br><span class="line"><span class="meta">    @abstractmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">discount</span><span class="params">(self, order)</span>:</span></span><br><span class="line">    <span class="string">"""返回折扣金额（正值）"""</span></span><br><span class="line">    </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FidelityPromo</span><span class="params">(Promotion)</span>:</span> <span class="comment"># 第一个具体策略</span></span><br><span class="line">    <span class="string">"""为积分为1000或以上的顾客提供5%折扣"""</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">discount</span><span class="params">(self, order)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> order.total() * <span class="number">.05</span> <span class="keyword">if</span> order.customer.fidelity &gt;= <span class="number">1000</span> <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BulkItemPromo</span><span class="params">(Promotion)</span>:</span> <span class="comment"># 第二个具体策略</span></span><br><span class="line">    <span class="string">"""单个商品为20个或以上时提供10%折扣"""</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">discount</span><span class="params">(self, order)</span>:</span></span><br><span class="line">        discount = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> order.cart:</span><br><span class="line">            <span class="keyword">if</span> item.quantity &gt;= <span class="number">20</span>:</span><br><span class="line">                discount += item.total() * <span class="number">.1</span></span><br><span class="line">        <span class="keyword">return</span> discount</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LargeOrderPromo</span><span class="params">(Promotion)</span>:</span> <span class="comment"># 第三个具体策略</span></span><br><span class="line">    <span class="string">"""订单中的不同商品达到10个或以上时提供7%折扣"""</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">discount</span><span class="params">(self, order)</span>:</span></span><br><span class="line">        distinct_items = &#123;item.product <span class="keyword">for</span> item <span class="keyword">in</span> order.cart&#125;</span><br><span class="line">        <span class="keyword">if</span> len(distinct_items) &gt;= <span class="number">10</span>:</span><br><span class="line">            <span class="keyword">return</span> order.total() * <span class="number">.07</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>在这个示例中 Promotion是抽象基类(ABC)，这么做是为了使用@abstractmethod装饰器，从而明确表明所用的模式。</p>
+<p>下面是使用不同出小折扣的Order类示例:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>joe = Customer(<span class="string">'John Doe'</span>, <span class="number">0</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>ann = Customer(<span class="string">'Ann Smith'</span>, <span class="number">1100</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>cart = [LineItem(<span class="string">'banana'</span>, <span class="number">4</span>, <span class="number">.5</span>),</span><br><span class="line"><span class="meta">... </span>LineItem(<span class="string">'apple'</span>, <span class="number">10</span>, <span class="number">1.5</span>),</span><br><span class="line"><span class="meta">... </span>LineItem(<span class="string">'watermellon'</span>, <span class="number">5</span>, <span class="number">5.0</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Order(joe, cart, FidelityPromo())</span><br><span class="line">&lt;Order total: <span class="number">42.00</span> due: <span class="number">42.00</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Order(ann, cart, FidelityPromo())</span><br><span class="line">&lt;Order total: <span class="number">42.00</span> due: <span class="number">39.90</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>banana_cart = [LineItem(<span class="string">'banana'</span>, <span class="number">30</span>, <span class="number">.5</span>),</span><br><span class="line"><span class="meta">... </span>LineItem(<span class="string">'apple'</span>, <span class="number">10</span>, <span class="number">1.5</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Order(joe, banana_cart, BulkItemPromo())</span><br><span class="line">&lt;Order total: <span class="number">30.00</span> due: <span class="number">28.50</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>long_order = [LineItem(str(item_code), <span class="number">1</span>, <span class="number">1.0</span>)</span><br><span class="line"><span class="meta">... </span><span class="keyword">for</span> item_code <span class="keyword">in</span> range(<span class="number">10</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Order(joe, long_order, LargeOrderPromo())</span><br><span class="line">&lt;Order total: <span class="number">10.00</span> due: <span class="number">9.30</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Order(joe, cart, LargeOrderPromo())</span><br><span class="line">&lt;Order total: <span class="number">42.00</span> due: <span class="number">42.00</span>&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="使用函数实现策略模式"><a href="#使用函数实现策略模式" class="headerlink" title="使用函数实现策略模式"></a>使用函数实现策略模式</h3><p>上面的经典实现中，每个策略是一个类，而且都只定义了一个方法discount, 此外它们都没有实例属性，因此可以用普通函数替换。下面是使用函数的一种实现。<br><a href="https://github.com/aldslvda/readings/blob/master/Fluent-Python/6.%20Design%20Patterns%20with%20First-Class%20Functions/order6.3.py" target="_blank" rel="noopener">示例6.3</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> namedtuple</span><br><span class="line"></span><br><span class="line">Customer = namedtuple(<span class="string">'Customer'</span>, <span class="string">'name fidelity'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LineItem</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, product, quantity, price)</span>:</span></span><br><span class="line">        self.product = product</span><br><span class="line">        self.quantity = quantity</span><br><span class="line">        self.price = price</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">total</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.price * self.quantity</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Order</span>:</span> <span class="comment"># 上下文</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, customer, cart, promotion=None)</span>:</span></span><br><span class="line">        self.customer = customer</span><br><span class="line">        self.cart = list(cart)</span><br><span class="line">        self.promotion = promotion</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">total</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> hasattr(self, <span class="string">'__total'</span>):</span><br><span class="line">            self.__total = sum(item.total() <span class="keyword">for</span> item <span class="keyword">in</span> self.cart)</span><br><span class="line">            <span class="keyword">return</span> self.__total</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">due</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.promotion <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            discount = <span class="number">0</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            discount = self.promotion(self)</span><br><span class="line">        <span class="keyword">return</span> self.total() - discount</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></span><br><span class="line">        fmt = <span class="string">'&lt;Order total: &#123;:.2f&#125; due: &#123;:.2f&#125;&gt;'</span></span><br><span class="line">        <span class="keyword">return</span> fmt.format(self.total(), self.due())</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fidelity_promo</span><span class="params">(order)</span>:</span></span><br><span class="line">    <span class="string">"""为积分为1000或以上的顾客提供5%折扣"""</span></span><br><span class="line">    <span class="keyword">return</span> order.total() * <span class="number">.05</span> <span class="keyword">if</span> order.customer.fidelity &gt;= <span class="number">1000</span> <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bulk_item_promo</span><span class="params">(order)</span>:</span></span><br><span class="line">    <span class="string">"""单个商品为20个或以上时提供10%折扣"""</span></span><br><span class="line">    discount = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> order.cart:</span><br><span class="line">        <span class="keyword">if</span> item.quantity &gt;= <span class="number">20</span>:</span><br><span class="line">            discount += item.total() * <span class="number">.1</span></span><br><span class="line">    <span class="keyword">return</span> discount</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">large_order_promo</span><span class="params">(order)</span>:</span></span><br><span class="line">    <span class="string">"""订单中的不同商品达到10个或以上时提供7%折扣"""</span></span><br><span class="line">    distinct_items = &#123;item.product <span class="keyword">for</span> item <span class="keyword">in</span> order.cart&#125;</span><br><span class="line">    <span class="keyword">if</span> len(distinct_items) &gt;= <span class="number">10</span>:</span><br><span class="line">        <span class="keyword">return</span> order.total() * <span class="number">.07</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>这个实例中没有抽象类，而且各个策略都是<strong>函数</strong>。<br>下面是实际使用的输出:   </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>joe = Customer(<span class="string">'John Doe'</span>, <span class="number">0</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>ann = Customer(<span class="string">'Ann Smith'</span>, <span class="number">1100</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>cart = [LineItem(<span class="string">'banana'</span>, <span class="number">4</span>, <span class="number">.5</span>),</span><br><span class="line"><span class="meta">... </span>LineItem(<span class="string">'apple'</span>, <span class="number">10</span>, <span class="number">1.5</span>),</span><br><span class="line"><span class="meta">... </span>LineItem(<span class="string">'watermellon'</span>, <span class="number">5</span>, <span class="number">5.0</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Order(joe, cart, fidelity_promo)</span><br><span class="line">&lt;Order total: <span class="number">42.00</span> due: <span class="number">42.00</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Order(ann, cart, fidelity_promo)</span><br><span class="line">&lt;Order total: <span class="number">42.00</span> due: <span class="number">39.90</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>banana_cart = [LineItem(<span class="string">'banana'</span>, <span class="number">30</span>, <span class="number">.5</span>),</span><br><span class="line"><span class="meta">... </span>LineItem(<span class="string">'apple'</span>, <span class="number">10</span>, <span class="number">1.5</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Order(joe, banana_cart, bulk_item_promo)</span><br><span class="line">&lt;Order total: <span class="number">30.00</span> due: <span class="number">28.50</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>long_order = [LineItem(str(item_code), <span class="number">1</span>, <span class="number">1.0</span>)</span><br><span class="line"><span class="meta">... </span><span class="keyword">for</span> item_code <span class="keyword">in</span> range(<span class="number">10</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Order(joe, long_order, large_order_promo)</span><br><span class="line">&lt;Order total: <span class="number">10.00</span> due: <span class="number">9.30</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Order(joe, cart, large_order_promo)</span><br><span class="line">&lt;Order total: <span class="number">42.00</span> due: <span class="number">42.00</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>可以看到应用对应的详细策略只需要将函数作为参数传入Order类，没必要像6.1一样实例化策略对象，这样会使得资源有所节省。</p>
+<p>《设计模式：可复用面向对象软件的基础》一书的作者指出：“策略对象通常是很好的享元（flyweight）。” 那本书的另一部分对“享元”下了定义：“享元是可共享的对象，可以同时在多个上下文中使用。” 共享是推荐的做法，这样不必在每个新的上下文（这里是 Order 实例）中使用相同的策略时不断新建具体策略对象，从而减少消耗。因此，为了避免“策略”模式的一个缺点（运行时消耗），《设计模式：可复用面向对象软件的基础》的作者建议再使用另一个模式。但此时，代码行数和维护成本会不断攀升。</p>
+<p>在复杂的情况下，需要具体策略维护内部状态时，可能需要把“策略”和“享元”模式结合起来。但是，具体策略一般没有内部状态，只是处理上下文中的数据。此时，一定要使用普通的函数，别去编写只有一个方法的类，再去实现另一个类声明的单函数接口。<strong>函数比用户定义的类的实例轻量</strong>，而且无需使用“享元”模式，因为各个策略函数在 Python 编译模块时只会创建一次。普通的函数也是<strong>“可共享的对象，可以同时在多个上下文中使用”</strong></p>
+<p>至此，我们使用函数实现了“策略”模式，接下来我们会在此基础上讲如何利用一致的条件选择最佳的策略。</p>
+<h3 id="选择最佳策略的简单方法-暴力迭代"><a href="#选择最佳策略的简单方法-暴力迭代" class="headerlink" title="选择最佳策略的简单方法(暴力迭代)"></a>选择最佳策略的简单方法(暴力迭代)</h3><p>使用暴力迭代的话，这个最佳策略选择的实现异常简单:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">promos = [fidelity_promo, bulk_item_promo, large_order_promo]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">best_promo</span><span class="params">(order)</span>:</span></span><br><span class="line">    <span class="string">"""选择可用的最佳折扣"""</span></span><br><span class="line">    <span class="keyword">return</span> max(promo(order) <span class="keyword">for</span> promo <span class="keyword">in</span> promos)</span><br></pre></td></tr></table></figure>
+<p>这样直接将best_promo作为参数传入Order类就行。不过这样做的缺陷是:添加新的策略要定义新的函数，并加进promos列表，否则不在best_promo的选择范围内。</p>
+<h3 id="找出模块中的全部策略"><a href="#找出模块中的全部策略" class="headerlink" title="找出模块中的全部策略"></a>找出模块中的全部策略</h3><p>既然说到对模块中函数的遍历，就不得不提到模块的内省函数globals(),这样一说我们就知道，模块也是一等对象（。。。。<img src="https://github.com/aldslvda/blog-images/blob/master/acfun_emoji/11.png?raw=true" alt></p>
+<p>这样我们有了新的best_promo:    </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">promos = [globals()[name] <span class="keyword">for</span> name <span class="keyword">in</span> globals()</span><br><span class="line">            <span class="keyword">if</span> name.endswith(<span class="string">'_promo'</span>)</span><br><span class="line">                <span class="keyword">and</span> name != <span class="string">'best_promo'</span>]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">best_promo</span><span class="params">(order)</span>:</span></span><br><span class="line"><span class="string">"""选择可用的最佳折扣"""</span></span><br><span class="line">    <span class="keyword">return</span> max(promo(order) <span class="keyword">for</span> promo <span class="keyword">in</span> promos)</span><br></pre></td></tr></table></figure>
+<p>另一种方法是，在一个单独的模块(promotions.py)中保存所有策略函数，把best_promo排除在外。   </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">promos = [func <span class="keyword">for</span> name, func <span class="keyword">in</span></span><br><span class="line">            inspect.getmembers(promotions, inspect.isfunction)]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">best_promo</span><span class="params">(order)</span>:</span></span><br><span class="line">    <span class="string">"""选择可用的最佳折扣"""</span></span><br><span class="line">    <span class="keyword">return</span> max(promo(order) <span class="keyword">for</span> promo <span class="keyword">in</span> promos)</span><br></pre></td></tr></table></figure>
+<p>这个实现的缺陷是，promotions模块中的<strong>所有函数必须是策略函数</strong>，这种实现是强调模块内省的一种用途而不是提供完善的方案。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>使用一等对象实现策略模式的核心思想是:   </p>
+<blockquote>
+<p> 用”使用普通的函数”的方式代替”编写只有一个方法的类，再去实现另一个类声明的单函数接口”。将普通的函数作为可共享的对象。     </p>
+</blockquote>
+<p>上面的例子都是基于这一思想进行优化，并且处使用一等对象的特性(函数作为参数、模块内省)。</p>
+<p>下一篇我们会讲到命令模式，关于策略模式和命令模式的定义和场景，参见：<a href="https://github.com/aldslvda/readings/blob/master/Fluent-Python/6.%20Design%20Patterns%20with%20First-Class%20Functions/design-pattern-mentioned.md" target="_blank" rel="noopener">关于设计模式：策略模式和命令模式</a></p>
+<p>（今天好高产<br><img src="https://github.com/aldslvda/blog-images/blob/master/acfun_emoji/17.png?raw=true" alt></p>
+
+      
+    </div>
+
+    
+      
+
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/fluent-python/" rel="tag"># fluent python</a>
+          
+            <a href="/tags/design-pattern/" rel="tag"># design pattern</a>
+          
+            <a href="/tags/The-Strategy-pattern/" rel="tag"># The Strategy pattern</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/13/fluent-python-5/" rel="next" title="fluent python 第五章小记">
+                <i class="fa fa-chevron-left"></i> fluent python 第五章小记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/19/fluent-python-6-2/" rel="prev" title="Fluent Python第六章:使用一等函数实现设计模式(2) —— 命令模式">
+                Fluent Python第六章:使用一等函数实现设计模式(2) —— 命令模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image" src="https://avatars0.githubusercontent.com/u/4235999?s=460&v=4" alt="aldslvda">
+  
+  <p class="site-author-name" itemprop="name">aldslvda</p>
+  <div class="site-description motion-element" itemprop="description">聚沙成塔</div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">66</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+  <div class="links-of-author motion-element">
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://github.com/aldslvda" title="GitHub &rarr; https://github.com/aldslvda" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="mailto:aldslvda@live.com" title="E-Mail &rarr; mailto:aldslvda@live.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="http://weibo.com/aldslvda" title="weibo &rarr; http://weibo.com/aldslvda" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+    
+  </div>
+
+
+
+
+
+
+
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Chapter-6-Design-Patterns-with-First-Class-Functions"><span class="nav-text">Chapter 6. Design Patterns with First-Class Functions</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第六章-使用一等函数实现设计模式-1-——-策略模式"><span class="nav-text">第六章. 使用一等函数实现设计模式(1) —— 策略模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#策略模式"><span class="nav-text">策略模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#经典的策略模式"><span class="nav-text">经典的策略模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用函数实现策略模式"><span class="nav-text">使用函数实现策略模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择最佳策略的简单方法-暴力迭代"><span class="nav-text">选择最佳策略的简单方法(暴力迭代)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#找出模块中的全部策略"><span class="nav-text">找出模块中的全部策略</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aldslvda</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+  
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://aldslvda.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://aldslvda.github.io/2017/12/17/fluent-python-6-1/";
+    this.page.identifier = "2017/12/17/fluent-python-6-1/";
+    this.page.title = 'Fluent Python第六章:使用一等函数实现设计模式(1) —— 策略模式';
+    };
+  function loadComments() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://aldslvda.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', '' + +new Date());
+    (d.head || d.body).appendChild(s);
+  }
+  
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// GET RESPONSIVE HEIGHT PASSED FROM IFRAME
+
+window.addEventListener("message", function(e) {
+  var data = e.data;
+  if ((typeof data === 'string') && (data.indexOf('ciu_embed') > -1)) {
+    var featureID = data.split(':')[1];
+    var height = data.split(':')[2];
+    $(`iframe[data-feature=${featureID}]`).height(parseInt(height) + 30);
+  }
+}, false);
+</script>
+
+
+
+
+
+
+
+
+  
+
+</body>
+</html>
